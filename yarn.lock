@@ -2692,6 +2692,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "hello-react-breadboard@workspace:samples/Hello React Breadboard"
   dependencies:
+    "@google-labs/breadboard": "npm:^0.5.1"
     "@types/react": "npm:^18.2.37"
     "@types/react-dom": "npm:^18.2.15"
     "@typescript-eslint/eslint-plugin": "npm:^6.10.0"
