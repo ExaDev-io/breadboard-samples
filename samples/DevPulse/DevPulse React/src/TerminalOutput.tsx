@@ -3,6 +3,24 @@ import { useEffect, useRef, useState } from "react";
 
 const CLAUDE_API_KEY = import.meta.env.VITE_CLAUDE_API_KEY;
 
+function unescapeHtml(str: string): string {
+	return str.replace(/&(#?\w+);/g, (_match, p1) => {
+		const charCode = p1.startsWith("#") ? parseInt(p1.slice(1), 16) : decodeURI(p1);
+		return String.fromCharCode(typeof charCode === "number" ? charCode : 0);
+	});
+}
+
+function cleanString(run: any): string {
+	const outputs = run.outputs
+	const unescapedString = JSON.stringify(outputs, null, 2)
+		.replaceAll("\\n", "\n")
+		.replaceAll("\\\"", "\"")
+		.replaceAll("\\\\", "\\")
+	const unescapedHtml = unescapeHtml(unescapedString)
+
+	return `${run.node.id} ${unescapedHtml}`;
+}
+
 export function TerminalOutput({board}: { board: Board }) {
 	const [output, setOutput] = useState<string[]>([]);
 	const ref = useRef<HTMLDivElement>(null);
@@ -21,8 +39,7 @@ export function TerminalOutput({board}: { board: Board }) {
 						run.inputs = {CLAUDE_API_KEY};
 					}
 				} else if (run.type === "output") {
-					const outputs = run.outputs
-					const outputMessage = `${run.node.id} ${JSON.stringify(outputs, null, 2).replaceAll("\\n", "\n").replaceAll("\\\"", "\"" )}`
+					const outputMessage = cleanString(run);
 					console.log(outputMessage)
 					setOutput((prev) => [
 						...prev,
