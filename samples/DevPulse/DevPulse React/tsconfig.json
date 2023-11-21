@@ -1,12 +1,14 @@
 {
 	"extends": "../../../tsconfig.minimal",
 	"compilerOptions": {
-		"target": "ES2020",
+		"target": "ESNext",
 		"useDefineForClassFields": true,
 		"lib": [
+			"ESNext",
 			"ES2020",
 			"DOM",
-			"DOM.Iterable"
+			"DOM.Iterable",
+			"WebWorker"
 		],
 		"module": "ESNext",
 		"skipLibCheck": true,
@@ -15,16 +17,21 @@
 		"allowImportingTsExtensions": true,
 		"resolveJsonModule": true,
 		"isolatedModules": true,
+		"esModuleInterop": true,
 		"noEmit": true,
 		"jsx": "react-jsx",
 		/* Linting */
 		"strict": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
-		"noFallthroughCasesInSwitch": true
+		"noFallthroughCasesInSwitch": true,
+		"composite": true,
+		"types": [
+			"vite/client"
+		]
 	},
 	"include": [
-		"src"
+		"src",
 	],
 	"references": [
 		{
