@@ -4,10 +4,14 @@
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
+		"start": "yarn clean && yarn build && yarn preview",
 		"dev": "vite --open",
 		"build": "tsc && vite build",
 		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-		"preview": "vite preview --open"
+		"clean": "rimraf dist",
+		"prebuild": "npm run clean",
+		"prepreview": "npm run build",
+		"preview": "vite preview"
 	},
 	"dependencies": {
 		"@exadev/breadboard-kits": "0.5.8-0",
