@@ -2,10 +2,10 @@
 import exadev from "@exadev/breadboard-kits";
 import { hackerNewsBoard } from "./hackerNewsBoard.js";
 import { MarkdownContentType } from '@exadev/breadboard-kits/dist/types/markdown.js';
+import makeMarkdown from "@exadev/breadboard-kits/util/files/makeMarkdown.js";
 
 ////////////////////////////////////////////////
-
-exadev.util.files.makeMarkdown({
+makeMarkdown({
 	board: hackerNewsBoard,
 	filename: "README",
 	title: "Hacker News",

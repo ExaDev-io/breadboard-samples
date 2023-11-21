@@ -1,6 +1,8 @@
 {
-  "compilerOptions": {
-    "target": "ES6",
-    "moduleResolution": "Node",
-  }
+	"compilerOptions": {
+		"target": "ES6",
+		"moduleResolution": "Node",
+		"composite": true
+	},
+	"references": []
 }
