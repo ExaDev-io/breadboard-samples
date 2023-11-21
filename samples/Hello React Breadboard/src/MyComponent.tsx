@@ -12,34 +12,41 @@ const preStyle: React.CSSProperties = {
 };
 
 const MyComponent = () => {
-	const [inputData, setInputData] = useState({});
-	const [outputData, setOutputData] = useState({});
-	const [userInput, setUserInput] = useState(""); // State to hold user input
+	const [inputData, setInputData] = useState<{ [key: string]: string }>({});
+	const [outputData, setOutputData] = useState<{ [key: string]: unknown }>(
+		{}
+	);
+	const [dynamicInputs, setDynamicInputs] = useState<(string | undefined)[]>(
+		[]
+	);
 
-	// Event handler for user input
-	const handleInputChange = (event: {
-		target: { value: React.SetStateAction<string> };
-	}) => {
-		setUserInput(event.target.value);
+	// Handle dynamic input change
+	const handleDynamicInputChange = (
+		event: React.ChangeEvent<HTMLInputElement>,
+		inputKey: string
+	) => {
+		setInputData((prev) => ({
+			...prev,
+			[inputKey]: event.target.value,
+		}));
 	};
 
 	// Submit handler to initiate processing
 	const handleSubmit = async () => {
 		for await (const run of board.run({})) {
 			if (run.type === "input") {
-				// Use the user input data
-				run.inputs = {
-					...run.inputs,
-					inputKey: userInput, // Assuming 'inputKey' is what you need
-				};
-				setInputData((prev) => ({
-					...prev,
-					[run.node.id]: {
-						node: run.node,
-						inputs: run.inputs,
-						state: run.state,
-					},
-				}));
+				// Extract newOpportunities
+				const newOps = run.state.newOpportunities;
+				setDynamicInputs(newOps.map((op) => op.in));
+
+				for (const op of newOps) {
+					if (op.in && inputData[op.in]) {
+						run.inputs = {
+							...run.inputs,
+							[op.in]: inputData[op.in],
+						};
+					}
+				}
 			}
 			if (run.type === "output") {
 				setOutputData((prev) => ({
@@ -56,7 +63,16 @@ const MyComponent = () => {
 
 	return (
 		<div>
-			<input type="text" value={userInput} onChange={handleInputChange} />
+			{dynamicInputs.map((inputKey) => (
+				<input
+					key={inputKey}
+					type="text"
+					value={inputData[inputKey] || ""}
+					onChange={(e) => handleDynamicInputChange(e, inputKey)}
+					placeholder={`Enter value for ${inputKey}`}
+				/>
+			))}
+
 			<button onClick={handleSubmit}>Submit</button>
 
 			<h2>Input Nodes</h2>
