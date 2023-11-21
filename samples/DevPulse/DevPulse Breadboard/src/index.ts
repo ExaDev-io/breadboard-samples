@@ -1,9 +1,7 @@
 #!/usr/bin/env npx -y tsx watch
-import exadev from "@exadev/breadboard-kits";
-import { hackerNewsBoard } from "./hackerNewsBoard.js";
-import { MarkdownContentType } from '@exadev/breadboard-kits/dist/types/markdown.js';
+import { MarkdownContentType } from "@exadev/breadboard-kits/types/markdown.js";
 import makeMarkdown from "@exadev/breadboard-kits/util/files/makeMarkdown.js";
-
+import { hackerNewsBoard } from "./hackerNewsBoard.js";
 ////////////////////////////////////////////////
 makeMarkdown({
 	board: hackerNewsBoard,
