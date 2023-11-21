@@ -3,6 +3,33 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 
+const CLAUDE_API_KEY = import.meta.env.VITE_CLAUDE_API_KEY;
+console.log("CLAUDE_API_KEY", CLAUDE_API_KEY);
+
+const board = import("./hackerNewsBoard.ts").then((m) => m.makeBoard());
+
+board.then(async (board) => {
+	for await (const run of board.run()) {
+		console.log("run.node.id", run.node.id);
+		if (run.type === "input") {
+			if (run.node.id === "claudeApiKey") {
+				run.inputs = {
+					CLAUDE_API_KEY,
+				};
+			}
+
+			// const opId = run.state.opportunities[0].in;
+			// run.inputs = {
+			// 	[opId ?? "message"]: new Date().toISOString(),
+			// };
+		} else if (run.type === "output") {
+			console.log(run.node.id, run.outputs);
+		} else {
+			// console.log(run.node.id, run.state);
+		}
+	}
+});
+
 function App() {
 	const [count, setCount] = useState(0);
 
