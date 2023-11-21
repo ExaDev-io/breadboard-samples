@@ -1,34 +1,37 @@
-import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
+import { apps, openApp } from "open";
+import { defineConfig } from "vite";
+import topLevelAwait from "vite-plugin-top-level-await";
 // import react from '@vitejs/plugin-react';
 import wasm from "vite-plugin-wasm";
-import topLevelAwait from "vite-plugin-top-level-await";
-import open, { openApp, apps } from "open";
 
 
 const SERVER_PORT = 5173;
 async function openChrome() {
 	const args = [
-		// `http://localhost:${SERVER_PORT}`,
 		"--args",
 		"--disable-fre",
 		"--no-default-browser-check",
 		"--no-first-run",
-		`--user-data-dir=/tmp/${new Date().getDate()}`,
+		`--user-data-dir=/tmp/${new Date().toDateString()}`,
 		"--disable-web-security",
 		"--disable-gpu",
 		"--no-startup-window",
 		"--disable-site-isolation-trials",
+		"--auto-open-devtools-for-tabs",
+		"--new-window",
+		"--incognito",
+		`http://localhost:${SERVER_PORT}`,
 	];
 
 	return await openApp(apps.chrome, {
 		arguments: args,
-		background: true,
+		background: false,
 		newInstance: false,
 		wait: false,
-	}).then(() => {
-		return "";
-	});
+	})
+
+	// return await open(
 }
 
 // https://vitejs.dev/config/
