@@ -458,65 +458,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@esbuild/win32-x64@npm:0.19.6":
-  version: 0.19.6
-  resolution: "@esbuild/win32-x64@npm:0.19.6"
-  conditions: os=win32 & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@eslint-community/eslint-utils@npm:^4.2.0, @eslint-community/eslint-utils@npm:^4.4.0":
-  version: 4.4.0
-  resolution: "@eslint-community/eslint-utils@npm:4.4.0"
-  dependencies:
-    eslint-visitor-keys: "npm:^3.3.0"
-  peerDependencies:
-    eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
-  checksum: 8d70bcdcd8cd279049183aca747d6c2ed7092a5cf0cf5916faac1ef37ffa74f0c245c2a3a3d3b9979d9dfdd4ca59257b4c5621db699d637b847a2c5e02f491c2
-  languageName: node
-  linkType: hard
-
-"@eslint-community/regexpp@npm:^4.5.1, @eslint-community/regexpp@npm:^4.6.1":
-  version: 4.10.0
-  resolution: "@eslint-community/regexpp@npm:4.10.0"
-  checksum: 8c36169c815fc5d726078e8c71a5b592957ee60d08c6470f9ce0187c8046af1a00afbda0a065cc40ff18d5d83f82aed9793c6818f7304a74a7488dc9f3ecbd42
-  languageName: node
-  linkType: hard
-
-"@eslint/eslintrc@npm:^2.1.3":
-  version: 2.1.3
-  resolution: "@eslint/eslintrc@npm:2.1.3"
-  dependencies:
-    ajv: "npm:^6.12.4"
-    debug: "npm:^4.3.2"
-    espree: "npm:^9.6.0"
-    globals: "npm:^13.19.0"
-    ignore: "npm:^5.2.0"
-    import-fresh: "npm:^3.2.1"
-    js-yaml: "npm:^4.1.0"
-    minimatch: "npm:^3.1.2"
-    strip-json-comments: "npm:^3.1.1"
-  checksum: 77b70a89232fe702c2f765b5b92970f5e4224b55363b923238b996c66fcd991504f40d3663c0543ae17d6c5049ab9b07ab90b65d7601e6f25e8bcd4caf69ac75
-  languageName: node
-  linkType: hard
-
-"@eslint/js@npm:8.54.0":
-  version: 8.54.0
-  resolution: "@eslint/js@npm:8.54.0"
-  checksum: 4d491ff234cd94b54499428cb3435623270ff8cc59950e13e6e1ac2fa350ec60502dac7bfd4f486523fee65ad7a358034570fe776b81b14dbfe5525d1e26e1d8
-  languageName: node
-  linkType: hard
-
-"@exadev/breadboard-kits@npm:^0.4.7, @exadev/breadboard-kits@npm:^0.4.8":
-  version: 0.4.8
-  resolution: "@exadev/breadboard-kits@npm:0.4.8"
+"@exadev/breadboard-kits@npm:^0.5.3":
+  version: 0.5.3
+  resolution: "@exadev/breadboard-kits@npm:0.5.3"
   dependencies:
     "@google-labs/breadboard": "npm:^0.5.1"
     "@google-labs/core-kit": "npm:^0.0.1"
     "@google-labs/llm-starter": "npm:^0.2.1"
     dotenv: "npm:^16.3.1"
     jsonschema: "npm:^1.4.1"
-  checksum: adb18ff562010ddb17b0a9c9d81848c670c19447f71fa034420d33ee7949318bfe3854415fa53cd08bf6633cef17a3efeaa51ad806ff9899dfb0960b467dbfb0
+  checksum: 6ed48799e83f012dbad2b9dd380eeef8c89e3224f877172404f0531cd9090e47c135a06d96a1a199310adad6be642572910ccbd21655e3e1551f9152ba3d8410
+  languageName: node
+  linkType: hard
+
+"@exadev/breadboard-kits@npm:^0.5.3-0":
+  version: 0.5.3-0
+  resolution: "@exadev/breadboard-kits@npm:0.5.3-0"
+  dependencies:
+    "@google-labs/breadboard": "npm:^0.5.1"
+    "@google-labs/core-kit": "npm:^0.0.1"
+    "@google-labs/llm-starter": "npm:^0.2.1"
+    dotenv: "npm:^16.3.1"
+    jsonschema: "npm:^1.4.1"
+  checksum: fde86c45edbc120a4613cc4af0829014b72de73d9dd6ee90070f87753435cae28323688a3a108f07a911bd98a83fd88a98af4b919e6106614529f69da355ab16
   languageName: node
   linkType: hard
 
@@ -1080,20 +1044,20 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:*, @types/node@npm:^20.9.0, @types/node@npm:^20.9.2":
-  version: 20.9.2
-  resolution: "@types/node@npm:20.9.2"
+  version: 20.9.3
+  resolution: "@types/node@npm:20.9.3"
   dependencies:
     undici-types: "npm:~5.26.4"
-  checksum: 8bab2870bfc02efc988c53dfb0149634f8feb824132cc7f20b36f3d55d89ef893e3a43d545524a5cb3a284f4ce68ae4181d75a4a39cee6b79c586d719e6b7461
+  checksum: 5d2a3a6b2b900814eab8c5093dabb7aa10895928719ec0074b9ac5584bcc83f5b680e2d2cb6c8b9751511b7b1b7fdd8586d2fc827b156f0263fdb65c4741bdef
   languageName: node
   linkType: hard
 
 "@types/node@npm:^18.11.18":
-  version: 18.18.10
-  resolution: "@types/node@npm:18.18.10"
+  version: 18.18.11
+  resolution: "@types/node@npm:18.18.11"
   dependencies:
     undici-types: "npm:~5.26.4"
-  checksum: 6f5bca390970ac42ed073490127edc9822e030def4f5ec7dd71e2dcf5a9dd622be984ef6676b698db126d986229ef5b02c65dac7cfc09cc2c1d94eaefe32a805
+  checksum: 05fe069846ae6accdaad2e4381dfd024c44b84010d5f213725009a34769f346cbb7b38d36931b4ff64f3af57b5fe0a3ccc33d0ef207a1ed9d76c1115b0d559a4
   languageName: node
   linkType: hard
 
@@ -1613,7 +1577,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "breadboard-walkthrough@workspace:samples/Breadboard Walkthrough"
   dependencies:
-    "@exadev/breadboard-kits": "npm:^0.4.8"
+    "@exadev/breadboard-kits": "npm:^0.5.3"
     "@google-labs/breadboard": "npm:^0.5.1"
     "@types/node": "npm:^20.9.3"
     npm-run-all: "npm:^4.1.5"
@@ -1903,7 +1867,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "dev-pulse-breadboard@workspace:samples/DevPulse/DevPulse Breadboard"
   dependencies:
-    "@exadev/breadboard-kits": "npm:^0.4.7"
+    "@exadev/breadboard-kits": "npm:^0.5.3-0"
     "@google-labs/breadboard": "npm:^0.5.1"
     "@google-labs/core-kit": "npm:^0.0.1"
     "@google-labs/llm-starter": "npm:^0.1.0"
@@ -5372,8 +5336,8 @@ __metadata:
   linkType: hard
 
 "tsx@npm:^4.1.4":
-  version: 4.1.4
-  resolution: "tsx@npm:4.1.4"
+  version: 4.2.0
+  resolution: "tsx@npm:4.2.0"
   dependencies:
     esbuild: "npm:~0.18.20"
     fsevents: "npm:~2.3.3"
@@ -5384,7 +5348,7 @@ __metadata:
       optional: true
   bin:
     tsx: dist/cli.mjs
-  checksum: 00b0a01f6803e42081681ea4fe155215854c71bb3aae3aeeda5db78369e2c8766bd084f266ee34cbe8b45d0125efef1daabe54dbfca2e8bb4f318b1f866c7f6c
+  checksum: 73a2c4cb7e21cb36080e0430b4aa6e7dce793780faf343b807ee64ba435c722907dd18c140411c5296edca618858f8429469f42a441f1bd3920b29df338c57c1
   languageName: node
   linkType: hard
 
@@ -5469,12 +5433,12 @@ __metadata:
   linkType: hard
 
 "typescript@npm:^5.2.2":
-  version: 5.2.2
-  resolution: "typescript@npm:5.2.2"
+  version: 5.3.2
+  resolution: "typescript@npm:5.3.2"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: d65e50eb849bd21ff8677e5b9447f9c6e74777e346afd67754934264dcbf4bd59e7d2473f6062d9a015d66bd573311166357e3eb07fea0b52859cf9bb2b58555
+  checksum: 415e5fb6611f5713e460bad48039f00bcfdbde53a2f911727862d5aa9c5d5edd250059a419df382d8f031709e15a169c41eb62b6a401da5eec7ac0f4e359d6ac
   languageName: node
   linkType: hard
 
@@ -5489,12 +5453,12 @@ __metadata:
   linkType: hard
 
 "typescript@patch:typescript@npm%3A^5.2.2#optional!builtin<compat/typescript>":
-  version: 5.2.2
-  resolution: "typescript@patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"
+  version: 5.3.2
+  resolution: "typescript@patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: f79cc2ba802c94c2b78dbb00d767a10adb67368ae764709737dc277273ec148aa4558033a03ce901406b35fddf4eac46dabc94a1e1d12d2587e2b9cfe5707b4a
+  checksum: 1b45cdfb577a78ae7a9a9d0b77a7b772142cb98ba05e4e5aefba7044a028ded885bcecef63166407a5986645cea816fe4986894336aacd5e791796ea79a6a7ed
   languageName: node
   linkType: hard
 
