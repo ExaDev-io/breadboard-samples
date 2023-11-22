@@ -59,6 +59,8 @@ export function TerminalOutput({board}: { board: Board }) {
 						// ...JSON.stringify(run.outputs, null, 2).split("\n"),
 						`\n${"-".repeat(80)}\n`,
 					]);
+				} else {
+					console.debug(run.node.id, run);
 				}
 			}
 		};
