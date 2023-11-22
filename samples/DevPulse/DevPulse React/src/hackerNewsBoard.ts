@@ -50,6 +50,7 @@ const searchQuery = board.input({
 
 const search = algolia.search({
 	tags: ["story"],
+	limit: 5
 });
 
 const searchPassthrough = core.passthrough();
