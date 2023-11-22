@@ -771,16 +771,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@exadev/breadboard-kits@npm:0.5.8-0, @exadev/breadboard-kits@npm:^0.5.8-0":
-  version: 0.5.8-0
-  resolution: "@exadev/breadboard-kits@npm:0.5.8-0"
+"@exadev/breadboard-kits@npm:0.6.0":
+  version: 0.6.0
+  resolution: "@exadev/breadboard-kits@npm:0.6.0"
   dependencies:
     "@google-labs/breadboard": "npm:^0.5.1"
     "@google-labs/core-kit": "npm:^0.0.1"
     "@google-labs/llm-starter": "npm:^0.2.1"
     dotenv: "npm:^16.3.1"
     jsonschema: "npm:^1.4.1"
-  checksum: f00678ee194391e12cf3d1fdd48f4aa58bfe86e212ba60aba5540bd6330178dfb032b1fe820f09cf5cfbd221137abe642b932d61782b5df4a7a99492420b7af8
+  checksum: 6e4a5f01eddb2c5b2f77ef352d07d7288046a49e6d03f345626e39c3fe8779141626cc7f35af8e05ea7802ade57ee0f95077b53f0f55f08e7bf176835e2b307c
   languageName: node
   linkType: hard
 
@@ -794,6 +794,19 @@ __metadata:
     dotenv: "npm:^16.3.1"
     jsonschema: "npm:^1.4.1"
   checksum: 7fcc5fc81d06090edbe395f7af8d0a73b7d15e804c906ab9454f233c9f68b3faf7343f9ebdfaf5943568162990e14df5d1cb3ce496cd00b3aa4cabcfe5a61eeb
+  languageName: node
+  linkType: hard
+
+"@exadev/breadboard-kits@npm:^0.5.8-0":
+  version: 0.5.8-0
+  resolution: "@exadev/breadboard-kits@npm:0.5.8-0"
+  dependencies:
+    "@google-labs/breadboard": "npm:^0.5.1"
+    "@google-labs/core-kit": "npm:^0.0.1"
+    "@google-labs/llm-starter": "npm:^0.2.1"
+    dotenv: "npm:^16.3.1"
+    jsonschema: "npm:^1.4.1"
+  checksum: f00678ee194391e12cf3d1fdd48f4aa58bfe86e212ba60aba5540bd6330178dfb032b1fe820f09cf5cfbd221137abe642b932d61782b5df4a7a99492420b7af8
   languageName: node
   linkType: hard
 
@@ -2464,7 +2477,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "devpulse-react@workspace:samples/DevPulse/DevPulse React"
   dependencies:
-    "@exadev/breadboard-kits": "npm:0.5.8-0"
+    "@exadev/breadboard-kits": "npm:0.6.0"
     "@types/react": "npm:^18.2.38"
     "@types/react-dom": "npm:^18.2.16"
     "@typescript-eslint/eslint-plugin": "npm:^6.12.0"

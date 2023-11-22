@@ -15,7 +15,7 @@
 		"runBoard": "npx -y tsx watch src/runBoard.ts"
 	},
 	"dependencies": {
-		"@exadev/breadboard-kits": "0.5.8-0",
+		"@exadev/breadboard-kits": "0.6.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0"
 	},
