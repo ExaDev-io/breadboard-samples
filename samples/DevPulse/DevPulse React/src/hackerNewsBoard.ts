@@ -170,11 +170,25 @@ postContentCompletion.wire(
 		$id: "postContentError",
 	})
 );
+const postContentResponse = board.output({
+	$id: "postContentResponse",
+})
+
+storyData.wire("title", postContentResponse);
+storyData.wire("story_id", postContentResponse);
+storyData.wire("url", postContentResponse);
+// storyData.wire("algoliaUrl", postContentResponse);
+storyData.wire("points", postContentResponse);
+// storyData.wire("author", postContentResponse);
+storyData.wire("created_at", postContentResponse);
+const hnUrl = string.template({
+	template: "https://news.ycombinator.com/item?id={{story_id}}",
+});
+storyData.wire("story_id", hnUrl);
+hnUrl.wire("string->hnURL", postContentResponse);
 postContentCompletion.wire(
-	"completion",
-	board.output({
-		$id: "postContentResponse",
-	})
+	"completion->summary",
+	postContentResponse
 );
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -207,19 +221,6 @@ commentData.wire("*",
 	})
 );
 
-
-// for await (const run of board.run()) {
-// 	// Handle runs
-// 	if (run.type === "input") {
-// 		if (run.node.id === "claudeApiKey") {
-// 			run.inputs = {
-// 				CLAUDE_API_KEY,
-// 			};
-// 		}
-// 	} else if (run.type === "output") {
-// 		console.log(run.node.id, run.outputs);
-// 	}
-// }
 
 export default board;
 
