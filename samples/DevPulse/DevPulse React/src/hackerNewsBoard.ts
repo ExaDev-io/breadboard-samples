@@ -172,7 +172,7 @@ story.wire("*", nest);
 const jsonKit = board.addKit(JsonKit);
 
 const limit = objectKit.limitDepth({
-	depth: 10,
+	depth: 5,
 });
 nest.wire("post->object", limit);
 limit.wire(
