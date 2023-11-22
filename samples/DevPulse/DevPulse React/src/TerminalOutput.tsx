@@ -1,16 +1,15 @@
 import { Board } from "@google-labs/breadboard";
 import { useEffect, useRef, useState } from "react";
 
-const CLAUDE_API_KEY = import.meta.env.VITE_CLAUDE_API_KEY;
 
-function unescapeHtml(str: string): string {
+export function unescapeHtml(str: string): string {
 	return str.replace(/&(#?\w+);/g, (_match, p1) => {
 		const charCode = p1.startsWith("#") ? parseInt(p1.slice(1), 16) : decodeURI(p1);
 		return String.fromCharCode(typeof charCode === "number" ? charCode : 0);
 	});
 }
 
-function cleanString(run: any): string {
+export function cleanString(run: any): string {
 	const outputs = run.outputs
 	const unescapedString = JSON.stringify(outputs, null, 2)
 		.replaceAll("\\n", "\n")
@@ -21,13 +20,15 @@ function cleanString(run: any): string {
 	return `${run.node.id} ${unescapedHtml}`;
 }
 
-const ignoredOutputs = [
+export const ignoredOutputs = [
 	"fullCommentData",
 	"commentOutput",
 	"truncatePost",
 ]
 
 export function TerminalOutput({board}: { board: Board }) {
+	const CLAUDE_API_KEY = import.meta.env.VITE_CLAUDE_API_KEY;
+
 	const [output, setOutput] = useState<string[]>([]);
 	const ref = useRef<HTMLDivElement>(null);
 
