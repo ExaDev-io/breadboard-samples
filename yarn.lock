@@ -797,16 +797,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@exadev/breadboard-kits@npm:^0.6.1":
-  version: 0.6.1
-  resolution: "@exadev/breadboard-kits@npm:0.6.1"
+"@exadev/breadboard-kits@npm:^0.6.2":
+  version: 0.6.2
+  resolution: "@exadev/breadboard-kits@npm:0.6.2"
   dependencies:
     "@google-labs/breadboard": "npm:^0.5.1"
     "@google-labs/core-kit": "npm:^0.0.1"
     "@google-labs/llm-starter": "npm:^0.2.1"
     dotenv: "npm:^16.3.1"
     jsonschema: "npm:^1.4.1"
-  checksum: 90066dde4139f0e26400ae06dce0b47e6b8b8027ac6299a59148256641c6e66f1161c5156fff612ab79202bdaefe0ee228e656b2cf253ffacb491e4e3d4d2d6d
+  checksum: 121da10c5bbebd63f88c120851134c3dc770291e404a614be97cef4e687026bdbddf66b15a2e438c65403380d10f1ca16ddc1bccd9071ed47bdb719d14853267
   languageName: node
   linkType: hard
 
@@ -2486,7 +2486,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "devpulse-react@workspace:samples/DevPulse/DevPulse React"
   dependencies:
-    "@exadev/breadboard-kits": "npm:^0.6.1"
+    "@exadev/breadboard-kits": "npm:^0.6.2"
     "@types/react": "npm:^18.2.38"
     "@types/react-dom": "npm:^18.2.17"
     "@typescript-eslint/eslint-plugin": "npm:^6.12.0"
