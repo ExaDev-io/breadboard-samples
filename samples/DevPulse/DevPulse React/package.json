@@ -11,7 +11,8 @@
 		"clean": "rimraf dist",
 		"prebuild": "npm run clean",
 		"prepreview": "npm run build",
-		"preview": "vite preview"
+		"preview": "vite preview",
+		"runBoard": "npx -y tsx watch src/runBoard.ts"
 	},
 	"dependencies": {
 		"@exadev/breadboard-kits": "0.5.8-0",
