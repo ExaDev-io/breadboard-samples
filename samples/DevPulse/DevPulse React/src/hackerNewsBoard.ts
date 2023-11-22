@@ -24,6 +24,7 @@ const topStoryIdNode = firebase.topStoryIds({
 });
 
 //////////////////////////////////////////////////
+const string = board.addKit(StringKit);
 
 //////////////////////////////////////////////////
 const listKit = board.addKit(ListKit);
@@ -41,6 +42,58 @@ popStory.wire("item->id", getStoryFromId);
 const core = board.addKit(Core);
 //////////////////////////////////////////////////
 const objectKit = board.addKit(ObjectKit);
+//////////////////////////////////////////////////
+
+const searchQuery = board.input({
+	$id: "searchQuery",
+});
+
+const search = algolia.search({
+	tags: ["story"],
+});
+
+const searchPassthrough = core.passthrough();
+searchQuery.wire("query", searchPassthrough);
+searchPassthrough.wire("*", search);
+search.wire("algoliaUrl", board.output({ $id: "algoliaSearchUrl" }));
+
+search.wire("hits", board.output({
+	$id: "querySearchHits",
+}));
+
+//////////////////////////////////////////////////
+
+const popHits = listKit.pop({
+	$id: "searchHits",
+});
+search.wire("hits->list", popHits);
+
+const spreadHit = objectKit.spread({
+	$id: "spreadHit",
+});
+popHits.wire("item->object", spreadHit);
+popHits.wire("list", popHits);
+
+
+const searchHit = core.passthrough({
+	$id: "searchHitPassthrough",
+});
+spreadHit.wire("*", searchHit);
+const searchHitData = board.output({
+	$id: "searchHitOutput",
+});
+
+searchHit.wire("story_id", searchHitData);
+searchHit.wire("title", searchHitData);
+searchHit.wire("url", searchHitData);
+searchHit.wire("created_at", searchHitData);
+const searchHitUrl = string.template({
+	template: "https://news.ycombinator.com/item?id={{story_id}}",
+});
+searchHit.wire("story_id", searchHitUrl);
+searchHitUrl.wire("string->hnURL", searchHitData);
+// story_id.id
+searchHit.wire("story_id->id", getStoryFromId);
 //////////////////////////////////////////////////
 //////////////////////////////////////////////////
 
@@ -85,7 +138,6 @@ claudeApiKey.wire("CLAUDE_API_KEY", completion);
 
 ////////////////////////////////////////////////////////////////////////////////
 
-const string = board.addKit(StringKit);
 const titleTemplate = string.template({
 	$id: "titleTemplate",
 	template: [
@@ -172,7 +224,7 @@ postContentCompletion.wire(
 );
 const postContentResponse = board.output({
 	$id: "postContentResponse",
-})
+});
 
 storyData.wire("title", postContentResponse);
 storyData.wire("story_id", postContentResponse);
