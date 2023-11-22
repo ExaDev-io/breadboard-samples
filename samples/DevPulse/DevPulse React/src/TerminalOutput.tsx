@@ -21,6 +21,12 @@ function cleanString(run: any): string {
 	return `${run.node.id} ${unescapedHtml}`;
 }
 
+const ignoredOutputs = [
+	"fullCommentData",
+	"commentOutput",
+	"truncatePost",
+]
+
 export function TerminalOutput({board}: { board: Board }) {
 	const [output, setOutput] = useState<string[]>([]);
 	const ref = useRef<HTMLDivElement>(null);
@@ -39,6 +45,9 @@ export function TerminalOutput({board}: { board: Board }) {
 						run.inputs = {CLAUDE_API_KEY};
 					}
 				} else if (run.type === "output") {
+					if (ignoredOutputs.includes(run.node.id)) {
+						continue;
+					}
 					const outputMessage = cleanString(run);
 					console.log(outputMessage)
 					setOutput((prev) => [
