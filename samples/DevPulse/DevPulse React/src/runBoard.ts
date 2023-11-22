@@ -29,6 +29,8 @@ for await (const run of board.run()) {
 	if (run.type === "input") {
 		if (run.node.id === "claudeApiKey") {
 			run.inputs = {CLAUDE_API_KEY};
+		} else {
+			console.log("input required for", run.node.id);
 		}
 	} else if (run.type === "output") {
 		if (ignoredOutputs.includes(run.node.id)) {
