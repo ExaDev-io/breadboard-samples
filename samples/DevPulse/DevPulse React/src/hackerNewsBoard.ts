@@ -48,6 +48,10 @@ const searchQuery = board.input({
 	$id: "searchQuery",
 });
 
+const searchQueries = board.input({
+	$id: "searchQueries"
+});
+
 const search = algolia.search({
 	tags: ["story"],
 	limit: 5
@@ -61,6 +65,14 @@ search.wire("algoliaUrl", board.output({ $id: "algoliaSearchUrl" }));
 search.wire("hits", board.output({
 	$id: "querySearchHits",
 }));
+
+//////////////////////////////////////////////////
+const popSearchQueries = listKit.pop({
+	$id: "popSearchQueries",
+});
+searchQueries.wire("queries->list", popSearchQueries);
+popSearchQueries.wire("->list", popSearchQueries);
+popSearchQueries.wire("item->query", search);
 
 //////////////////////////////////////////////////
 
