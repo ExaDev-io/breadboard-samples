@@ -48,11 +48,12 @@ export function TerminalOutput({board}: { board: Board }) {
 						console.log("input required for", run.node.id);
 					}
 				} else if (run.type === "output") {
+					const outputMessage = cleanString(run);
+					console.log(outputMessage);
+
 					if (ignoredOutputs.includes(run.node.id)) {
 						continue;
 					}
-					const outputMessage = cleanString(run);
-					console.log(outputMessage)
 					setOutput((prev) => [
 						...prev,
 						outputMessage,
