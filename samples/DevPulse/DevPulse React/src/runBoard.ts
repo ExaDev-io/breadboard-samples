@@ -1,10 +1,11 @@
 #!/usr/bin/env npm -y tsx watch
 import { MarkdownContentType } from "@exadev/breadboard-kits/types/markdown.js";
 import makeMarkdown from "@exadev/breadboard-kits/util/files/makeMarkdown.js";
-
 import dotenv from "dotenv";
+import fs from "fs";
+import { ignoredOutputs } from "util/IgnoredOutputs.ts";
+import { cleanString } from "util/CleanString.ts";
 import board from "./hackerNewsBoard.ts";
-import { cleanString, ignoredOutputs } from "./TerminalOutput.tsx";
 
 dotenv.config({
 	path: ".env"
@@ -28,7 +29,15 @@ makeMarkdown({
 for await (const run of board.run()) {
 	if (run.type === "input") {
 		if (run.node.id === "claudeApiKey") {
-			run.inputs = {CLAUDE_API_KEY};
+			run.inputs = { CLAUDE_API_KEY };
+		} else if (run.node.id === "searchQuery") {
+			run.inputs = {query: "OpenAI"};
+		} else if (run.node.id === "searchQueries") {
+			run.inputs = {
+				queries: [
+					"Google Chrome"
+				]
+			};
 		} else {
 			console.log("input required for", run.node.id);
 		}
@@ -38,6 +47,9 @@ for await (const run of board.run()) {
 		}
 		const outputMessage = cleanString(run);
 		console.log(outputMessage);
+		if (run.node.id === "searchHits") {
+			fs.writeFileSync("searchHits.json", JSON.stringify(run.outputs, null, 2));
+		}
 	}
 }
 

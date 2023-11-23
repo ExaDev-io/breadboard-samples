@@ -10,6 +10,7 @@
 			"DOM.Iterable",
 			"WebWorker"
 		],
+		"baseUrl": "./src",
 		"module": "ESNext",
 		"skipLibCheck": true,
 		/* Bundler mode */
