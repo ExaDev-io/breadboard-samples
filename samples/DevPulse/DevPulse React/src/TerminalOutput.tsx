@@ -5,7 +5,7 @@ import { ignoredOutputs } from "./util/IgnoredOutputs";
 
 // const worker = new MyWorker();
 
-export function TerminalOutput({board}: { board: Board }) {
+export function TerminalOutput({ board }: { board: Board }) {
 	const CLAUDE_API_KEY = import.meta.env.VITE_CLAUDE_API_KEY;
 
 	const [output, setOutput] = useState<string[]>([]);
@@ -22,14 +22,12 @@ export function TerminalOutput({board}: { board: Board }) {
 			for await (const run of board.run()) {
 				if (run.type === "input") {
 					if (run.node.id === "claudeApiKey") {
-						run.inputs = {CLAUDE_API_KEY};
+						run.inputs = { CLAUDE_API_KEY };
 					} else if (run.node.id === "searchQuery") {
-						run.inputs = {query: "Google Lab"};
+						run.inputs = { query: "Google Lab" };
 					} else if (run.node.id === "searchQueries") {
 						run.inputs = {
-							queries: [
-								"Google Chrome"
-							]
+							queries: ["Google Chrome"],
 						};
 					} else {
 						console.log("input required for", run.node.id);
@@ -52,7 +50,7 @@ export function TerminalOutput({board}: { board: Board }) {
 				}
 			}
 		};
-		processRun().then(r => console.log("processRun", r));
+		processRun().then((r) => console.log("processRun", r));
 	}, [CLAUDE_API_KEY, board]);
 
 	return (
