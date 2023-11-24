@@ -2,8 +2,8 @@
 
 /// <reference lib="webworker" />
 
-import { ignoredOutputs } from "src/IgnoredOutputs.tsx";
-import { cleanString } from "util/CleanString.ts";
+import { cleanString } from "util/CleanString";
+import { ignoredOutputs } from "util/IgnoredOutputs";
 import board from "../hackerNewsBoard";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
