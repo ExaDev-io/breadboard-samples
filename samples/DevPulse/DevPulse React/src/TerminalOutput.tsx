@@ -53,7 +53,7 @@ export function TerminalOutput({board}: { board: Board }) {
 			}
 		};
 		processRun().then(r => console.log("processRun", r));
-	}, [board]);
+	}, [CLAUDE_API_KEY, board]);
 
 	return (
 		<div
