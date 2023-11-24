@@ -1,8 +1,7 @@
 import { Board } from "@google-labs/breadboard";
 import { useEffect, useRef, useState } from "react";
-import { cleanString } from "util/CleanString.ts";
-import { ignoredOutputs } from "util/IgnoredOutputs.ts";
-
+import { cleanString } from "./util/CleanString";
+import { ignoredOutputs } from "./util/IgnoredOutputs";
 
 // const worker = new MyWorker();
 

@@ -1,5 +1,5 @@
 import { RunResult } from "@google-labs/breadboard";
-import { unescapeHtml } from "util/UnescapeHtml.ts";
+import { unescapeHtml } from "./UnescapeHtml.ts";
 
 export function cleanString(run: RunResult): string {
 	const outputs = run.outputs;
