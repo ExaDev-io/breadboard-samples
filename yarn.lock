@@ -587,6 +587,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@google-labs/breadboard@npm:^0.6.0":
+  version: 0.6.0
+  resolution: "@google-labs/breadboard@npm:0.6.0"
+  dependencies:
+    zod: "npm:^3.22.4"
+    zod-to-json-schema: "npm:^3.22.1"
+  checksum: bad6b96e287c27ed24f7612469db7c7dfb3eebd7148aeda608074b42bd93d5e3a3b467691d7e7a14879be7e1bccd65faf03da35605b7753fd46de0f148e28de4
+  languageName: node
+  linkType: hard
+
 "@google-labs/core-kit@npm:^0.0.1":
   version: 0.0.1
   resolution: "@google-labs/core-kit@npm:0.0.1"
@@ -2151,6 +2161,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "coursecrafter@workspace:samples/CourseCrafter"
   dependencies:
+    "@google-labs/breadboard": "npm:^0.6.0"
     "@types/react": "npm:^18.2.37"
     "@types/react-dom": "npm:^18.2.15"
     "@typescript-eslint/eslint-plugin": "npm:^6.10.0"
@@ -6731,5 +6742,21 @@ __metadata:
   version: 0.1.0
   resolution: "yocto-queue@npm:0.1.0"
   checksum: f77b3d8d00310def622123df93d4ee654fc6a0096182af8bd60679ddcdfb3474c56c6c7190817c84a2785648cdee9d721c0154eb45698c62176c322fb46fc700
+  languageName: node
+  linkType: hard
+
+"zod-to-json-schema@npm:^3.22.1":
+  version: 3.22.1
+  resolution: "zod-to-json-schema@npm:3.22.1"
+  peerDependencies:
+    zod: ^3.22.4
+  checksum: 21c2f8bb62254370e89092a00893b05d40524544e5fcfbb13c0a35eb408318c598e3865de4b9b63e5d0ef691850cb183a74dbadeab3982f29b174d9e1c8cde43
+  languageName: node
+  linkType: hard
+
+"zod@npm:^3.22.4":
+  version: 3.22.4
+  resolution: "zod@npm:3.22.4"
+  checksum: 73622ca36a916f785cf528fe612a884b3e0f183dbe6b33365a7d0fc92abdbedf7804c5e2bd8df0a278e1472106d46674281397a3dd800fa9031dc3429758c6ac
   languageName: node
   linkType: hard
