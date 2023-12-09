@@ -20,7 +20,7 @@ concurrency:
   group: "pages"
   cancel-in-progress: true
 env:
-  PAGES_PROJECT_DIR: "./samples/vite-service-worker"
+  PAGES_PROJECT_DIR: "samples/vite-service-worker"
 
 jobs:
   # Single deploy job since we're just deploying
@@ -50,7 +50,7 @@ jobs:
         uses: actions/upload-pages-artifact@v2
         with:
           # Upload dist repository
-          path: "${{ env.PAGES_PROJECT_DIR }}/dist"
+          path: "./${{ env.PAGES_PROJECT_DIR }}/dist"
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
