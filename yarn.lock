@@ -8356,6 +8356,7 @@ __metadata:
     react-dom: "npm:^18.2.0"
     typescript: "npm:^5.3.3"
     vite: "npm:^5.0.7"
+    vite-plugin-pwa: "npm:^0.17.4"
   languageName: unknown
   linkType: soft
 
