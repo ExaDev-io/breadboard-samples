@@ -19,6 +19,8 @@ permissions:
 concurrency:
   group: "pages"
   cancel-in-progress: true
+env:
+  PAGES_PROJECT_DIR: "./samples/vite-service-worker"
 
 jobs:
   # Single deploy job since we're just deploying
@@ -29,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./samples/vite-service-worker
+        working-directory: ${{ env.PAGES_PROJECT_DIR }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -48,7 +50,7 @@ jobs:
         uses: actions/upload-pages-artifact@v2
         with:
           # Upload dist repository
-          path: "./dist"
+          path: "${{ env.PAGES_PROJECT_DIR }}/dist"
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
