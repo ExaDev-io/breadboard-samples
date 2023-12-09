@@ -3718,9 +3718,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.4.601":
-  version: 1.4.608
-  resolution: "electron-to-chromium@npm:1.4.608"
-  checksum: 521b5e15ca18b37b20c4382d18d37ff913ae27536c8e7373e063c115db84e9d8849f3f36c5dc030aab543e31591e0a282ba375c40da808cff6395fd911186bc6
+  version: 1.4.609
+  resolution: "electron-to-chromium@npm:1.4.609"
+  checksum: 0ec022c34a254eaa3b595b05f2c0f027f713e8c3c986e42920f8a958385ef5b8a3ea97735109edf4394600db7a9d2dd8ab096b0d1839d4452708f0ad88488943
   languageName: node
   linkType: hard
 
@@ -6407,8 +6407,8 @@ __metadata:
   linkType: hard
 
 "rc-pagination@npm:~4.0.1":
-  version: 4.0.1
-  resolution: "rc-pagination@npm:4.0.1"
+  version: 4.0.2
+  resolution: "rc-pagination@npm:4.0.2"
   dependencies:
     "@babel/runtime": "npm:^7.10.1"
     classnames: "npm:^2.3.2"
@@ -6416,7 +6416,7 @@ __metadata:
   peerDependencies:
     react: ">=16.9.0"
     react-dom: ">=16.9.0"
-  checksum: ee83ea5d43cfa5cfa489ac6ba3f7d3892ef2b2e7b23fe6ce47ee76824183ca3f41395ce38d056b8dd96b92053994a7f262ce443b93f31baebb4748b43e5663ff
+  checksum: d05c62b5105a7be55802eb84ad67c39bfb085d2b8b9a89f634e4d074e7221b9562eb4c0d97a9328e309dae2f1613a703a45325d38ef89079e160982350207110
   languageName: node
   linkType: hard
 
@@ -7021,6 +7021,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"rollup-plugin-tsconfig-paths@npm:^1.5.2":
+  version: 1.5.2
+  resolution: "rollup-plugin-tsconfig-paths@npm:1.5.2"
+  dependencies:
+    typescript-paths: "npm:^1.5.1"
+  peerDependencies:
+    rollup: ^2 || ^3 || ^4
+  checksum: 11e9cb8b096edc0dd17deba660213ec3047ea06790ff034984a3a6687acb0bd910a10ca825184f01a838a5c934021e8858e043c8668d0bf1fde389bf50240b78
+  languageName: node
+  linkType: hard
+
 "rollup@npm:^2.43.1":
   version: 2.79.1
   resolution: "rollup@npm:2.79.1"
@@ -7446,12 +7457,12 @@ __metadata:
   linkType: hard
 
 "streamx@npm:^2.15.0":
-  version: 2.15.5
-  resolution: "streamx@npm:2.15.5"
+  version: 2.15.6
+  resolution: "streamx@npm:2.15.6"
   dependencies:
     fast-fifo: "npm:^1.1.0"
     queue-tick: "npm:^1.0.1"
-  checksum: c0401b0a6c13e92a4bf61f2e6ae8564bb3723d782c0286902cd44223c086c4909dab6f70ac082d89d07be8bcb0ffb25160d82c83f5667199bc70761626c18561
+  checksum: 10773efb28bc673aa04d7fe0900ac25f35f5b80401f754c62d8ecd37cad248f3a6b8dd68819060959703548ec3d8eaed96d52e54298f4c4f21baab80d903afd5
   languageName: node
   linkType: hard
 
@@ -7941,6 +7952,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript-paths@npm:^1.5.1":
+  version: 1.5.1
+  resolution: "typescript-paths@npm:1.5.1"
+  peerDependencies:
+    typescript: ^4.7.2 || ^5
+  checksum: 755aecb40a1015152c31f1b3b8e587330aca05e8dfb7e4e48df28add152c9cc257a16df98c58f31724d9b210199f56feb2710db3e7da948ab6f607d32fb6a572
+  languageName: node
+  linkType: hard
+
 "typescript@npm:^4.9.5":
   version: 4.9.5
   resolution: "typescript@npm:4.9.5"
@@ -8213,6 +8233,7 @@ __metadata:
     react-dom: "npm:^18.2.0"
     react-redux: "npm:^9.0.2"
     redux-persist: "npm:^6.0.0"
+    rollup-plugin-tsconfig-paths: "npm:^1.5.2"
     sass: "npm:^1.69.5"
     typescript: "npm:^5.3.3"
     uuid: "npm:^9.0.1"
