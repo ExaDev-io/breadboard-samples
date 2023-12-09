@@ -8,7 +8,7 @@ import {
 } from "@exadev/breadboard-kits";
 import { Board } from "@google-labs/breadboard";
 import Core from "@google-labs/core-kit";
-import { ClaudeKitBuilder } from "~/breadboard/ClaudeKitBuilder.ts";
+import { ClaudeKitBuilder } from "./ClaudeKitBuilder";
 
 const LIMIT_DEPTH = 3;
 const SEARCH_RESULT_COUNT = 10;

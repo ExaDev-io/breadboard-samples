@@ -14,12 +14,11 @@ self.addEventListener("activate", (event) => {
 });
 
 import { LogProbe } from "@google-labs/breadboard";
-import { BROADCAST_CHANNEL } from "~/constants.ts";
-import { updateCounter } from "~/services/counterService.ts";
-import board from "~/breadboard/makeBoard";
+import { BROADCAST_CHANNEL } from "../constants";
+import board from "../breadboard/makeBoard";
+import { StoryOutput } from "../hnStory/domain";
+import { Stories } from "../core/Stories";
 import { WorkerStatus } from "./types";
-import { Stories } from "~/core/Stories";
-import { StoryOutput } from "~/hnStory/domain";
 
 let loopActive: boolean = false;
 let loopPaused: boolean = false;
@@ -48,8 +47,8 @@ type Receiver = {
 async function runBoard() {
 	const logReceiver: Receiver = { log: (message) => console.debug(message) };
 
-	broadcastWorkerStatus("running")
-console.log("posting status message *********************");
+	broadcastWorkerStatus("running");
+	console.log("posting status message *********************");
 	for await (const runResult of board.run({
 		probe: new LogProbe(logReceiver),
 	})) {
@@ -82,9 +81,7 @@ console.log("posting status message *********************");
 				type: "inputNeeded",
 				node: runResult.node.id,
 				attribute: inputAttribute,
-				message: ["Please type in", runResult.node.id].join(
-					" "
-				),
+				message: ["Please type in", runResult.node.id].join(" "),
 			});
 
 			const userInput = await waitForInput(
@@ -110,7 +107,7 @@ console.log("posting status message *********************");
 			broadcastChannel.postMessage(output);
 		}
 	}
-	broadcastWorkerStatus("finished")
+	broadcastWorkerStatus("finished");
 }
 
 function handleCommand(data: {
@@ -141,7 +138,6 @@ function handleCommand(data: {
 		case "start":
 			if (!loopActive) {
 				console.log("Starting loop");
-				updateCounter(0).then();
 				runBoard().then(() => console.debug("runBoard finished"));
 			} else {
 				console.log("Loop already active");
@@ -151,11 +147,11 @@ function handleCommand(data: {
 			break;
 		case "pause":
 			loopPaused = true;
-			broadcastWorkerStatus("paused")
+			broadcastWorkerStatus("paused");
 			break;
 		case "stop":
 			loopActive = false;
-			broadcastWorkerStatus("stopped")
+			broadcastWorkerStatus("stopped");
 			break;
 	}
 }
@@ -165,7 +161,7 @@ function broadcastWorkerStatus(status: WorkerStatus) {
 		type: "status",
 		status,
 		source: "worker",
-	})
+	});
 }
 
 broadcastChannel.onmessage = (event) => handleCommand(event.data);
