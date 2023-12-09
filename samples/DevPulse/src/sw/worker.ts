@@ -16,7 +16,7 @@ self.addEventListener("activate", (event) => {
 import { LogProbe } from "@google-labs/breadboard";
 import { BROADCAST_CHANNEL } from "~/constants.ts";
 import { updateCounter } from "~/services/counterService.ts";
-import { makeBoard } from "../breadboard/makeBoard";
+import board from "~/breadboard/makeBoard";
 import { WorkerStatus } from "./types";
 import { Stories } from "~/core/Stories";
 import { StoryOutput } from "~/hnStory/domain";
@@ -46,7 +46,6 @@ type Receiver = {
 };
 
 async function runBoard() {
-	const board = makeBoard();
 	const logReceiver: Receiver = { log: (message) => console.debug(message) };
 
 	broadcastWorkerStatus("running")
