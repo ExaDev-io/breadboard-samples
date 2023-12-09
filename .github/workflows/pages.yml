@@ -28,6 +28,9 @@ jobs:
       name: pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./samples/DevPulse
     steps:
       - name: Checkout
         uses: actions/checkout@v4
