@@ -21,6 +21,7 @@ concurrency:
   cancel-in-progress: true
 env:
   PAGES_PROJECT_DIR: "samples/vite-service-worker"
+  PAGES_URL: "http://${{ github.repository_owner }}.github.io/${{ github.repository }}"
 
 jobs:
   # Single deploy job since we're just deploying
@@ -43,7 +44,7 @@ jobs:
       - name: Install dependencies
         run: yarn install
       - name: Build
-        run: yarn build
+        run: yarn build --base "${{ env.PAGES_URL }}"
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
