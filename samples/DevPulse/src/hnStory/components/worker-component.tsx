@@ -7,7 +7,7 @@ import Button from "~/components/button";
 import OutputAccordion from "~/hnStory/components/output-accordion";
 
 export const WorkerComponent: React.FC = () => {
-	const { broadcastChannel, unregisterController, workerSteps } =
+	const { broadcastChannel, workerSteps } =
 		useWorkerControllerContext();
 	const handleSubmit = (
 		e: React.FormEvent<HTMLFormElement>,
@@ -35,7 +35,7 @@ export const WorkerComponent: React.FC = () => {
 					Service Worker{" "}
 					<span>Status: {broadcastChannel.status}</span>
 				</h6>
-				<div className={styles.controls}>
+				<div className={styles.ccontrols}>
 					<Button onClick={broadcastChannel.start}>Start</Button>
 					<Button
 						onClick={broadcastChannel.pause}
@@ -45,13 +45,6 @@ export const WorkerComponent: React.FC = () => {
 					</Button>
 					<Button onClick={broadcastChannel.stop} disabled={!running}>
 						Stop
-					</Button>
-					<Button
-						type="button"
-						onClick={unregisterController}
-						variant="danger"
-					>
-						Unregister Worker
 					</Button>
 				</div>
 			</header>

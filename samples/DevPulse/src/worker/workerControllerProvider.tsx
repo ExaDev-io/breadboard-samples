@@ -1,41 +1,21 @@
 import React, { ReactNode, useEffect } from "react";
 import useWorkerController from "~/worker/useWorkerController.ts";
 import { WorkerControllerContext } from "~/worker/workerControllerContext.tsx";
-import { registerServiceWorkerIfNeeded } from "~/sw/workerRegistration";
+import { SW_CONTROL_CHANNEL } from '../lib/constants';
 
 export function WorkerControllerProvider({
 	broadcastChannel,
 	children,
 }: {
-	broadcastChannel?: BroadcastChannel;
+	broadcastChannel?: string;
 	children: ReactNode;
 }): React.JSX.Element {
-	const bc = useWorkerController(broadcastChannel);
+	const bc = useWorkerController(new BroadcastChannel(broadcastChannel ?? SW_CONTROL_CHANNEL));
 	useEffect(() => {
-		registerServiceWorkerIfNeeded();
 	}, []);
-	const unregisterController = () => {
-		const workerName =
-			import.meta.env.MODE === "production"
-				? "/sw/worker.js"
-				: "/dev-sw.js?dev-sw";
-		navigator.serviceWorker
-			.getRegistrations()
-			.then(function (registrations) {
-				for (const registration of registrations) {
-					if (registration.active?.scriptURL.includes(workerName)) {
-						console.log(
-							"unregistering service worker",
-							registration
-						);
-						registration.unregister();
-					}
-				}
-			});
-	};
 	return (
 		<WorkerControllerContext.Provider
-			value={{ broadcastChannel: bc, unregisterController, workerSteps: bc.workerSteps }}
+			value={{ broadcastChannel: bc, workerSteps: bc.workerSteps }}
 		>
 			{children}
 		</WorkerControllerContext.Provider>
