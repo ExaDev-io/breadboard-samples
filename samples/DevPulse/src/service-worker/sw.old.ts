@@ -14,10 +14,10 @@ self.addEventListener("activate", (event) => {
 });
 
 import { LogProbe } from "@google-labs/breadboard";
-import { BROADCAST_CHANNEL } from "../constants";
+import { BROADCAST_CHANNEL } from "src/constants";
 import board from "../breadboard/makeBoard";
-import { StoryOutput } from "../hnStory/domain";
-import { Stories } from "../core/Stories";
+import { StoryOutput } from "src/hnStory/domain";
+import { Stories } from "src/core/Stories";
 import { WorkerStatus } from "./types";
 
 let loopActive: boolean = false;
