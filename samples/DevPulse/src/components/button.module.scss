@@ -15,3 +15,15 @@
 		color: var(--theme-tertiary-color);
 	}
 }
+
+.iconButton {
+	background-color: transparent;
+	border:none;
+	cursor: pointer;
+}
+
+.iconButton:hover {
+	path {
+		fill: #323941;
+	}
+}

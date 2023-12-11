@@ -22,6 +22,9 @@ const inputSlice = createSlice({
 		) => {
 			inputAdaptor.updateOne(state, action);
 		},
+		saveLatestQueries: () => {
+			//action for saving the 10 latest search queries
+		},
 		reset: () => initialState,
 	},
 });
