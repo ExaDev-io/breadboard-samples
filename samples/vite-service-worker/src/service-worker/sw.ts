@@ -32,6 +32,7 @@ for (let i = 0; i < 10; i++) {
 
 const channel = new BroadcastChannel("gen-control");
 channel.onmessage = (event) => handleCommand(event.data);
+self.addEventListener("message", (event) => handleCommand(event.data));
 
 let active = false;
 let paused = false;
