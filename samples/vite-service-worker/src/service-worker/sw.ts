@@ -47,7 +47,7 @@ setInterval(() => {
 
 			if (runResult.type == "input") {
 				runResult.inputs = {
-					time: new Date().toISOString(),
+					[`input_${boardCounter}`]: new Date().toISOString(),
 				};
 			} else if (runResult.type == "output") {
 				console.log("output", runResult.outputs);
