@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { BROADCAST_CHANNEL } from "~/constants.ts";
 import { WorkerData, WorkerStatus } from "sw/types.ts";
 import { useDispatch, useSelector } from "react-redux";
-import { outputSuccess, selectOutput } from "~/hnStory/outputSlice";
+import { setOutput, selectOutput } from "~/hnStory/outputSlice";
 import { StoryOutput } from "~/hnStory/domain";
 import { RootState } from "~/core/redux/store";
 import useWorkerSteps from "~/hnStory/components/useWorkerSteps";
@@ -44,7 +44,7 @@ const useWorkerController = (
 			setInput(inputObject);
 		}
 		if (event.data.output) {
-			dispatch(outputSuccess(event.data.output));
+			dispatch(setOutput(event.data.output));
 		}
 		if (event.data.type === "status") {
 			setStatus(event.data.status);

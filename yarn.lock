@@ -2249,6 +2249,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@remix-run/router@npm:1.13.1":
+  version: 1.13.1
+  resolution: "@remix-run/router@npm:1.13.1"
+  checksum: bf1ff266744352e71fc414f983a9f7772c10ec55cf4b978d851026e6c12b39c0084f99e4e45de706b800a71889ef09f652b8e7c43e21800351cc14c5ada8c834
+  languageName: node
+  linkType: hard
+
 "@rgrove/parse-xml@npm:^4.1.0":
   version: 4.1.0
   resolution: "@rgrove/parse-xml@npm:4.1.0"
@@ -5343,7 +5350,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4.17.20":
+"lodash@npm:^4.17.20, lodash@npm:^4.17.21":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: c08619c038846ea6ac754abd6dd29d2568aa705feb69339e836dfa8d8b09abbb2f859371e86863eda41848221f9af43714491467b5b0299122431e202bb0c532
@@ -6788,6 +6795,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-router-dom@npm:^6.20.1":
+  version: 6.20.1
+  resolution: "react-router-dom@npm:6.20.1"
+  dependencies:
+    "@remix-run/router": "npm:1.13.1"
+    react-router: "npm:6.20.1"
+  peerDependencies:
+    react: ">=16.8"
+    react-dom: ">=16.8"
+  checksum: 27efb05af0025bdcd7ecc85d2df2f53ca90bbf4db1dd4319002714b5be4e23c9434f95932d79f14a42d7c347ca882e9a0bba74a4d6331de8f7fb527c21f3f069
+  languageName: node
+  linkType: hard
+
+"react-router@npm:6.20.1, react-router@npm:^6.20.1":
+  version: 6.20.1
+  resolution: "react-router@npm:6.20.1"
+  dependencies:
+    "@remix-run/router": "npm:1.13.1"
+  peerDependencies:
+    react: ">=16.8"
+  checksum: 96c25c8ca782dfa5b501540b9a491d8dca67c829a90fda237238a22881c695226fd5bbe14fcb2793bd5877aec2514d932c3293bf1f2463606fb3f2326628d766
+  languageName: node
+  linkType: hard
+
 "react@npm:^18.2.0":
   version: 18.2.0
   resolution: "react@npm:18.2.0"
@@ -6825,6 +6856,18 @@ __metadata:
   dependencies:
     picomatch: "npm:^2.2.1"
   checksum: 196b30ef6ccf9b6e18c4e1724b7334f72a093d011a99f3b5920470f0b3406a51770867b3e1ae9711f227ef7a7065982f6ee2ce316746b2cb42c88efe44297fe7
+  languageName: node
+  linkType: hard
+
+"redux-persist-transform-filter@npm:^0.0.22":
+  version: 0.0.22
+  resolution: "redux-persist-transform-filter@npm:0.0.22"
+  dependencies:
+    lodash: "npm:^4.17.21"
+  peerDependencies:
+    redux: ">3.0.0"
+    redux-persist: ^3.4.0 || ^4 || ^5 || ^6
+  checksum: e85f6e73ae4e86bdf551a641d2138878ae131477ed483a431bb571c25c18cd77deb6bf305ea7d406bef8c97d457ba0fab36a825aa44bb21498a4556300bcabeb
   languageName: node
   linkType: hard
 
@@ -8212,7 +8255,10 @@ __metadata:
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     react-redux: "npm:^9.0.2"
+    react-router: "npm:^6.20.1"
+    react-router-dom: "npm:^6.20.1"
     redux-persist: "npm:^6.0.0"
+    redux-persist-transform-filter: "npm:^0.0.22"
     sass: "npm:^1.69.5"
     typescript: "npm:^5.3.3"
     uuid: "npm:^9.0.1"
