@@ -26,32 +26,22 @@ setInterval(() => {
 	console.log(new Date().toISOString(), counter++);
 }, 1000);
 
-setInterval(() => {
-	console.log(new Date().toISOString(), counter++);
-}, 1000);
-
 (async () => {
 	const board = new Board();
-	const output = board.output();
-	board.input({ $id: "one" }).wire("*", output);
-	board.input({ $id: "two" }).wire("*", output);
-	board.input({ $id: "three" }).wire("*", output);
+	for (let i = 0; i < 100; i++) {
+		board.input({ $id: `input_${i}` }).wire("*", board.output());
+	}
 
-	let boardCounter = 0;
-	const LIMIT = 100;
+	for await (const runResult of board.run()) {
+		console.log("=".repeat(80));
+		console.log(runResult.node.id);
 
-	while (boardCounter++ < LIMIT) {
-		for await (const runResult of board.run()) {
-			console.log("=".repeat(80));
-			console.log(runResult.node.id);
-
-			if (runResult.type == "input") {
-				runResult.inputs = {
-					[`input_${boardCounter}`]: new Date().toISOString(),
-				};
-			} else if (runResult.type == "output") {
-				console.log("output", runResult.outputs);
-			}
+		if (runResult.type == "input") {
+			runResult.inputs = {
+				message: new Date().toISOString(),
+			};
+		} else if (runResult.type == "output") {
+			console.log("output", runResult.outputs);
 		}
 	}
 })().catch((error) => {
