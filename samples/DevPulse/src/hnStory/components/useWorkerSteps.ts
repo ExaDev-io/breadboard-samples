@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { InputSteps, addInputCollection } from "../inputSlice";
 import { useAppDispatch } from "~/core/redux/hooks";
-import { WorkerData } from "~/sw/types";
+import { WorkerData } from "~/lib/sw/types";
 
 const useWorkerSteps = () => {
 	const [stepNumber, setStepNumber] = useState<number>(0);
@@ -12,7 +12,7 @@ const useWorkerSteps = () => {
 		console.log("Adding step", stepNumber, step);
 		setInputSteps((prev) => ({ ...prev, [stepNumber]: step }));
 		setStepNumber((prev) => prev + 1);
-	}
+	};
 
 	const finalize = useCallback(() => {
 		if (stepNumber === 0) {
@@ -23,12 +23,12 @@ const useWorkerSteps = () => {
 		dispatch(addInputCollection(deepCopy));
 		setStepNumber(0);
 		setInputSteps({});
-	}, [stepNumber, inputSteps, dispatch])
-	
+	}, [stepNumber, inputSteps, dispatch]);
+
 	return {
 		addStep,
-		finalize
-	}
+		finalize,
+	};
 };
 
 export default useWorkerSteps;

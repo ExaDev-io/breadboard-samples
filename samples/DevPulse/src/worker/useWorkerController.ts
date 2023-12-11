@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { BROADCAST_CHANNEL } from "~/constants.ts";
-import { WorkerData, WorkerStatus } from "sw/types.ts";
+import { WorkerData, WorkerStatus } from "~/lib/sw/types";
 import { useDispatch, useSelector } from "react-redux";
 import { setOutput, selectOutput } from "~/hnStory/outputSlice";
 import { StoryOutput } from "~/hnStory/domain";
@@ -60,8 +60,7 @@ const useWorkerController = (
 	useEffect(() => {
 		if (!broadcastChannel) return;
 		broadcastChannel.addEventListener("message", handleMessage);
-		return () =>
-			broadcastChannel.removeEventListener("message", handleMessage);
+		return () => broadcastChannel.removeEventListener("message", handleMessage);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

@@ -1,14 +1,16 @@
-import { OutputNodeData, OutputNodeIds } from "~/sw/types"
+import { OutputNodeData, OutputNodeIds } from "~/lib/sw/types";
 
-const Fallback = "Hidden"
+const Fallback = "Hidden";
 
-const NodeIdMap: Map<string, OutputNodeIds> = new Map()
-NodeIdMap.set("searchResultData", OutputNodeIds.searchResultData)
-NodeIdMap.set("summary", OutputNodeIds.summary)
-NodeIdMap.set("storyData", OutputNodeIds.storyData)
+const NodeIdMap: Map<string, OutputNodeIds> = new Map();
+NodeIdMap.set("searchResultData", OutputNodeIds.searchResultData);
+NodeIdMap.set("summary", OutputNodeIds.summary);
+NodeIdMap.set("storyData", OutputNodeIds.storyData);
 
-const useComponentForNode = (data: OutputNodeData): OutputNodeIds | typeof Fallback => {
-	return NodeIdMap.get(data["node"]) || Fallback
-}
+const useComponentForNode = (
+	data: OutputNodeData
+): OutputNodeIds | typeof Fallback => {
+	return NodeIdMap.get(data["node"]) || Fallback;
+};
 
 export default useComponentForNode;

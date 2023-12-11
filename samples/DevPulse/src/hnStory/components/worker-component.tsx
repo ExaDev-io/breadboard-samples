@@ -1,7 +1,7 @@
 import React from "react";
 import { useWorkerControllerContext } from "worker/useWorkerControllerContext.tsx";
 import styles from "./worker-component.module.scss";
-import { InputNode, WorkerStatus } from "~/sw/types";
+import { InputNode, WorkerStatus } from "~/lib/sw/types";
 import { StoryOutput } from "~/hnStory/domain";
 import Button from "~/components/button";
 import OutputAccordion from "~/hnStory/components/output-accordion";

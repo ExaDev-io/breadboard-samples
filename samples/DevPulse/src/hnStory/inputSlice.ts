@@ -1,6 +1,10 @@
-import { PayloadAction, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
+import {
+	PayloadAction,
+	createEntityAdapter,
+	createSlice,
+} from "@reduxjs/toolkit";
 import { RootState } from "~/core/redux/store";
-import { WorkerData } from "~/sw/types";
+import { WorkerData } from "~/lib/sw/types";
 import { v4 as uuid } from "uuid";
 
 export type InputSteps = Record<number, WorkerData>;
@@ -18,7 +22,7 @@ const inputSlice = createSlice({
 		},
 		setInputObject: (
 			state,
-			action: PayloadAction<{id: string, changes: InputSteps}>
+			action: PayloadAction<{ id: string; changes: InputSteps }>
 		) => {
 			inputAdaptor.updateOne(state, action);
 		},
@@ -29,13 +33,12 @@ const inputSlice = createSlice({
 	},
 });
 
-
 export const {
 	selectById: selectInputStepById,
 	selectIds: selectInputStepIds,
 	selectEntities: selectInputStepEntities,
 	selectAll: selectAllInputSteps,
-	selectTotal: selectTotalInputSteps
+	selectTotal: selectTotalInputSteps,
 } = inputAdaptor.getSelectors<RootState>((state) => state.input);
 
 export const { addInputCollection, setInputObject, reset } = inputSlice.actions;
