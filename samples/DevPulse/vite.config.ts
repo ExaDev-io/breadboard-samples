@@ -10,17 +10,11 @@ export default defineConfig({
 		tsconfigPaths(),
 		VitePWA({
 			registerType: "autoUpdate",
+			filename: "sw.ts",
+			includeManifestIcons: false,
+			injectRegister: false,
+			srcDir: "src/service-worker",
 			strategies: "injectManifest",
-			injectRegister: "auto",
-			devOptions: {
-				enabled: true,
-			},
-			srcDir: "src",
-			filename: "sw/worker.ts",
-			workbox: {
-				clientsClaim: true,
-				skipWaiting: true,
-			},
 		}),
 	],
 	server: {
