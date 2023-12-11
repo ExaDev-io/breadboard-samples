@@ -146,13 +146,6 @@ const postContentTemplate = string.template({
 	].join("\n"),
 });
 
-// const instructionNode = board.input({
-// 	$id: "instruction",
-// 	instruction
-// });
-
-// instructionNode.wire("instruction", postContentTemplate);
-
 stringify.wire("string->post", postContentTemplate);
 postContentTemplate.wire(
 	"string",
