@@ -1,7 +1,7 @@
 import { Board } from "@google-labs/breadboard";
 import path from "path";
 import {makeMarkdown} from "@exadev/breadboard-kits/dist/util/files/makeMarkdown.js"
-import {MarkdownContentList, MarkdownContentType} from "@exadev/breadboard-kits/dist/types/markdown.js"
+import {MarkdownContentType} from "@exadev/breadboard-kits/dist/types/markdown.js"
 
 const board = new Board({
 	title: path.basename(new URL(import.meta.url).pathname),
