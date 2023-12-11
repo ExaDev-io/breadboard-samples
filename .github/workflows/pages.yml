@@ -20,7 +20,7 @@ concurrency:
   group: "pages"
   cancel-in-progress: true
 env:
-  PAGES_PROJECT_DIR: "samples/vite-service-worker"
+  PAGES_PROJECT_DIR: "samples/DevPulse"
   PAGES_URL: "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
 
 jobs:
