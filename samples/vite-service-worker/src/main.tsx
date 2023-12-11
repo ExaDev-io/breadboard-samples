@@ -1,33 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App.tsx';
-import './index.css';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App.tsx";
+import "./index.css";
+import { initSW } from "./lib/sw-helpers";
 
-
-// https://vite-pwa-org.netlify.app/guide/service-worker-without-pwa-capabilities.html#registering-of-the-service-worker-in-your-app
-
-// if ('serviceWorker' in navigator) {
-// 	navigator.serviceWorker.register(
-// 		import.meta.env.MODE === 'production' ? '/service-worker.js' : '/dev-sw.js?dev-sw'
-// 	);
-// }
-
-// If you're using import statements inside your service worker (will work only on chromium based browsers) check injectManifest section for more info
-
-if ('serviceWorker' in navigator) {
-	const basePath = import.meta.env.BASE_URL;
-	const workerPath = import.meta.env.MODE === 'production' ? '/service-worker.js' : '/dev-sw.js?dev-sw';
-
-	const fullWorkerPath = `${basePath.endsWith('/') ? basePath.slice(0, -1) : basePath}${workerPath}`;
-
-	navigator.serviceWorker.register(
-		fullWorkerPath,
-		{ type: import.meta.env.MODE === 'production' ? 'classic' : 'module' }
-	);
-}
-
-ReactDOM.createRoot(document.getElementById('root')!).render(
+ReactDOM.createRoot(document.getElementById("root")!).render(
 	<React.StrictMode>
 		<App />
-	</React.StrictMode>,
+	</React.StrictMode>
 );
+
+initSW();

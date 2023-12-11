@@ -8,17 +8,11 @@ export default defineConfig({
 		react(),
 		// vite.config.js or vite.config.ts
 		VitePWA({
-			srcDir: "src",
-			filename: "service-worker.ts",
-			strategies: "injectManifest",
+			filename: "sw.ts",
+			includeManifestIcons: false,
 			injectRegister: false,
-			manifest: false,
-			devOptions: {
-				enabled: true,
-			},
-			injectManifest: {
-				injectionPoint: null,
-			},
+			srcDir: "src/service-worker",
+			strategies: "injectManifest",
 		}),
 	],
 });

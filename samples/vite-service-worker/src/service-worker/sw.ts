@@ -1,20 +1,31 @@
 /// <reference lib="webworker" />
+declare const self: ServiceWorkerGlobalScope;
 
 import { Board } from "@google-labs/breadboard";
+import { createHandlerBoundToURL, precacheAndRoute } from "workbox-precaching";
+import { registerRoute } from "workbox-routing";
 
-declare let self: ServiceWorkerGlobalScope;
+precacheAndRoute(self.__WB_MANIFEST || []);
 
-self.addEventListener("fetch", (event: FetchEvent) => {
-	console.log("ServiceWorker", "fetch", event);
-	event.respondWith(fetch(event.request));
+registerRoute(
+	({ request }) => request.mode === "navigate",
+	createHandlerBoundToURL("/index.html")
+);
+
+self.addEventListener("install", () => {
+	console.log("ServiceWorker", "install");
+	return self.skipWaiting();
+});
+self.addEventListener("activate", () => {
+	console.log("ServiceWorker", "activate");
+	return self.clients.claim();
 });
 
-self.addEventListener("install", (event: ExtendableEvent) => {
-	console.log("ServiceWorker", "install", event);
-});
-
-// add a persistent infinite loop that prints a counter every second
 let counter = 0;
+setInterval(() => {
+	console.log(new Date().toISOString(), counter++);
+}, 1000);
+
 setInterval(() => {
 	console.log(new Date().toISOString(), counter++);
 }, 1000);
@@ -27,7 +38,6 @@ setInterval(() => {
 	board.input({ $id: "three" }).wire("*", output);
 
 	let boardCounter = 0;
-
 	const LIMIT = 100;
 
 	while (boardCounter++ < LIMIT) {
@@ -47,5 +57,3 @@ setInterval(() => {
 })().catch((error) => {
 	console.error(error);
 });
-
-export {};
