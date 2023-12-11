@@ -34,68 +34,19 @@ const channel = new BroadcastChannel("gen-control");
 channel.onmessage = (event) => handleCommand(event.data);
 self.addEventListener("message", (event) => handleCommand(event.data));
 
-let active = false;
-let paused = false;
-
 function handleCommand(data: { command: string }) {
 	console.log("ServiceWorker", "message", data);
 	switch (data.command) {
 		case "start":
-			if (!active) {
-				console.debug("ServiceWorker", "starting");
-				active = true;
-				paused = false;
-				runAsync(board.run(), handler).then(() => {
-					channel.postMessage({ command: "done" });
-				});
-			} else if (paused) {
-				console.debug("ServiceWorker", "resuming");
-				paused = false;
-				pausePromiseResolve();
-			} else {
-				console.warn("ServiceWorker", "already running");
-			}
+			boardRunner.start();
 			break;
 		case "pause":
-			if (active) {
-				console.debug("ServiceWorker", "pausing");
-				paused = true;
-			} else {
-				console.warn("ServiceWorker", "not running");
-			}
+			boardRunner.pause();
 			break;
 		case "stop":
-			if (active) {
-				console.debug("ServiceWorker", "stopping");
-				active = false;
-				paused = false;
-				pausePromiseResolve();
-			} else {
-				console.warn("ServiceWorker", "not running");
-			}
+			boardRunner.stop();
 			break;
 	}
-}
-
-let pausePromiseResolve: (value?: unknown) => void;
-
-async function runAsync(
-	run: AsyncGenerator<RunResult, unknown, unknown>,
-	handler: (value: RunResult) => unknown
-) {
-	for await (const runResult of run) {
-		if (!active) {
-			break;
-		}
-		if (paused) {
-			await new Promise((resolve) => {
-				pausePromiseResolve = resolve;
-			});
-		}
-		await handler(runResult);
-	}
-	paused = false;
-	active = false;
 }
 
 async function handler(runResult: RunResult) {
@@ -110,3 +61,86 @@ async function handler(runResult: RunResult) {
 	}
 	await new Promise((resolve) => setTimeout(resolve, 1000));
 }
+
+class ControllableAsyncGeneratorRunner<
+	TReturn,
+	TNext,
+	TNextReturn,
+	TGenerateParams
+> {
+	private pausePromiseResolve: undefined | ((value?: unknown) => void);
+	private instance: AsyncGenerator<TReturn, TNext, TNextReturn> | undefined;
+	private paused = false;
+
+	constructor(
+		private readonly generator: (
+			params?: TGenerateParams
+		) => AsyncGenerator<TReturn, TNext, TNextReturn>,
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		private readonly handler: (value: TReturn) => any,
+		private readonly generatorParams?: TGenerateParams
+	) {
+		this.generator = generator;
+		this.handler = handler;
+	}
+
+	run() {
+		if (this.instance) {
+			const instance = this.instance;
+			const handler = this.handler;
+			(async () => {
+				try {
+					let next = await instance.next();
+					while (!next.done) {
+						if (this.paused) {
+							await new Promise((resolve) => {
+								this.pausePromiseResolve = resolve;
+							});
+						}
+						await handler(next.value);
+						next = await instance.next();
+					}
+				} catch (error) {
+					console.error(error);
+					this.stop();
+				}
+			})();
+		} else {
+			throw new Error("No generator instance");
+		}
+	}
+	start() {
+		if (!this.instance) {
+			console.debug("ServiceWorker", "starting");
+			this.instance = this.generator(this.generatorParams);
+			this.run();
+		} else if (this.paused) {
+			console.debug("ServiceWorker", "resuming");
+			this.paused = false;
+			if (this.pausePromiseResolve) {
+				this.pausePromiseResolve();
+				this.pausePromiseResolve = undefined;
+			}
+		} else {
+			console.warn("ServiceWorker", "already running");
+		}
+	}
+	pause() {
+		this.paused = true;
+	}
+	stop() {
+		if (this.instance) {
+			console.debug("ServiceWorker", "stopping");
+			this.paused = false;
+			if (this.pausePromiseResolve) {
+				this.pausePromiseResolve();
+				this.pausePromiseResolve = undefined;
+			}
+			this.instance = undefined;
+		} else {
+			console.warn("ServiceWorker", "not running");
+		}
+	}
+}
+
+const boardRunner = new ControllableAsyncGeneratorRunner(board.run, handler);
