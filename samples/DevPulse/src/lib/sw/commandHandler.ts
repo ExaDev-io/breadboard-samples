@@ -22,6 +22,8 @@ export function commandHandler(data: ServiceWorkerCommandEvent) {
 				paused: boardRunner.paused,
 			});
 			break;
+		default:
+			console.error("ServiceWorker", "unknown command", data);
 	}
 }
 
