@@ -2,15 +2,15 @@
 declare const self: ServiceWorkerGlobalScope;
 
 import { Board } from "@google-labs/breadboard";
-import { createHandlerBoundToURL, precacheAndRoute } from "workbox-precaching";
-import { registerRoute } from "workbox-routing";
+import { precacheAndRoute } from "workbox-precaching";
+// import { registerRoute } from "workbox-routing";
 
 precacheAndRoute(self.__WB_MANIFEST || []);
 
-registerRoute(
-	({ request }) => request.mode === "navigate",
-	createHandlerBoundToURL("/index.html")
-);
+// registerRoute(
+// 	({ request }) => request.mode === "navigate",
+// 	createHandlerBoundToURL("/index.html")
+// );
 
 self.addEventListener("install", () => {
 	console.log("ServiceWorker", "install");

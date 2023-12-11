@@ -21,7 +21,8 @@ export function initSW() {
 		}${workerPath}`;
 
 		navigator.serviceWorker.register(fullWorkerPath, {
-			type: import.meta.env.MODE === "production" ? "classic" : "module",
+			// 	type: import.meta.env.MODE === "production" ? "classic" : "module",
+			type: "module",
 		});
 
 		if (navigator.serviceWorker.controller) {
