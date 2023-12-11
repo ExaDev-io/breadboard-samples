@@ -3,21 +3,28 @@ declare const self: ServiceWorkerGlobalScope;
 
 import { Board, RunResult } from "@google-labs/breadboard";
 import { precacheAndRoute } from "workbox-precaching";
-// import { registerRoute } from "workbox-routing";
-import { clientsClaim } from "workbox-core";
 
 precacheAndRoute(self.__WB_MANIFEST || []);
-self.skipWaiting();
-clientsClaim();
-// registerRoute(
-// 	({ request }) => request.mode === "navigate",
-// 	createHandlerBoundToURL("/index.html")
-// );
+
+let boardRunner: ControllableAsyncGeneratorRunner<
+	RunResult,
+	unknown,
+	unknown,
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	any
+>;
 
 self.addEventListener("install", () => {
 	console.log("ServiceWorker", "install");
+
+	boardRunner = new ControllableAsyncGeneratorRunner(
+		(): AsyncGenerator<RunResult, unknown, unknown> => board.run(),
+		handler
+	);
+
 	return self.skipWaiting();
 });
+
 self.addEventListener("activate", () => {
 	console.log("ServiceWorker", "activate");
 	return self.clients.claim();
@@ -31,8 +38,8 @@ for (let i = 0; i < 10; i++) {
 }
 
 const channel = new BroadcastChannel("gen-control");
-channel.onmessage = (event) => handleCommand(event.data);
-self.addEventListener("message", (event) => handleCommand(event.data));
+channel.onmessage = (event): void => handleCommand(event.data);
+self.addEventListener("message", (event): void => handleCommand(event.data));
 
 function handleCommand(data: { command: string }) {
 	console.log("ServiceWorker", "message", data);
@@ -49,7 +56,8 @@ function handleCommand(data: { command: string }) {
 	}
 }
 
-async function handler(runResult: RunResult) {
+async function handler(runResult: RunResult): Promise<void> {
+	console.log("=".repeat(80));
 	if (runResult.type === "input") {
 		const input = {
 			time: new Date().toISOString(),
@@ -59,7 +67,7 @@ async function handler(runResult: RunResult) {
 	} else if (runResult.type === "output") {
 		console.log(runResult.node.id, "output", runResult.outputs);
 	}
-	await new Promise((resolve) => setTimeout(resolve, 1000));
+	await new Promise((resolve): NodeJS.Timeout => setTimeout(resolve, 1000));
 }
 
 class ControllableAsyncGeneratorRunner<
@@ -69,78 +77,63 @@ class ControllableAsyncGeneratorRunner<
 	TGenerateParams
 > {
 	private pausePromiseResolve: undefined | ((value?: unknown) => void);
-	private instance: AsyncGenerator<TReturn, TNext, TNextReturn> | undefined;
-	private paused = false;
+	private paused: boolean = false;
+	private active: boolean = false;
 
 	constructor(
-		private readonly generator: (
+		private readonly generatorGenerator: (
 			params?: TGenerateParams
 		) => AsyncGenerator<TReturn, TNext, TNextReturn>,
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		private readonly handler: (value: TReturn) => any,
+		private readonly handler: (value: TReturn) => unknown,
 		private readonly generatorParams?: TGenerateParams
-	) {
-		this.generator = generator;
-		this.handler = handler;
+	) {}
+
+	run(): void {
+		const generator = this.generatorGenerator(this.generatorParams);
+		const handler = this.handler;
+		this.active = true;
+		this.paused = false;
+		(async (): Promise<void> => {
+			try {
+				let next = await generator.next();
+				while (this.active && !next.done) {
+					if (this.paused) {
+						await new Promise((resolve): void => {
+							this.pausePromiseResolve = resolve;
+						});
+					}
+					await handler(next.value);
+					next = await generator.next();
+				}
+				console.debug("ServiceWorker", "generator done");
+			} catch (error) {
+				console.error(error);
+			} finally {
+				this.stop();
+			}
+		})();
 	}
 
-	run() {
-		if (this.instance) {
-			const instance = this.instance;
-			const handler = this.handler;
-			(async () => {
-				try {
-					let next = await instance.next();
-					while (!next.done) {
-						if (this.paused) {
-							await new Promise((resolve) => {
-								this.pausePromiseResolve = resolve;
-							});
-						}
-						await handler(next.value);
-						next = await instance.next();
-					}
-				} catch (error) {
-					console.error(error);
-					this.stop();
-				}
-			})();
-		} else {
-			throw new Error("No generator instance");
-		}
-	}
-	start() {
-		if (!this.instance) {
-			console.debug("ServiceWorker", "starting");
-			this.instance = this.generator(this.generatorParams);
+	start(): void {
+		if (!this.active) {
+			this.active = true;
+			this.paused = false;
 			this.run();
 		} else if (this.paused) {
-			console.debug("ServiceWorker", "resuming");
 			this.paused = false;
-			if (this.pausePromiseResolve) {
-				this.pausePromiseResolve();
-				this.pausePromiseResolve = undefined;
-			}
-		} else {
-			console.warn("ServiceWorker", "already running");
+			this.pausePromiseResolve?.();
 		}
 	}
-	pause() {
+
+	pause(): void {
 		this.paused = true;
 	}
+
 	stop() {
-		if (this.instance) {
-			console.debug("ServiceWorker", "stopping");
+		if (this.active) {
+			this.active = false;
 			this.paused = false;
-			if (this.pausePromiseResolve) {
-				this.pausePromiseResolve();
-				this.pausePromiseResolve = undefined;
-			}
-			this.instance = undefined;
-		} else {
-			console.warn("ServiceWorker", "not running");
+			this.pausePromiseResolve?.();
 		}
 	}
 }
-
-const boardRunner = new ControllableAsyncGeneratorRunner(board.run, handler);
