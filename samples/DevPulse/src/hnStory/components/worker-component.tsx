@@ -44,7 +44,7 @@ export const WorkerComponent: React.FC = () => {
 		};
 		new BroadcastChannel(SW_CONTROL_CHANNEL).postMessage(message);
 	};
-	const running = broadcastChannel.status === WorkerStatus.running;
+	const running = broadcastChannel.status.active && !broadcastChannel.status.paused && !broadcastChannel.status.finished;
 	//const inputField = useSelector((state: RootState) => selectInput(state))
 
 	return (
@@ -52,7 +52,9 @@ export const WorkerComponent: React.FC = () => {
 			<header className={styles.header}>
 				<h6>
 					Service Worker{" "}
-					<span>Status: {broadcastChannel.status}</span>
+					<span>Status: {
+						running ? 'running' : broadcastChannel.status.paused ? 'paused' : broadcastChannel.status.finished ? 'finished' : 'idle'
+					}</span>
 				</h6>
 				<div className={styles.ccontrols}>
 					<Button onClick={broadcastChannel.start}>Start</Button>
@@ -69,7 +71,7 @@ export const WorkerComponent: React.FC = () => {
 			</header>
 
 			<main className={styles.main}>
-				{broadcastChannel.status === WorkerStatus.running && (
+				{running && (
 					<form
 						className={styles.form}
 						onSubmit={(e) =>

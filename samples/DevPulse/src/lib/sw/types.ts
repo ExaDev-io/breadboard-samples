@@ -122,12 +122,14 @@ export type ServiceWorkerOutputData = ServiceWorkerBroadcastData & {
 };
 // export type STATUS = typeof ServiceWorkerBroadcastType.STATUS;
 
+export type ServiceWorkerStatus = {
+	active: boolean;
+	paused: boolean;
+	finished: boolean;
+	pendingInputResolvers?: Record<string, unknown>;
+};
 //
 export type ServiceWorkerStatusData = ServiceWorkerBroadcastData & {
 	type: typeof ServiceWorkerBroadcastType.STATUS;
-	value: {
-		active: boolean;
-		paused: boolean;
-		pendingInputResolvers: Record<string, unknown>;
-	};
+	value: ServiceWorkerStatus;
 };

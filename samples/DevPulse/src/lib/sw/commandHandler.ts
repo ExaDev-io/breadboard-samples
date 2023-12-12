@@ -51,6 +51,7 @@ export function serviceWorkerCommandHandler(data: ServiceWorkerCommandData) {
 					value: {
 						active: boardRunner.active,
 						paused: boardRunner.paused,
+						finished: boardRunner.finished,
 						pendingInputResolvers: pendingInputResolvers,
 					},
 				};
