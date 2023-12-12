@@ -19,20 +19,14 @@ import { StoryOutput } from "../hnStory/domain";
 import { Stories } from "../core/Stories";
 import { WorkerStatus } from "../lib/sw/types";
 import { SW_CONTROL_CHANNEL } from "../lib/constants";
+import { pendingInputResolvers } from "src/lib/sw/pendingInputResolvers";
+import { waitForInput } from "src/lib/sw/waitForInput";
 
 let loopActive: boolean = false;
 let loopPaused: boolean = false;
 export const broadcastChannel: BroadcastChannel = new BroadcastChannel(
 	SW_CONTROL_CHANNEL
 );
-
-const pendingInputResolvers: { [key: string]: (input: string) => void } = {};
-
-function waitForInput(node: string, attrib: string): Promise<string> {
-	return new Promise<string>((resolve) => {
-		pendingInputResolvers[`${node}-${attrib}`] = resolve;
-	});
-}
 
 const ignoredOutputNodeIds = [
 	"testCompletion",

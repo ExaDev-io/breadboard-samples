@@ -1,6 +1,6 @@
 import { Edge, RunResult, Schema } from "@google-labs/breadboard";
 
-export function getNodeInputSchema(runResult: RunResult): Schema {
+export function getInputSchemaFromNode(runResult: RunResult): Schema {
 	let schema: Schema;
 	const inputAttribute: string = runResult.state.newOpportunities.find(
 		(op: Edge) => op.from == runResult.node.id
@@ -31,4 +31,16 @@ export function getNodeInputSchema(runResult: RunResult): Schema {
 		schema = schemaFromOpportunity;
 	}
 	return schema;
+}
+
+export function getInputAttributeSchemaFromNodeSchema(schema: Schema): {
+	key: string;
+	schema: Schema;
+} {
+	const key = Object.keys(schema.properties!)[0];
+	// return first property in schema
+	return {
+		key,
+		schema: schema.properties![key],
+	};
 }

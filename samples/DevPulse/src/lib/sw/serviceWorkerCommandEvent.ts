@@ -11,5 +11,8 @@ import { ServiceWorkerCommand } from "~/lib/sw/serviceWorkerCommand.ts";
 
 export type ServiceWorkerCommandEvent = MessageEvent & {
 	command: ServiceWorkerCommand;
+	node?: string;
+	attribute?: string;
+	value?: string;
 };
 export default ServiceWorkerCommandEvent;
