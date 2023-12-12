@@ -8,7 +8,7 @@
 		"build": "tsc && vite build",
 		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
 		"preview": "vite preview --open",
-		"board": "npx -y tsx src/breadboard/runBoard.ts"
+		"board": "npx -y tsx src/lib/runBoard.ts"
 	},
 	"dependencies": {
 		"@anthropic-ai/tokenizer": "^0.0.4",
