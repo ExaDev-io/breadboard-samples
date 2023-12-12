@@ -1,12 +1,12 @@
 import { RunResult } from "@google-labs/breadboard";
-import { getInputAttribute } from "~/lib/getInputAttribute.ts";
+import { getNodeInputSchema } from "~/lib/getNodeInputSchema.ts";
 import { getInputForSchema } from "~/lib/getInputForSchema.ts";
 
 export async function cliRunResultHandler(runResult: RunResult): Promise<void> {
 	console.debug("=".repeat(80));
 	console.debug(runResult.node.id, runResult.type);
 	if (runResult.type === "input") {
-		const inputAttribute = getInputAttribute(runResult);
+		const inputAttribute = getNodeInputSchema(runResult);
 		const input = await getInputForSchema(inputAttribute);
 		console.debug(runResult.node.id, "input", input);
 		runResult.inputs = input;
