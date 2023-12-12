@@ -1,9 +1,9 @@
-import { RunResult, Schema } from "@google-labs/breadboard";
+import { Edge, RunResult, Schema } from "@google-labs/breadboard";
 
 export function getNodeInputSchema(runResult: RunResult): Schema {
 	let schema: Schema;
 	const inputAttribute: string = runResult.state.newOpportunities.find(
-		(op) => op.from == runResult.node.id
+		(op: Edge) => op.from == runResult.node.id
 	)!.out!;
 
 	const schemaFromOpportunity = {
