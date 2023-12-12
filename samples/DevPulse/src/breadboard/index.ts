@@ -16,7 +16,9 @@ const SEARCH_RESULT_COUNT = 2;
 const DEBUG = false;
 const TOP_STORIES = false;
 
-const board = new Board();
+const board = new Board({
+	title: "DevPulse",
+});
 //////////////////////////////////////////////
 const hnFirebaseKit = board.addKit(HackerNewsFirebaseKit);
 const algolia = board.addKit(HackerNewsAlgoliaKit);
@@ -28,6 +30,15 @@ const stringKit = board.addKit(StringKit);
 //////////////////////////////////////////////
 const searchQuery = board.input({
 	$id: "searchQuery",
+	schema: {
+		type: "object",
+		properties: {
+			searchQuery: {
+				type: "string",
+				title: "searchQuery",
+			},
+		},
+	},
 });
 
 const search = algolia.search({
