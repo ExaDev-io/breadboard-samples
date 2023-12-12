@@ -1,50 +1,60 @@
-import { ServiceWorkerCommand } from "./serviceWorkerCommand.ts";
-import { ServiceWorkerCommandEvent } from "./serviceWorkerCommandEvent.ts";
-import { SW_CONTROL_CHANNEL } from "../constants";
-import { boardRunner } from "../../service-worker/sw";
+import {
+	BROADCAST_SOURCE,
+	ClientBroadcastData,
+	ClientInputResponseData,
+	ServiceWorkerBroadcastType,
+	ServiceWorkerCommandData,
+	ServiceWorkerCommandValues,
+	ServiceWorkerStatusData,
+} from "~/lib/sw/types.ts";
 import { pendingInputResolvers } from "~/lib/sw/pendingInputResolvers.ts";
-import ServiceWorkerRequest from "./ServiceWorkerRequest.ts";
+import { boardRunner } from "~/service-worker/sw.ts";
+import { serviceWorkerOutputBroadcast } from "./runResultHandler.ts";
+import { ClientBroadcastType } from "~/lib/sw/types";
 
-export function commandHandler(data: ServiceWorkerCommandEvent) {
+export function commandHandler(data: ClientBroadcastData) {
 	console.log("ServiceWorker", "message", data);
-	switch (data.command) {
-		case ServiceWorkerCommand.inputResponse:
-			if (data.node && data.value) {
-				const resolver =
-					pendingInputResolvers[`${data.node}-${data.attribute}`];
-				if (resolver) {
-					resolver(data.value);
-					delete pendingInputResolvers[`${data.node}-${data.attribute}`];
-				}
+	if (data.type === ClientBroadcastType.INPUT_RESPONSE) {
+		if (data.value) {
+			const clientInputResponseData = data as ClientInputResponseData;
+			const resolverKey = `${clientInputResponseData.value.node}-${clientInputResponseData.value.attribute}`;
+			const resolver = pendingInputResolvers[resolverKey];
+			if (resolver) {
+				resolver(clientInputResponseData.value.value as never);
+				delete pendingInputResolvers[resolverKey];
 			}
-			break;
-		case ServiceWorkerCommand.start:
+		}
+	} else if (data.type === ClientBroadcastType.SERVICE_WORKER_COMMAND) {
+		const commandData = data as ServiceWorkerCommandData;
+		serviceWorkerCommandHandler(commandData);
+	} else {
+		console.error("ServiceWorker", "unknown command", data);
+	}
+}
+
+export function serviceWorkerCommandHandler(data: ServiceWorkerCommandData) {
+	switch (data.value) {
+		case ServiceWorkerCommandValues.START:
 			boardRunner.start();
 			break;
-		case ServiceWorkerCommand.pause:
+		case ServiceWorkerCommandValues.PAUSE:
 			boardRunner.pause();
 			break;
-		case ServiceWorkerCommand.stop:
+		case ServiceWorkerCommandValues.STOP:
 			boardRunner.stop();
 			break;
-		case ServiceWorkerCommand.status:
-			new BroadcastChannel(SW_CONTROL_CHANNEL).postMessage({
-				command: "status",
-				active: boardRunner.active,
-				paused: boardRunner.paused,
-				pendingInputResolvers: pendingInputResolvers,
-			});
+		case ServiceWorkerCommandValues.STATUS:
+			serviceWorkerOutputBroadcast({
+				type: ServiceWorkerBroadcastType.STATUS,
+				source: BROADCAST_SOURCE.SERVICE_WORKER,
+				value: {
+					active: boardRunner.active,
+					paused: boardRunner.paused,
+					pendingInputResolvers: pendingInputResolvers,
+				},
+			} as ServiceWorkerStatusData);
 			break;
 		default:
-			if (Object.values(ServiceWorkerRequest).includes(data.command)) {
-				console.debug(
-					"ServiceWorker",
-					"ignoring",
-					"ServiceWorkerRequest",
-					data
-				);
-				break;
-			}
 			console.error("ServiceWorker", "unknown command", data);
 	}
 }

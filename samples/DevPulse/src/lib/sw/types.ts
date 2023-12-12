@@ -1,56 +1,131 @@
-export const InputNode = {
-	searchQuery: "searchQuery",
-	claudeApiKey: "claudeApiKey",
-	none: ""
+import { Schema } from "@google-labs/breadboard";
+
+export const SERVICE_WORKER = "service-worker";
+//
+export type SERVICE_WORKER = typeof SERVICE_WORKER;
+//
+export const CLIENT = "client";
+//
+export type CLIENT = typeof CLIENT;
+//
+export const BROADCAST_SOURCE = {
+	SERVICE_WORKER,
+	CLIENT,
 } as const;
-
-export type InputNode = (typeof InputNode)[keyof typeof InputNode];
-
-export type WorkerMessage = {
-	output: {
-		[key: string]: unknown;
-	}[];
-	attribute?: string;
-	iteration?: number;
-	currentDateTime?: string;
-	type?: string;
-	node?: string;
-	message?: string;
+//
+export type BROADCAST_SOURCE =
+	(typeof BROADCAST_SOURCE)[keyof typeof BROADCAST_SOURCE];
+//
+export const BROADCAST_TARGET = { SERVICE_WORKER };
+//
+export type BROADCAST_TARGET =
+	(typeof BROADCAST_TARGET)[keyof typeof BROADCAST_TARGET];
+//
+export const ServiceWorkerCommandValues = {
+	STOP: "STOP",
+	PAUSE: "PAUSE",
+	START: "START",
+	STATUS: "STATUS",
+} as const;
+//
+export type ServiceWorkerCommandValues =
+	(typeof ServiceWorkerCommandValues)[keyof typeof ServiceWorkerCommandValues];
+//
+export const ClientBroadcastType = {
+	SERVICE_WORKER_COMMAND: "SERVICE_WORKER_COMMAND",
+	INPUT_RESPONSE: "INPUT_RESPONSE",
+} as const;
+//
+export type ClientBroadcastType =
+	(typeof ClientBroadcastType)[keyof typeof ClientBroadcastType];
+//
+export const ServiceWorkerBroadcastType = {
+	INPUT_NEEDED: "INPUT_NEEDED",
+	OUTPUT: "OUTPUT",
+	STATUS: "STATUS",
+} as const;
+//
+export type ServiceWorkerBroadcastType =
+	(typeof ServiceWorkerBroadcastType)[keyof typeof ServiceWorkerBroadcastType];
+//
+export const BroadcastType = {
+	...ClientBroadcastType,
+	...ServiceWorkerBroadcastType,
+} as const;
+//
+export type BroadcastType = (typeof BroadcastType)[keyof typeof BroadcastType];
+//
+export type BroadcastData = {
+	type: BroadcastType;
+	value?: unknown;
+	source?: BROADCAST_SOURCE;
+	target?: BROADCAST_TARGET;
 };
-
-export type WorkerData = {
-	node: InputNode;
+export type BroadcastEvent = MessageEvent<BroadcastData>;
+//
+export type ClientBroadcastData = BroadcastData & {
+	type: ClientBroadcastType;
+	source: typeof BROADCAST_SOURCE.CLIENT;
+};
+export type ClientBroadcastEvent = MessageEvent<ClientBroadcastData>;
+//
+export type ServiceWorkerCommandData = BroadcastData & {
+	type: typeof ClientBroadcastType.SERVICE_WORKER_COMMAND;
+	target: typeof BROADCAST_TARGET.SERVICE_WORKER;
+	value: ServiceWorkerCommandValues;
+};
+//
+export type ClientServiceWorkerCommandData = ClientBroadcastData &
+	ServiceWorkerCommandData;
+//
+export type ServiceWorkerBroadcastData = BroadcastData & {
+	type: typeof ServiceWorkerBroadcastType;
+	source: typeof BROADCAST_SOURCE.SERVICE_WORKER;
+};
+//
+export type ServiceWorkerBroadcastEvent =
+	MessageEvent<ServiceWorkerBroadcastData>;
+//
+export type InputRequest = {
+	node: string;
 	attribute: string;
-	message?: string;
-	value?: string;
+	schema: Schema;
 };
-
-export const WorkerStatus = {
-	idle: "idle",
-	running: "running",
-	paused: "paused",
-	stopped: "stopped",
-	loading: "loading",
-	finished: "finished",
-} as const;
-
-export type WorkerStatus = (typeof WorkerStatus)[keyof typeof WorkerStatus];
-
-
-export const OutputNodeIds = {
-	searchResultData: "searchResultData",
-	summary: "summary",
-	storyData: "storyData"
-} as const;
-
-export type OutputNodeIds = (typeof OutputNodeIds)[keyof typeof OutputNodeIds];
-
-export type NodeData = {
-	node: string; // node id
-	type: "input" | "output";
-}
-export type OutputNodeData = NodeData & {
-	type: "output";
-	timestamp: number;
-	output: { [key: string]: unknown };
-}
+//
+export type ServiceWorkerInputRequestData = ServiceWorkerBroadcastData & {
+	type: typeof ServiceWorkerBroadcastType.INPUT_NEEDED;
+	value: InputRequest;
+};
+//
+export type ServiceWorkerInputRequestEvent =
+	MessageEvent<ServiceWorkerInputRequestData>;
+//
+export type InputResponse = {
+	node: string;
+	attribute: string;
+	value: unknown;
+};
+//
+export type ClientInputResponseData = ClientBroadcastData & {
+	type: typeof ClientBroadcastType.INPUT_RESPONSE;
+	target: typeof BROADCAST_TARGET.SERVICE_WORKER;
+	value: InputResponse;
+};
+//
+export type ClientInputResponseEvent = MessageEvent<ClientInputResponseData>;
+//
+export type ServiceWorkerOutputData = ServiceWorkerBroadcastData & {
+	type: typeof ServiceWorkerBroadcastType.OUTPUT;
+	value: {
+		[key: string]: unknown;
+	};
+};
+//
+export type ServiceWorkerStatusData = ServiceWorkerBroadcastData & {
+	type: typeof ServiceWorkerBroadcastType.STATUS;
+	value: {
+		active: boolean;
+		paused: boolean;
+		pendingInputResolvers: Record<string, unknown>;
+	};
+};

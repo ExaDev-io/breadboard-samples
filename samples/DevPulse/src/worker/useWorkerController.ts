@@ -1,19 +1,28 @@
 import { useEffect, useMemo, useState } from "react";
-import { WorkerData, WorkerStatus } from "~/lib/sw/types";
 import { useDispatch, useSelector } from "react-redux";
 import { setOutput, selectOutput } from "~/hnStory/outputSlice";
-import { StoryOutput } from "~/hnStory/domain";
 import { RootState } from "~/core/redux/store";
 import useWorkerSteps from "~/hnStory/components/useWorkerSteps";
 import { SW_CONTROL_CHANNEL } from "~/lib/constants";
+import { WorkerStatus } from "../hnStory/components/worker-component";
+import {
+	BROADCAST_SOURCE,
+	BROADCAST_TARGET,
+	ClientBroadcastType,
+	InputResponse,
+	ServiceWorkerCommandValues,
+} from "~/lib/sw/types";
+import { StoryOutput } from "~/hnStory/domain";
+import { ClientServiceWorkerCommandData } from "../lib/sw/types";
 
 export type WorkerControllerHook = {
-	input: WorkerData | null;
+	input: InputResponse | null;
+	// output: ReturnType<typeof selectOutput>;
 	output: StoryOutput[];
 	start: () => void;
 	pause: () => void;
 	stop: () => void;
-	send: (data: WorkerData, clearInput?: boolean) => void;
+	send: (data: InputResponse, clearInput?: boolean) => void;
 	status: WorkerStatus;
 	workerSteps: ReturnType<typeof useWorkerSteps>;
 };
@@ -28,7 +37,7 @@ const useWorkerController = (
 		}
 		return new BroadcastChannel(SW_CONTROL_CHANNEL);
 	}, [bcChannel]);
-	const [input, setInput] = useState<WorkerData | null>(null);
+	const [input, setInput] = useState<InputResponse | null>(null);
 
 	const output = useSelector((state: RootState) => selectOutput(state));
 	const [status, setStatus] = useState<WorkerStatus>("idle");
@@ -39,7 +48,7 @@ const useWorkerController = (
 			const inputObject = {
 				node: event.data.node!,
 				attribute: event.data.attribute!,
-				message: event.data.message!,
+				value: event.data.value!,
 			};
 			setInput(inputObject);
 		}
@@ -55,7 +64,7 @@ const useWorkerController = (
 		if (status === "finished") {
 			workerSteps.finalize();
 		}
-	}, [status]);
+	}, [status, workerSteps]);
 
 	useEffect(() => {
 		if (!broadcastChannel) return;
@@ -65,9 +74,13 @@ const useWorkerController = (
 	}, []);
 
 	const start = () => {
-		broadcastChannel.postMessage({
-			command: "start",
-		});
+		const startCommand: ClientServiceWorkerCommandData = {
+			type: ClientBroadcastType.SERVICE_WORKER_COMMAND,
+			source: BROADCAST_SOURCE.CLIENT,
+			target: BROADCAST_TARGET.SERVICE_WORKER,
+			value: ServiceWorkerCommandValues.START,
+		};
+		broadcastChannel.postMessage(startCommand);
 		setStatus(WorkerStatus.running);
 	};
 
@@ -85,7 +98,7 @@ const useWorkerController = (
 		setStatus(WorkerStatus.stopped);
 	};
 
-	const send = (data: WorkerData) => {
+	const send = (data: InputResponse) => {
 		broadcastChannel.postMessage({
 			command: "inputResponse",
 			...data,

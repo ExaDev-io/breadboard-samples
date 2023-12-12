@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "~/core/redux/store";
 import { StoryOutput } from "~/hnStory/domain";
-import { WorkerStatus } from "~/lib/sw/types";
+import { WorkerStatus } from "./components/worker-component";
 
 const initialState = {
 	output: [] as StoryOutput[],

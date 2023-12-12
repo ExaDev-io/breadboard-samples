@@ -4,10 +4,10 @@ import {
 	createSlice,
 } from "@reduxjs/toolkit";
 import { RootState } from "~/core/redux/store";
-import { WorkerData } from "~/lib/sw/types";
 import { v4 as uuid } from "uuid";
+import { InputResponse } from "../lib/sw/types";
 
-export type InputSteps = Record<number, WorkerData>;
+export type InputSteps = Record<number, InputResponse>;
 export type WorkerDataCollection = { id: string; inputSteps: InputSteps };
 export const inputAdaptor = createEntityAdapter<WorkerDataCollection>();
 

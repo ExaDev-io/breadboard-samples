@@ -1,29 +1,48 @@
 import React from "react";
 import { useWorkerControllerContext } from "worker/useWorkerControllerContext.tsx";
 import styles from "./worker-component.module.scss";
-import { InputNode, WorkerStatus } from "~/lib/sw/types";
 import { StoryOutput } from "~/hnStory/domain";
 import Button from "~/components/button";
 import OutputAccordion from "~/hnStory/components/output-accordion";
+import { SW_CONTROL_CHANNEL } from '../../lib/constants';
+import { BROADCAST_SOURCE, ClientInputResponseData, InputResponse, BROADCAST_TARGET, ClientBroadcastType } from '../../lib/sw/types';
+
+export const WorkerStatus = {
+	idle: "idle",
+	running: "running",
+	paused: "paused",
+	stopped: "stopped",
+	loading: "loading",
+	finished: "finished",
+} as const;
+
+export type WorkerStatus = (typeof WorkerStatus)[keyof typeof WorkerStatus];
 
 export const WorkerComponent: React.FC = () => {
 	const { broadcastChannel, workerSteps } =
 		useWorkerControllerContext();
 	const handleSubmit = (
 		e: React.FormEvent<HTMLFormElement>,
-		node: InputNode,
+		node: string,
 		attribute: string
 	) => {
 		e.preventDefault();
 		const input = (e.target as HTMLFormElement).querySelector("input");
 
-		const inputObject = {
+		const inputObject: InputResponse = {
 			node,
 			attribute,
 			value: input?.value,
 		};
 		workerSteps.addStep(inputObject);
-		broadcastChannel.send(inputObject);
+
+		const message: ClientInputResponseData = {
+			type: ClientBroadcastType.INPUT_RESPONSE,
+			source: BROADCAST_SOURCE.CLIENT,
+			target: BROADCAST_TARGET.SERVICE_WORKER,
+			value: inputObject,
+		};
+		new BroadcastChannel(SW_CONTROL_CHANNEL).postMessage(message);
 	};
 	const running = broadcastChannel.status === WorkerStatus.running;
 	//const inputField = useSelector((state: RootState) => selectInput(state))
@@ -62,7 +81,7 @@ export const WorkerComponent: React.FC = () => {
 						}
 					>
 						<label htmlFor="input" className={styles.label}>
-							{broadcastChannel.input?.message || ""}
+							{JSON.stringify(broadcastChannel.input?.value) || ""}
 						</label>
 
 						<input
