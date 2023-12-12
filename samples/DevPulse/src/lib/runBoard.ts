@@ -14,6 +14,7 @@ import board from "../breadboard/index";
 // }
 
 generateAndWriteCombinedMarkdown({
+// @ts-ignore
 	board,
 	filename: "README",
 });
