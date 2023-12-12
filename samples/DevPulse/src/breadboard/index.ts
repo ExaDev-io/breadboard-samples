@@ -29,13 +29,13 @@ const objectKit = board.addKit(ObjectKit);
 const stringKit = board.addKit(StringKit);
 //////////////////////////////////////////////
 const searchQuery = board.input({
-	$id: "searchQuery",
+	$id: "query",
 	schema: {
 		type: "object",
 		properties: {
-			searchQuery: {
+			query: {
 				type: "string",
-				title: "searchQuery",
+				title: "Search Query",
 			},
 		},
 	},

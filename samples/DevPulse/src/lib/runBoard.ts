@@ -31,16 +31,9 @@ export class CliAsyncGeneratorRunner<
 		const handler = this.handler;
 		(async (): Promise<void> => {
 			try {
-				// let next = await generator.next();
-				// while (!next.done) {
-				// 	await handler(next.value);
-				// 	next = await generator.next();
-				// }
 				for await (const value of generator) {
-					// console.log("=".repeat(80));
 					await handler(value);
 				}
-				// console.debug("ServiceWorker", "generator done");
 			} catch (error) {
 				console.error(error);
 			}
@@ -50,22 +43,33 @@ export class CliAsyncGeneratorRunner<
 
 function getInputAttribute(runResult: RunResult): Schema {
 	let schema: Schema;
+	const inputAttribute: string = runResult.state.newOpportunities.find(
+		(op) => op.from == runResult.node.id
+	)!.out!;
+
+	const schemaFromOpportunity = {
+		type: "object",
+		properties: {
+			[inputAttribute]: {
+				title: inputAttribute,
+				type: "string",
+			},
+		},
+	};
+
 	if (runResult.inputArguments.schema) {
 		schema = runResult.inputArguments.schema as Schema;
+		if (!Object.keys(schema.properties!).includes(inputAttribute)) {
+			throw new Error(
+				`Input attribute "${inputAttribute}" not found in schema:\n${JSON.stringify(
+					schema,
+					null,
+					2
+				)}`
+			);
+		}
 	} else {
-		const inputAttribute: string =
-			runResult.state.newOpportunities.find(
-				(op) => op.from == runResult.node.id
-			)?.out || "UNKNOWN";
-		schema = {
-			type: "object",
-			properties: {
-				[inputAttribute]: {
-					title: inputAttribute,
-					type: "string",
-				},
-			},
-		};
+		schema = schemaFromOpportunity;
 	}
 	return schema;
 }
@@ -99,22 +103,18 @@ function getInputForSchema(schema: Schema): Promise<{ [key: string]: string }> {
 }
 
 export async function cliRunResultHandler(runResult: RunResult): Promise<void> {
-	console.log("=".repeat(80));
+	console.debug("=".repeat(80));
+	console.debug(runResult.node.id, runResult.type);
 	if (runResult.type === "input") {
 		const inputAttribute = getInputAttribute(runResult);
 		const input = await getInputForSchema(inputAttribute);
 		console.debug(runResult.node.id, "input", input);
 		runResult.inputs = input;
 		return;
-	}
-	if (runResult.type === "output") {
+	} else if (runResult.type === "output") {
 		console.debug(runResult.node.id, "output", runResult.outputs);
 		return;
 	}
-
-	throw new Error(["Unknown runResult type", runResult].join(" "));
-
-	// await new Promise((resolve): NodeJS.Timeout => setTimeout(resolve, 1000));
 }
 
 generateAndWriteCombinedMarkdown({
@@ -129,34 +129,7 @@ const boardRunner: CliAsyncGeneratorRunner<
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	any
 > = new CliAsyncGeneratorRunner(
-	(): AsyncGenerator<RunResult, unknown, unknown> => {
-		// return board.run();
-		const b = new Board();
-		b.input({
-			schema: {
-				type: "object",
-				properties: {
-					one: {
-						title: "Input 1",
-						type: "string",
-					},
-				},
-			},
-		}).wire("*", b.output());
-		b.input({
-			schema: {
-				type: "object",
-				properties: {
-					two: {
-						title: "Input 2",
-						type: "string",
-					},
-				},
-			},
-		}).wire("*", b.output());
-
-		return b.run();
-	},
+	(): AsyncGenerator<RunResult, unknown, unknown> => board.run(),
 	cliRunResultHandler
 );
 
