@@ -79,7 +79,7 @@ export type ClientServiceWorkerCommandData = ClientBroadcastData &
 	ServiceWorkerCommandData;
 //
 export type ServiceWorkerBroadcastData = BroadcastData & {
-	type: typeof ServiceWorkerBroadcastType;
+	type: ServiceWorkerBroadcastType;
 	source: typeof BROADCAST_SOURCE.SERVICE_WORKER;
 };
 //
@@ -120,6 +120,8 @@ export type ServiceWorkerOutputData = ServiceWorkerBroadcastData & {
 		[key: string]: unknown;
 	};
 };
+// export type STATUS = typeof ServiceWorkerBroadcastType.STATUS;
+
 //
 export type ServiceWorkerStatusData = ServiceWorkerBroadcastData & {
 	type: typeof ServiceWorkerBroadcastType.STATUS;

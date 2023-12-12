@@ -4,7 +4,7 @@ import {
 	getInputAttributeSchemaFromNodeSchema,
 } from "../getNodeInputSchema";
 import { SW_CONTROL_CHANNEL } from "../constants";
-import { waitForInput } from "lib/sw/waitForInput.ts";
+import { waitForInput } from "./waitForInput.ts";
 import {
 	ServiceWorkerInputRequestData,
 	ServiceWorkerOutputData,

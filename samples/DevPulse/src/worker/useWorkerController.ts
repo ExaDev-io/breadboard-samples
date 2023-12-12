@@ -13,7 +13,10 @@ import {
 	ServiceWorkerCommandValues,
 } from "~/lib/sw/types";
 import { StoryOutput } from "~/hnStory/domain";
-import { ClientServiceWorkerCommandData } from "../lib/sw/types";
+import {
+	ClientServiceWorkerCommandData,
+	ClientInputResponseData,
+} from "../lib/sw/types";
 
 export type WorkerControllerHook = {
 	input: InputResponse | null;
@@ -85,24 +88,35 @@ const useWorkerController = (
 	};
 
 	const pause = () => {
-		broadcastChannel.postMessage({
-			command: "pause",
-		});
+		const pauseCommand: ClientServiceWorkerCommandData = {
+			type: ClientBroadcastType.SERVICE_WORKER_COMMAND,
+			source: BROADCAST_SOURCE.CLIENT,
+			target: BROADCAST_TARGET.SERVICE_WORKER,
+			value: ServiceWorkerCommandValues.PAUSE,
+		};
+		broadcastChannel.postMessage(pauseCommand);
 		setStatus(WorkerStatus.paused);
 	};
 
 	const stop = () => {
-		broadcastChannel.postMessage({
-			command: "stop",
-		});
+		const stopCommand: ClientServiceWorkerCommandData = {
+			type: ClientBroadcastType.SERVICE_WORKER_COMMAND,
+			source: BROADCAST_SOURCE.CLIENT,
+			target: BROADCAST_TARGET.SERVICE_WORKER,
+			value: ServiceWorkerCommandValues.STOP,
+		};
+		broadcastChannel.postMessage(stopCommand);
 		setStatus(WorkerStatus.stopped);
 	};
 
 	const send = (data: InputResponse) => {
-		broadcastChannel.postMessage({
-			command: "inputResponse",
-			...data,
-		});
+		const inputData: ClientInputResponseData = {
+			type: ClientBroadcastType.INPUT_RESPONSE,
+			source: BROADCAST_SOURCE.CLIENT,
+			target: BROADCAST_TARGET.SERVICE_WORKER,
+			value: data,
+		};
+		broadcastChannel.postMessage(inputData);
 	};
 
 	return {

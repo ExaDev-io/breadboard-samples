@@ -6,11 +6,11 @@ import {
 	ServiceWorkerCommandData,
 	ServiceWorkerCommandValues,
 	ServiceWorkerStatusData,
-} from "~/lib/sw/types.ts";
-import { pendingInputResolvers } from "~/lib/sw/pendingInputResolvers.ts";
-import { boardRunner } from "~/service-worker/sw.ts";
+} from "../../lib/sw/types.ts";
+import { pendingInputResolvers } from "../../lib/sw/pendingInputResolvers.ts";
+import { boardRunner } from "../../service-worker/sw.ts";
 import { serviceWorkerOutputBroadcast } from "./runResultHandler.ts";
-import { ClientBroadcastType } from "~/lib/sw/types";
+import { ClientBroadcastType } from "../../lib/sw/types";
 
 export function commandHandler(data: ClientBroadcastData) {
 	console.log("ServiceWorker", "message", data);
@@ -44,15 +44,18 @@ export function serviceWorkerCommandHandler(data: ServiceWorkerCommandData) {
 			boardRunner.stop();
 			break;
 		case ServiceWorkerCommandValues.STATUS:
-			serviceWorkerOutputBroadcast({
-				type: ServiceWorkerBroadcastType.STATUS,
-				source: BROADCAST_SOURCE.SERVICE_WORKER,
-				value: {
-					active: boardRunner.active,
-					paused: boardRunner.paused,
-					pendingInputResolvers: pendingInputResolvers,
-				},
-			} as ServiceWorkerStatusData);
+			{
+				const StatusData: ServiceWorkerStatusData = {
+					type: ServiceWorkerBroadcastType.STATUS,
+					source: BROADCAST_SOURCE.SERVICE_WORKER,
+					value: {
+						active: boardRunner.active,
+						paused: boardRunner.paused,
+						pendingInputResolvers: pendingInputResolvers,
+					},
+				};
+				serviceWorkerOutputBroadcast(StatusData);
+			}
 			break;
 		default:
 			console.error("ServiceWorker", "unknown command", data);
