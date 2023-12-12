@@ -21,8 +21,8 @@ const routeItems: { path: string; element: React.ReactNode }[] = [
 const AppRoutes = (): React.JSX.Element => {
 	return (
 		<Routes>
-			{routeItems.map((route) => (
-				<Route path={route.path} element={route.element} />
+			{routeItems.map((route, key) => (
+				<Route path={route.path} element={route.element} key={key} />
 			))}
 		</Routes>
 	);

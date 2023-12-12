@@ -43,6 +43,9 @@ const useWorkerController = (
 			};
 			setInput(inputObject);
 		}
+		if (event.data.type === "inputReceived") {
+			setInput({node: "", attribute: "", message: ""});
+		}
 		if (event.data.output) {
 			dispatch(setOutput(event.data.output));
 		}

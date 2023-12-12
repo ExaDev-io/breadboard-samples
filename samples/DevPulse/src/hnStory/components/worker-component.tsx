@@ -7,8 +7,7 @@ import Button from "~/components/button";
 import OutputAccordion from "~/hnStory/components/output-accordion";
 
 export const WorkerComponent: React.FC = () => {
-	const { broadcastChannel, workerSteps } =
-		useWorkerControllerContext();
+	const { broadcastChannel, workerSteps } = useWorkerControllerContext();
 	const handleSubmit = (
 		e: React.FormEvent<HTMLFormElement>,
 		node: InputNode,
@@ -27,20 +26,16 @@ export const WorkerComponent: React.FC = () => {
 	};
 	const running = broadcastChannel.status === WorkerStatus.running;
 	//const inputField = useSelector((state: RootState) => selectInput(state))
-
+	console.log(broadcastChannel.output);
 	return (
 		<div>
 			<header className={styles.header}>
 				<h6>
-					Service Worker{" "}
-					<span>Status: {broadcastChannel.status}</span>
+					Service Worker <span>Status: {broadcastChannel.status}</span>
 				</h6>
 				<div className={styles.ccontrols}>
 					<Button onClick={broadcastChannel.start}>Start</Button>
-					<Button
-						onClick={broadcastChannel.pause}
-						disabled={!running}
-					>
+					<Button onClick={broadcastChannel.pause} disabled={!running}>
 						Pause
 					</Button>
 					<Button onClick={broadcastChannel.stop} disabled={!running}>
@@ -72,7 +67,9 @@ export const WorkerComponent: React.FC = () => {
 							className={styles.input}
 						/>
 
-						<Button type="submit" className={styles.button}>Submit</Button>
+						<Button type="submit" className={styles.button}>
+							Submit
+						</Button>
 					</form>
 				)}
 			</main>

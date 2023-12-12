@@ -8,7 +8,7 @@ import { persistor, store } from "~/core/redux/store.ts";
 import { PersistGate } from "redux-persist/integration/react";
 import { BrowserRouter } from "react-router-dom";
 import { WorkerControllerProvider } from "./worker/workerControllerProvider.tsx";
-import { SW_CONTROL_CHANNEL } from './lib/constants';
+import { SW_CONTROL_CHANNEL } from "./lib/constants";
 
 initialiseServiceWorker();
 
@@ -25,4 +25,3 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 		</Provider>
 	</React.StrictMode>
 );
-

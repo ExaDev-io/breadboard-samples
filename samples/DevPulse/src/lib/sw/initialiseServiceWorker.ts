@@ -22,6 +22,7 @@ export function initialiseServiceWorker() {
 		navigator.serviceWorker.ready.then(async (registration) => {
 			console.log("ServiceWorker", "ready", registration);
 		});
+		console.log(navigator.serviceWorker.ready);
 	}
 }
 
