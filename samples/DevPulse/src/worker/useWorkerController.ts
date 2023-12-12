@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
-import { BROADCAST_CHANNEL } from "~/constants.ts";
 import { WorkerData, WorkerStatus } from "~/lib/sw/types";
 import { useDispatch, useSelector } from "react-redux";
 import { setOutput, selectOutput } from "~/hnStory/outputSlice";
 import { StoryOutput } from "~/hnStory/domain";
 import { RootState } from "~/core/redux/store";
 import useWorkerSteps from "~/hnStory/components/useWorkerSteps";
+import { SW_CONTROL_CHANNEL } from "~/lib/constants";
 
 export type WorkerControllerHook = {
 	input: WorkerData | null;
@@ -26,7 +26,7 @@ const useWorkerController = (
 		if (bcChannel) {
 			return bcChannel;
 		}
-		return new BroadcastChannel(BROADCAST_CHANNEL);
+		return new BroadcastChannel(SW_CONTROL_CHANNEL);
 	}, [bcChannel]);
 	const [input, setInput] = useState<WorkerData | null>(null);
 

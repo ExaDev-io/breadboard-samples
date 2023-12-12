@@ -14,16 +14,16 @@ self.addEventListener("activate", (event) => {
 });
 
 import { LogProbe } from "@google-labs/breadboard";
-import { BROADCAST_CHANNEL } from "src/constants";
-import board from "../breadboard/makeBoard";
-import { StoryOutput } from "src/hnStory/domain";
-import { Stories } from "src/core/Stories";
-import { WorkerStatus } from "./types";
+import { SW_CONTROL_CHANNEL } from "../constants";
+import board from "../breadboard/index";
+import { StoryOutput } from "../hnStory/domain";
+import { Stories } from "../core/Stories";
+import { WorkerStatus } from "../lib/sw/types";
 
 let loopActive: boolean = false;
 let loopPaused: boolean = false;
 export const broadcastChannel: BroadcastChannel = new BroadcastChannel(
-	BROADCAST_CHANNEL
+	SW_CONTROL_CHANNEL
 );
 
 const pendingInputResolvers: { [key: string]: (input: string) => void } = {};
@@ -61,10 +61,9 @@ async function runBoard() {
 		if (runResult.type === "input") {
 			const nodeId = runResult.node.id;
 
-			const inputAttribute: string =
-				runResult.state.newOpportunities.find(
-					(op) => op.from == nodeId
-				)!.out!;
+			const inputAttribute: string = runResult.state.newOpportunities.find(
+				(op) => op.from == nodeId
+			)!.out!;
 
 			console.debug({
 				type: runResult.type,
@@ -73,9 +72,7 @@ async function runBoard() {
 			});
 
 			console.debug(
-				["Node", runResult.node.id, "requires", inputAttribute].join(
-					" "
-				)
+				["Node", runResult.node.id, "requires", inputAttribute].join(" ")
 			);
 			broadcastChannel.postMessage({
 				type: "inputNeeded",
@@ -84,10 +81,7 @@ async function runBoard() {
 				message: ["Please type in", runResult.node.id].join(" "),
 			});
 
-			const userInput = await waitForInput(
-				runResult.node.id,
-				inputAttribute
-			);
+			const userInput = await waitForInput(runResult.node.id, inputAttribute);
 
 			runResult.inputs = { [inputAttribute]: userInput };
 		}
@@ -129,9 +123,7 @@ function handleCommand(data: {
 				// const resolver = pendingInputResolvers[data.node]
 				if (resolver) {
 					resolver(data.value);
-					delete pendingInputResolvers[
-						`${data.node}-${data.attribute}`
-					];
+					delete pendingInputResolvers[`${data.node}-${data.attribute}`];
 				}
 			}
 			break;
