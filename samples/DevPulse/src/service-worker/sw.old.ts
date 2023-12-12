@@ -14,11 +14,11 @@ self.addEventListener("activate", (event) => {
 });
 
 import { LogProbe } from "@google-labs/breadboard";
-import { SW_CONTROL_CHANNEL } from "../constants";
 import board from "../breadboard/index";
 import { StoryOutput } from "../hnStory/domain";
 import { Stories } from "../core/Stories";
 import { WorkerStatus } from "../lib/sw/types";
+import { SW_CONTROL_CHANNEL } from "../lib/constants";
 
 let loopActive: boolean = false;
 let loopPaused: boolean = false;

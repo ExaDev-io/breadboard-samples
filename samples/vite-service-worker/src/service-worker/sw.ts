@@ -7,7 +7,7 @@ import { ControllableAsyncGeneratorRunner } from "../ControllableAsyncGeneratorR
 
 precacheAndRoute(self.__WB_MANIFEST || []);
 
-let boardRunner: ControllableAsyncGeneratorRunner<
+export let boardRunner: ControllableAsyncGeneratorRunner<
 	RunResult,
 	unknown,
 	unknown,
