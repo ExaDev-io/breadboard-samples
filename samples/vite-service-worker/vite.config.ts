@@ -13,6 +13,9 @@ export default defineConfig({
 			injectRegister: false,
 			srcDir: "src/service-worker",
 			strategies: "injectManifest",
+			devOptions: {
+				enabled: true,
+			}
 		}),
 	],
 });
