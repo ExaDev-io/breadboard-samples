@@ -3,6 +3,10 @@ declare const self: ServiceWorkerGlobalScope;
 
 import { Board, RunResult } from "@google-labs/breadboard";
 import { precacheAndRoute } from "workbox-precaching";
+import {
+	BroadcastChannelMember,
+	BroadcastMessage,
+} from "../BroadcastMessageRenderer";
 import { ControllableAsyncGeneratorRunner } from "../ControllableAsyncGeneratorRunner";
 
 precacheAndRoute(self.__WB_MANIFEST || []);
@@ -32,13 +36,14 @@ self.addEventListener("activate", () => {
 });
 
 const board = new Board();
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 3; i++) {
 	board
 		.input({ $id: `input_${i}` })
 		.wire("*", board.output({ $id: `output_${i}` }));
 }
 
-const channel = new BroadcastChannel("gen-control");
+export const SW_BROADCAST_CHANNEL: string = "service_worker_channel";
+const channel = new BroadcastChannel(SW_BROADCAST_CHANNEL);
 channel.onmessage = (event): void => handleCommand(event.data);
 self.addEventListener("message", (event): void => handleCommand(event.data));
 
@@ -67,6 +72,14 @@ async function handler(runResult: RunResult): Promise<void> {
 		runResult.inputs = input;
 	} else if (runResult.type === "output") {
 		console.log(runResult.node.id, "output", runResult.outputs);
+		const message: BroadcastMessage = {
+			id: new Date().getTime().toString(),
+			type: "output",
+			source: BroadcastChannelMember.ServiceWorker,
+			target: BroadcastChannelMember.Client,
+			content: runResult.outputs,
+		};
+		channel.postMessage(message);
 	}
 	await new Promise((resolve): NodeJS.Timeout => setTimeout(resolve, 1000));
 }
