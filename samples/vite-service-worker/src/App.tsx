@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
 import './App.css';
+import { BroadcastMessageRenderer } from "./BroadcastMessageRenderer.tsx";
+import reactLogo from './assets/react.svg';
+import { SW_BROADCAST_CHANNEL } from "./service-worker/sw.ts";
+import viteLogo from '/vite.svg';
 
-const controlChannel = new BroadcastChannel('gen-control');
 function sendCommandToSW(command: string) {
 	// if (navigator.serviceWorker.controller) {
 	// 	navigator.serviceWorker.controller.postMessage({ command });
@@ -11,7 +12,7 @@ function sendCommandToSW(command: string) {
 	// } else {
 	// 	console.error('ServiceWorker not registered');
 	// }
-	controlChannel.postMessage({ command });
+	new BroadcastChannel(SW_BROADCAST_CHANNEL).postMessage({ command });
 }
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
 			<p className="read-the-docs">
 				Click on the Vite and React logos to learn more
 			</p>
+			<BroadcastMessageRenderer channelId={SW_BROADCAST_CHANNEL} />
 			<div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
 				<button onClick={() => sendCommandToSW('start')}>Start</button>
 				<button onClick={() => sendCommandToSW('pause')}>Pause</button>
