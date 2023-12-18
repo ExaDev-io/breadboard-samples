@@ -2,16 +2,16 @@
 declare const self: ServiceWorkerGlobalScope;
 
 import { Board, RunResult } from "@google-labs/breadboard";
+import { ControllableAsyncGeneratorRunner } from "src/ControllableAsyncGeneratorRunner";
+import { BroadcastChannelMember } from "src/lib/BroadcastChannelMember";
+import { BroadcastMessage } from "src/lib/BroadcastMessage";
+import { SW_BROADCAST_CHANNEL } from "src/lib/constants";
 import { precacheAndRoute } from "workbox-precaching";
-import {
-	BroadcastChannelMember,
-	BroadcastMessage,
-} from "../BroadcastMessageRenderer";
-import { ControllableAsyncGeneratorRunner } from "../ControllableAsyncGeneratorRunner";
+
 
 precacheAndRoute(self.__WB_MANIFEST || []);
 
-export let boardRunner: ControllableAsyncGeneratorRunner<
+let boardRunner: ControllableAsyncGeneratorRunner<
 	RunResult,
 	unknown,
 	unknown,
@@ -42,7 +42,6 @@ for (let i = 0; i < 3; i++) {
 		.wire("*", board.output({ $id: `output_${i}` }));
 }
 
-export const SW_BROADCAST_CHANNEL: string = "service_worker_channel";
 const channel = new BroadcastChannel(SW_BROADCAST_CHANNEL);
 channel.onmessage = (event): void => handleCommand(event.data);
 self.addEventListener("message", (event): void => handleCommand(event.data));

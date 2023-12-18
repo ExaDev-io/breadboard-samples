@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import './App.css';
 import { BroadcastMessageRenderer } from "./BroadcastMessageRenderer.tsx";
+import { SW_BROADCAST_CHANNEL } from "./lib/constants.ts";
 import reactLogo from './assets/react.svg';
-import { SW_BROADCAST_CHANNEL } from "./service-worker/sw.ts";
 import viteLogo from '/vite.svg';
 
 function sendCommandToSW(command: string) {
