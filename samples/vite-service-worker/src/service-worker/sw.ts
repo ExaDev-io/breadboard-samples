@@ -2,12 +2,12 @@
 declare const self: ServiceWorkerGlobalScope;
 
 import { Board, RunResult } from "@google-labs/breadboard";
-import { ControllableAsyncGeneratorRunner } from "src/ControllableAsyncGeneratorRunner";
-import { BroadcastChannelMember } from "src/lib/BroadcastChannelMember";
-import { BroadcastMessage } from "src/lib/BroadcastMessage";
-import { SW_BROADCAST_CHANNEL } from "src/lib/constants";
-import { precacheAndRoute } from "workbox-precaching";
 
+import { precacheAndRoute } from "workbox-precaching";
+import { ControllableAsyncGeneratorRunner } from "../ControllableAsyncGeneratorRunner";
+import { BroadcastChannelMember } from "../lib/BroadcastChannelMember";
+import { BroadcastMessage } from "../lib/BroadcastMessage";
+import { SW_BROADCAST_CHANNEL } from "../lib/constants";
 
 precacheAndRoute(self.__WB_MANIFEST || []);
 

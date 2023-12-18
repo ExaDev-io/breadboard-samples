@@ -1,7 +1,6 @@
+import { BroadcastMessage } from 'lib/BroadcastMessage';
+import { SW_BROADCAST_CHANNEL } from 'lib/constants';
 import React, { useEffect, useState } from 'react';
-import { BroadcastMessage } from 'src/lib/BroadcastMessage.tsx';
-import { SW_BROADCAST_CHANNEL } from "src/lib/constants.ts";
-
 const BasicMessage: React.FC<{ message: BroadcastMessage; }> = ({ message }) => {
 	const renderContent = () => {
 		if (typeof message === 'object' && message !== null) {

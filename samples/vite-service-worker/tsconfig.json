@@ -21,11 +21,16 @@
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
 		"noFallthroughCasesInSwitch": true,
-		"rootDir": "src",
-		"baseUrl": "./",
+		"rootDir": ".",
+		"baseUrl": "./src",
+		"paths": {
+			"@/*": [
+				"src/*"
+			]
+		},
 	},
 	"include": [
-		"src"
+		"src",
 	],
 	"exclude": [
 		"src/service-worker"
