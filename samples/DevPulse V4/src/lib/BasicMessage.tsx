@@ -1,4 +1,4 @@
-import { BroadcastMessage } from "./lib/BroadcastMessage";
+import { BroadcastMessage } from "~/lib/BroadcastMessage.tsx";
 
 type BasicMessageProps = {
 	message: BroadcastMessage;

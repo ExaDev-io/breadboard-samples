@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { BroadcastMessage } from "./lib/BroadcastMessage.tsx";
-import { SW_BROADCAST_CHANNEL } from "./lib/constants.ts";
-import BasicMessage from "./BasicMessage.tsx";
+import BasicMessage from "~/lib/BasicMessage.tsx";
+import { BroadcastMessage } from "~/lib/BroadcastMessage.tsx";
+import { SW_BROADCAST_CHANNEL } from "~/lib/constants.ts";
+
 
 export function BroadcastMessageRenderer({
 	channelId = SW_BROADCAST_CHANNEL,
