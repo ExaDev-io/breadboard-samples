@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import BasicMessage from "./BroadcastMessageRenderer.tsx";
+import { BroadcastMessageRenderer } from "./BroadcastMessageRenderer.tsx";
 import { SW_BROADCAST_CHANNEL } from "./lib/constants.ts";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
@@ -39,7 +39,7 @@ function App() {
 			<p className="read-the-docs">
 				Click on the Vite and React logos to learn more
 			</p>
-			<BasicMessage channelId={SW_BROADCAST_CHANNEL} />
+      <BroadcastMessageRenderer channelId={SW_BROADCAST_CHANNEL} />
 			<div style={{ display: "flex", justifyContent: "space-evenly" }}>
 				<button onClick={() => sendCommandToSW("start")}>Start</button>
 				<button onClick={() => sendCommandToSW("pause")}>Pause</button>
