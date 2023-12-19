@@ -43,7 +43,7 @@ for (let i = 0; i < 3; i++) {
 
 const channel = new BroadcastChannel(SW_BROADCAST_CHANNEL);
 channel.onmessage = (event): void => handleCommand(event.data);
-self.addEventListener("message", (event): void => handleCommand(event));
+self.addEventListener("message", (event: ExtendableMessageEvent): void => handleCommand(event));
 
 function handleCommand<M extends BroadcastMessage = BroadcastMessage>(message: M & ExtendableMessageEvent) {
 	console.log("ServiceWorker", "message", message);
