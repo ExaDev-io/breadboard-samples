@@ -1,11 +1,17 @@
 import React from "react";
 import { useWorkerControllerContext } from "worker/useWorkerControllerContext.tsx";
 import styles from "./worker-component.module.scss";
-import { StoryOutput } from "~/hnStory/domain";
 import Button from "~/components/button";
 import OutputAccordion from "~/hnStory/components/output-accordion";
-import { SW_CONTROL_CHANNEL } from '../../lib/constants';
-import { BROADCAST_SOURCE, ClientInputResponseData, InputResponse, BROADCAST_TARGET, ClientBroadcastType } from '../../lib/sw/types';
+import { SW_CONTROL_CHANNEL } from "../../lib/constants";
+import {
+	BROADCAST_SOURCE,
+	ClientInputResponseData,
+	InputResponse,
+	BROADCAST_TARGET,
+	ClientBroadcastType,
+} from "../../lib/sw/types";
+import { Schema } from "@google-labs/breadboard";
 
 export const WorkerStatus = {
 	idle: "idle",
@@ -19,11 +25,11 @@ export const WorkerStatus = {
 export type WorkerStatus = (typeof WorkerStatus)[keyof typeof WorkerStatus];
 
 export const WorkerComponent: React.FC = () => {
-	const { broadcastChannel, workerSteps } =
-		useWorkerControllerContext();
+	const { broadcastChannel, workerSteps } = useWorkerControllerContext();
 	const handleSubmit = (
 		e: React.FormEvent<HTMLFormElement>,
 		node: string,
+		schema: Schema,
 		attribute: string
 	) => {
 		e.preventDefault();
@@ -32,6 +38,7 @@ export const WorkerComponent: React.FC = () => {
 		const inputObject: InputResponse = {
 			node,
 			attribute,
+			schema,
 			value: input?.value,
 		};
 		workerSteps.addStep(inputObject);
@@ -44,24 +51,30 @@ export const WorkerComponent: React.FC = () => {
 		};
 		new BroadcastChannel(SW_CONTROL_CHANNEL).postMessage(message);
 	};
-	const running = broadcastChannel.status.active && !broadcastChannel.status.paused && !broadcastChannel.status.finished;
+	const running =
+		broadcastChannel.status.active &&
+		!broadcastChannel.status.paused &&
+		!broadcastChannel.status.finished;
 	//const inputField = useSelector((state: RootState) => selectInput(state))
-
 	return (
 		<div>
 			<header className={styles.header}>
 				<h6>
 					Service Worker{" "}
-					<span>Status: {
-						running ? 'running' : broadcastChannel.status.paused ? 'paused' : broadcastChannel.status.finished ? 'finished' : 'idle'
-					}</span>
+					<span>
+						Status:{" "}
+						{running
+							? "running"
+							: broadcastChannel.status.paused
+							? "paused"
+							: broadcastChannel.status.finished
+							? "finished"
+							: "idle"}
+					</span>
 				</h6>
 				<div className={styles.ccontrols}>
 					<Button onClick={broadcastChannel.start}>Start</Button>
-					<Button
-						onClick={broadcastChannel.pause}
-						disabled={!running}
-					>
+					<Button onClick={broadcastChannel.pause} disabled={!running}>
 						Pause
 					</Button>
 					<Button onClick={broadcastChannel.stop} disabled={!running}>
@@ -78,6 +91,7 @@ export const WorkerComponent: React.FC = () => {
 							handleSubmit(
 								e,
 								broadcastChannel.input?.node || "",
+								broadcastChannel.input!.schema!,
 								broadcastChannel.input?.attribute || ""
 							)
 						}
@@ -93,13 +107,15 @@ export const WorkerComponent: React.FC = () => {
 							className={styles.input}
 						/>
 
-						<Button type="submit" className={styles.button}>Submit</Button>
+						<Button type="submit" className={styles.button}>
+							Submit
+						</Button>
 					</form>
 				)}
 			</main>
 
 			<OutputAccordion
-				data={broadcastChannel.output as StoryOutput[]}
+				data={broadcastChannel.output}
 				nodeId="searchResultData"
 			/>
 		</div>

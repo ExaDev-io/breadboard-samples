@@ -62,6 +62,7 @@ export type BroadcastData = {
 	target?: BROADCAST_TARGET;
 };
 export type BroadcastEvent = MessageEvent<BroadcastData>;
+
 //
 export type ClientBroadcastData = BroadcastData & {
 	type: ClientBroadcastType;
@@ -103,6 +104,7 @@ export type ServiceWorkerInputRequestEvent =
 export type InputResponse = {
 	node: string;
 	attribute: string;
+	schema: Schema;
 	value: unknown;
 };
 //

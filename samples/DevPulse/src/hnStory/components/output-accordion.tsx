@@ -16,8 +16,6 @@ const OutputAccordion = ({ data }: OutputAccordionProps): React.JSX.Element => {
 			))}
 		</div>
 	);
-
 };
 
 export default OutputAccordion;
-

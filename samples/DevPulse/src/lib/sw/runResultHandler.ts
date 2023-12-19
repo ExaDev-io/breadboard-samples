@@ -41,6 +41,7 @@ export async function runResultHandler(runResult: RunResult): Promise<void> {
 		const userInput = await waitForInput(runResult.node.id, key);
 
 		runResult.inputs = { [key]: userInput };
+		console.log(runResult.inputs);
 	} else if (runResult.type === "output") {
 		console.debug(runResult.node.id, "output", runResult.outputs);
 

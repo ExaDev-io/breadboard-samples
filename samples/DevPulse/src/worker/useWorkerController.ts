@@ -10,6 +10,7 @@ import {
 	BROADCAST_TARGET,
 	BroadcastData,
 	ClientBroadcastType,
+	InputRequest,
 	InputResponse,
 	ServiceWorkerCommandValues,
 	ServiceWorkerStatus,
@@ -60,22 +61,37 @@ const useWorkerController = (
 	const handleMessage = async (event: BroadcastEvent) => {
 		console.log("Client", "message received", event.data);
 		const broadcastData = event.data as BroadcastData;
-		if (broadcastData.type === ClientBroadcastType.INPUT_RESPONSE) {
+		if (broadcastData.type && broadcastData.type === ServiceWorkerBroadcastType.INPUT_NEEDED) {
+			const inputRequest = broadcastData.value as InputRequest;
+			setInput({
+				node: inputRequest.node,
+				attribute: inputRequest.attribute,
+				schema: inputRequest.schema,
+				value: ""
+			})
+		} else if (
+			broadcastData.type &&
+			broadcastData.type === ClientBroadcastType.INPUT_RESPONSE
+		) {
 			if (broadcastData.value) {
 				const clientInputResponseData =
-					broadcastData as ClientInputResponseData;
+					broadcastData.value as ClientInputResponseData;
 				const inputObject = {
 					node: clientInputResponseData.value.node,
 					attribute: clientInputResponseData.value.attribute,
+					schema: clientInputResponseData.value.schema,
 					value: clientInputResponseData.value.value,
 				};
+				console.log(clientInputResponseData);
 				setInput(inputObject);
 			}
+			
 		} else if (
 			broadcastData.type &&
 			broadcastData.type === ServiceWorkerBroadcastType.OUTPUT
 		) {
-			dispatch(setOutput(broadcastData.value));
+			dispatch(setOutput(event.data.value));
+			
 		} else if (
 			broadcastData.type &&
 			broadcastData.type === ServiceWorkerBroadcastType.STATUS
