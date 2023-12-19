@@ -7,8 +7,8 @@ import { sendBroadcastMessage } from "~/lib/SendBroadcastMessage.ts";
 
 export function sendBroadcastMessageToServiceWorker<
 	M extends BroadcastMessage & {
-		target: BroadcastChannelMember.ServiceWorker;
-	} = BroadcastMessage & { target: BroadcastChannelMember.ServiceWorker; },
+		messageTarget: BroadcastChannelMember.ServiceWorker;
+	} = BroadcastMessage & { messageTarget: BroadcastChannelMember.ServiceWorker; },
 	R extends BroadcastMessage = ResponseForMessage<M>,
 	H extends BroadcastChannelEventHandler<R> = BroadcastChannelEventHandler<R>
 >(channelId: string, message: M, responseHandler?: H) {

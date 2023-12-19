@@ -47,7 +47,7 @@ self.addEventListener("message", (event): void => handleCommand(event));
 
 function handleCommand<M extends BroadcastMessage = BroadcastMessage>(message: M & ExtendableMessageEvent) {
 	console.log("ServiceWorker", "message", message);
-	if (message.type != BroadcastMessageTypes.COMMAND) return;
+	if (message.messageType != BroadcastMessageTypes.COMMAND) return;
 	if (message.content == undefined) return;
 	switch (message.content) {
 		case "start":
@@ -74,9 +74,9 @@ async function handler(runResult: RunResult): Promise<void> {
 		console.log(runResult.node.id, "output", runResult.outputs);
 		const message: BroadcastMessage = {
 			id: new Date().getTime().toString(),
-			type: BroadcastMessageTypes.OUTPUT,
-			source: BroadcastChannelMember.ServiceWorker,
-			target: BroadcastChannelMember.Client,
+			messageType: BroadcastMessageTypes.OUTPUT,
+			messageSource: BroadcastChannelMember.ServiceWorker,
+			messageTarget: BroadcastChannelMember.Client,
 			content: runResult.outputs,
 		};
 		channel.postMessage(message);

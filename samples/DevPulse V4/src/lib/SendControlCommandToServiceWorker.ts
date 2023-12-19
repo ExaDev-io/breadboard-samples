@@ -9,22 +9,22 @@ import { ServiceWorkerStatus } from "~/lib/ServiceWorkerStatus.ts";
 
 export function sendControlCommandToServiceWorker<
 	M extends BroadcastMessage & {
-		target: BroadcastChannelMember.ServiceWorker;
-		type: BroadcastMessageTypes.COMMAND;
+		messageTarget: BroadcastChannelMember.ServiceWorker;
+		messageType: BroadcastMessageTypes.COMMAND;
 		content: ServiceWorkerControllerCommand;
 	},
 	R extends BroadcastMessage = ResponseForMessage<M> & {
 		content: ServiceWorkerStatus;
-		source: BroadcastChannelMember.ServiceWorker;
+		messageSource: BroadcastChannelMember.ServiceWorker;
 	},
 	H extends BroadcastChannelEventHandler<R> = BroadcastChannelEventHandler<R>
 >(channelId: string, command: M["content"], responseHandler?: H) {
 	return sendBroadcastMessageToServiceWorker<M, R, H>(
 		channelId,
 		{
-			type: BroadcastMessageTypes.COMMAND,
+			messageType: BroadcastMessageTypes.COMMAND,
 			content: command,
-			target: BroadcastChannelMember.ServiceWorker,
+			messageTarget: BroadcastChannelMember.ServiceWorker,
 		} as M,
 		responseHandler
 	);

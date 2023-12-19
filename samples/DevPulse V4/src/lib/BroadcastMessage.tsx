@@ -10,7 +10,7 @@ export enum BroadcastMessageTypes {
 export type BroadcastMessage = {
 	id?: string;
 	content?: unknown;
-	type?: BroadcastMessageTypes | string
-  source?: BroadcastChannelMember;
-  target?: BroadcastChannelMember;
+	messageType?: BroadcastMessageTypes
+	messageSource?: BroadcastChannelMember;
+	messageTarget?: BroadcastChannelMember;
 };

@@ -9,11 +9,11 @@ import { ServiceWorkerStatus } from "~/lib/ServiceWorkerStatus.ts";
 
 export function sendStatusRequestToServiceWorker<
 	M extends BroadcastMessage & {
-		target: BroadcastChannelMember.ServiceWorker;
-		type: BroadcastMessageTypes.STATUS;
+		messageTarget: BroadcastChannelMember.ServiceWorker;
+		messageType: BroadcastMessageTypes.STATUS;
 	} = BroadcastMessage & {
-		target: BroadcastChannelMember.ServiceWorker;
-		type: BroadcastMessageTypes.STATUS;
+		messageTarget: BroadcastChannelMember.ServiceWorker;
+		messageType: BroadcastMessageTypes.STATUS;
 	},
 	R extends BroadcastMessage = ResponseForMessage<M> & {
 		content: ServiceWorkerStatus;
@@ -24,8 +24,8 @@ export function sendStatusRequestToServiceWorker<
 	return sendBroadcastMessageToServiceWorker<M, R, H>(
 		channelId,
 		{
-			type: BroadcastMessageTypes.STATUS,
-			target: BroadcastChannelMember.ServiceWorker,
+			messageType: BroadcastMessageTypes.STATUS,
+			messageTarget: BroadcastChannelMember.ServiceWorker,
 		} as M,
 		responseHandler
 	);

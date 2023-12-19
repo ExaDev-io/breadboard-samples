@@ -5,9 +5,9 @@ import { BroadcastMessage } from "~/lib/BroadcastMessage.tsx";
 export function addBroadcastListener<T extends BroadcastMessage>(
 	channeld: string,
 	handler: BroadcastChannelEventHandler<T>,
-	source?: T["source"],
-	target?: T["target"],
-	type?: T["type"]
+	source?: T["messageSource"],
+	target?: T["messageTarget"],
+	type?: T["messageType"]
 ) {
 	const channel = new BroadcastChannel(channeld);
 
@@ -16,16 +16,16 @@ export function addBroadcastListener<T extends BroadcastMessage>(
 		const event = evt as MessageEvent<T>;
 		if (!(event && event.data)) return;
 		const data: T = event.data;
-		if (source && data.source !== source) {
-			console.debug(`Skipping message from ${data.source}`);
+		if (source && data.messageSource !== source) {
+			console.debug(`Skipping message from ${data.messageSource}`);
 			return;
 		}
-		if (target && data.target !== target) {
-			console.debug(`Skipping message to ${data.target}`);
+		if (target && data.messageTarget !== target) {
+			console.debug(`Skipping message to ${data.messageTarget}`);
 			return;
 		}
-		if (type && data.type !== type) {
-			console.debug(`Skipping message of type ${data.type}`);
+		if (type && data.messageType !== type) {
+			console.debug(`Skipping message of type ${data.messageType}`);
 			return;
 		}
 

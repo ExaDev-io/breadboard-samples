@@ -14,18 +14,18 @@ export function sendBroadcastMessage<
 		return addBroadcastListener<R>(
 			channelId,
 			responseHandler,
-			message.target,
-			message.source,
-			message.type
+			message.messageTarget,
+			message.messageSource,
+			message.messageType
 		);
 	} else {
 		return (h: BroadcastChannelEventHandler<R>) =>
 			addBroadcastListener<R>(
 				channelId,
 				h,
-				message.target,
-				message.source,
-				message.type
+				message.messageTarget,
+				message.messageSource,
+				message.messageType
 			);
 	}
 }
