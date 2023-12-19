@@ -10,8 +10,8 @@ import { ServiceWorkerStatus } from "~/lib/ServiceWorkerStatus.ts";
 
 
 export function ServiceWorkerControllerComponent({
-	                                                 channelId = SW_BROADCAST_CHANNEL,
-                                                 }: {
+	channelId = SW_BROADCAST_CHANNEL,
+}: {
 	channelId?: string;
 }): JSX.Element {
 	const [currentState, setCurrentState] = useState<ServiceWorkerStatus>();
@@ -28,20 +28,39 @@ export function ServiceWorkerControllerComponent({
 			(evt: MessageEvent<ServiceWorkerStatusResponse>) => {
 				setCurrentState(evt.data.content);
 			},
-			BroadcastChannelMember.ServiceWorker,
 			BroadcastChannelMember.Client,
+			BroadcastChannelMember.ServiceWorker,
 			BroadcastMessageTypes.STATUS
 		);
 	}, [channelId, currentState]);
 
 	useEffect(() => {
-		sendStatusRequestToServiceWorker(undefined, (evt) => {
+		sendStatusRequestToServiceWorker(SW_BROADCAST_CHANNEL, (evt: MessageEvent) => {
 			setCurrentState(evt.data.content);
-		})
+		});
 	}, []);
 
 	return (
 		<div>
+			{currentState && (
+				<div>
+					<p>Current state:</p>
+					<pre
+						style={
+							{
+								fontFamily: "monospace",
+								textAlign: "left",
+								padding: "10px",
+								margin: "5px",
+								border: "1px solid grey",
+								borderRadius: "5px"
+							}
+						}
+					>{JSON.stringify(currentState, null, "\t")}
+					</pre>
+				</div>
+			)}
+			<div>
 			<button
 				onClick={() =>
 					sendControlCommandToServiceWorker(
@@ -80,6 +99,14 @@ export function ServiceWorkerControllerComponent({
 			>
 				Stop
 			</button>
+				<button
+					onClick={() =>
+						sendStatusRequestToServiceWorker(SW_BROADCAST_CHANNEL, (evt: MessageEvent) => {
+							setCurrentState(evt.data.content);
+						})
+					}
+				>Status</button>
+			</div>
 		</div>
 	);
 }

@@ -6,6 +6,10 @@ import reactLogo from "assets/react.svg";
 import { BroadcastMessageRenderer } from "lib/BroadcastMessageRenderer.tsx";
 import { SW_BROADCAST_CHANNEL } from "lib/constants.ts";
 
+function InputRequestsRenderer(_props: { channelId: string }) {
+	return null;
+}
+
 function App() {
 	const [count, setCount] = useState(0);
 	return (
@@ -30,9 +34,9 @@ function App() {
 			<p className="read-the-docs">
 				Click on the Vite and React logos to learn more
 			</p>
-			{/* INPUT RENDERER */}
-			<BroadcastMessageRenderer channelId={SW_BROADCAST_CHANNEL} />
+			<InputRequestsRenderer channelId={SW_BROADCAST_CHANNEL}/>
 			<ServiceWorkerControllerComponent />
+			<BroadcastMessageRenderer channelId={SW_BROADCAST_CHANNEL} />
 		</>
 	);
 }

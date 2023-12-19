@@ -5,34 +5,41 @@ import { BroadcastMessage } from "~/lib/BroadcastMessage.tsx";
 export function addBroadcastListener<T extends BroadcastMessage>(
 	channeld: string,
 	handler: BroadcastChannelEventHandler<T>,
-	source?: T["messageSource"],
-	target?: T["messageTarget"],
-	type?: T["messageType"]
+	messageSource?: T["messageSource"],
+	messageTarget?: T["messageTarget"],
+	messageType?: T["messageType"]
 ) {
 	const channel = new BroadcastChannel(channeld);
 
 	function intermediateHandler(evt: MessageEvent<T> | Event) {
-		if (evt instanceof Event) return;
+		console.debug("intermediateHandler", "evt", evt);
 		const event = evt as MessageEvent<T>;
-		if (!(event && event.data)) return;
+		if (!(event && event.data)) {
+			console.debug("Skipping empty message");
+			return;
+		}
 		const data: T = event.data;
-		if (source && data.messageSource !== source) {
+		console.debug("intermediateHandler", "data", data);
+		if (messageSource && data.messageSource !== messageSource) {
 			console.debug(`Skipping message from ${data.messageSource}`);
 			return;
 		}
-		if (target && data.messageTarget !== target) {
+		if (messageTarget && data.messageTarget !== messageTarget) {
 			console.debug(`Skipping message to ${data.messageTarget}`);
 			return;
 		}
-		if (type && data.messageType !== type) {
+		if (messageType && data.messageType !== messageType) {
 			console.debug(`Skipping message of type ${data.messageType}`);
 			return;
 		}
-
+		console.debug("handling", data);
 		handler(event);
+		channel.removeEventListener("message", intermediateHandler);
+		channel.close();
 	}
 
 	channel.addEventListener("message", intermediateHandler);
+
 	return () => {
 		channel.removeEventListener("message", intermediateHandler);
 		channel.close();

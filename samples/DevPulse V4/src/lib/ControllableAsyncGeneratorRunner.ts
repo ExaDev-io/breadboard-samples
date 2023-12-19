@@ -4,9 +4,22 @@ export class ControllableAsyncGeneratorRunner<
 	TNextReturn,
 	TGenerateParams
 > {
+	public get finished(): boolean {
+		return this._finished;
+	}
+
+	public get active(): boolean {
+		return this._active;
+	}
+
+	public get paused(): boolean {
+		return this._paused;
+	}
+
 	private pausePromiseResolve: undefined | ((value?: unknown) => void);
-	private paused: boolean = false;
-	private active: boolean = false;
+	private _paused: boolean = false;
+	private _active: boolean = false;
+	private _finished: boolean = false;
 
 	constructor(
 		private readonly generatorGenerator: (
@@ -19,13 +32,14 @@ export class ControllableAsyncGeneratorRunner<
 	run(): void {
 		const generator = this.generatorGenerator(this.generatorParams);
 		const handler = this.handler;
-		this.active = true;
-		this.paused = false;
+		this._active = true;
+		this._paused = false;
+		this._finished = false;
 		(async (): Promise<void> => {
 			try {
 				let next = await generator.next();
-				while (this.active && !next.done) {
-					if (this.paused) {
+				while (this._active && !next.done) {
+					if (this._paused) {
 						await new Promise((resolve): void => {
 							this.pausePromiseResolve = resolve;
 						});
@@ -34,6 +48,7 @@ export class ControllableAsyncGeneratorRunner<
 					next = await generator.next();
 				}
 				console.debug("ServiceWorker", "generator done");
+				this._finished = true
 			} catch (error) {
 				console.error(error);
 			} finally {
@@ -43,24 +58,26 @@ export class ControllableAsyncGeneratorRunner<
 	}
 
 	start(): void {
-		if (!this.active) {
-			this.active = true;
-			this.paused = false;
+		if (!this._active) {
+			this._active = true;
+			this._paused = false;
+			this._finished = false;
 			this.run();
-		} else if (this.paused) {
-			this.paused = false;
+		} else if (this._paused) {
+			this._paused = false;
+			this._finished = false;
 			this.pausePromiseResolve?.();
 		}
 	}
 
 	pause(): void {
-		this.paused = true;
+		this._paused = true;
 	}
 
 	stop() {
-		if (this.active) {
-			this.active = false;
-			this.paused = false;
+		if (this._active) {
+			this._active = false;
+			this._paused = false;
 			this.pausePromiseResolve?.();
 		}
 	}
