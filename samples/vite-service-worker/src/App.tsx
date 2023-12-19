@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import './App.css';
-import { BroadcastMessageRenderer } from "./BroadcastMessageRenderer.tsx";
+import { useState } from "react";
+import "./App.css";
+import BasicMessage from "./BroadcastMessageRenderer.tsx";
 import { SW_BROADCAST_CHANNEL } from "./lib/constants.ts";
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
 
 function sendCommandToSW(command: string) {
 	// if (navigator.serviceWorker.controller) {
@@ -39,11 +39,11 @@ function App() {
 			<p className="read-the-docs">
 				Click on the Vite and React logos to learn more
 			</p>
-			<BroadcastMessageRenderer channelId={SW_BROADCAST_CHANNEL} />
-			<div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-				<button onClick={() => sendCommandToSW('start')}>Start</button>
-				<button onClick={() => sendCommandToSW('pause')}>Pause</button>
-				<button onClick={() => sendCommandToSW('stop')}>Stop</button>
+			<BasicMessage channelId={SW_BROADCAST_CHANNEL} />
+			<div style={{ display: "flex", justifyContent: "space-evenly" }}>
+				<button onClick={() => sendCommandToSW("start")}>Start</button>
+				<button onClick={() => sendCommandToSW("pause")}>Pause</button>
+				<button onClick={() => sendCommandToSW("stop")}>Stop</button>
 			</div>
 		</>
 	);

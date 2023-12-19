@@ -2,12 +2,11 @@
 declare const self: ServiceWorkerGlobalScope;
 
 import { Board, RunResult } from "@google-labs/breadboard";
-
-import { precacheAndRoute } from "workbox-precaching";
 import { ControllableAsyncGeneratorRunner } from "../ControllableAsyncGeneratorRunner";
 import { BroadcastChannelMember } from "../lib/BroadcastChannelMember";
 import { BroadcastMessage } from "../lib/BroadcastMessage";
 import { SW_BROADCAST_CHANNEL } from "../lib/constants";
+import { precacheAndRoute } from "workbox-precaching";
 
 precacheAndRoute(self.__WB_MANIFEST || []);
 
@@ -65,7 +64,8 @@ async function handler(runResult: RunResult): Promise<void> {
 	console.log("=".repeat(80));
 	if (runResult.type === "input") {
 		const input = {
-			time: new Date().toISOString(),
+			node: runResult.node.id
+			
 		};
 		console.log(runResult.node.id, "input", input);
 		runResult.inputs = input;
