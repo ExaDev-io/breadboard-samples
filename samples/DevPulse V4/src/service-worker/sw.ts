@@ -2,11 +2,11 @@
 declare const self: ServiceWorkerGlobalScope;
 
 import { Board, RunResult } from "@google-labs/breadboard";
+import { precacheAndRoute } from "workbox-precaching";
 import { ControllableAsyncGeneratorRunner } from "../ControllableAsyncGeneratorRunner";
 import { BroadcastChannelMember } from "../lib/BroadcastChannelMember";
-import { BroadcastMessage } from "../lib/BroadcastMessage";
+import { BroadcastMessage, BroadcastMessageTypes } from "../lib/BroadcastMessage";
 import { SW_BROADCAST_CHANNEL } from "../lib/constants";
-import { precacheAndRoute } from "workbox-precaching";
 
 precacheAndRoute(self.__WB_MANIFEST || []);
 
@@ -43,11 +43,13 @@ for (let i = 0; i < 3; i++) {
 
 const channel = new BroadcastChannel(SW_BROADCAST_CHANNEL);
 channel.onmessage = (event): void => handleCommand(event.data);
-self.addEventListener("message", (event): void => handleCommand(event.data));
+self.addEventListener("message", (event): void => handleCommand(event));
 
-function handleCommand(data: { command: string }) {
-	console.log("ServiceWorker", "message", data);
-	switch (data.command) {
+function handleCommand<M extends BroadcastMessage = BroadcastMessage>(message: M & ExtendableMessageEvent) {
+	console.log("ServiceWorker", "message", message);
+	if (message.type != BroadcastMessageTypes.COMMAND) return;
+	if (message.content == undefined) return;
+	switch (message.content) {
 		case "start":
 			boardRunner.start();
 			break;
@@ -65,7 +67,6 @@ async function handler(runResult: RunResult): Promise<void> {
 	if (runResult.type === "input") {
 		const input = {
 			node: runResult.node.id
-			
 		};
 		console.log(runResult.node.id, "input", input);
 		runResult.inputs = input;
@@ -73,7 +74,7 @@ async function handler(runResult: RunResult): Promise<void> {
 		console.log(runResult.node.id, "output", runResult.outputs);
 		const message: BroadcastMessage = {
 			id: new Date().getTime().toString(),
-			type: "output",
+			type: BroadcastMessageTypes.OUTPUT,
 			source: BroadcastChannelMember.ServiceWorker,
 			target: BroadcastChannelMember.Client,
 			content: runResult.outputs,
