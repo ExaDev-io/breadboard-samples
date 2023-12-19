@@ -1,5 +1,5 @@
-import { BroadcastChannelEventHandler } from "~/lib/BroadcastChannelEventHandler.ts";
-import { BroadcastMessage } from "~/lib/BroadcastMessage.tsx";
+import { BroadcastChannelEventHandler } from "~/lib/types.ts";
+import { BroadcastMessage } from "~/lib/types.tsx";
 
 
 export function addBroadcastListener<T extends BroadcastMessage>(

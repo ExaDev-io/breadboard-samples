@@ -4,8 +4,8 @@ declare const self: ServiceWorkerGlobalScope;
 import { Board, RunResult } from "@google-labs/breadboard";
 import { precacheAndRoute } from "workbox-precaching";
 import { ControllableAsyncGeneratorRunner } from "../lib/ControllableAsyncGeneratorRunner";
-import { BroadcastChannelMember } from "../lib/BroadcastChannelMember";
-import { BroadcastMessage, BroadcastMessageTypes } from "../lib/BroadcastMessage";
+import { BroadcastChannelMember } from "../lib/types";
+import { BroadcastMessage, BroadcastMessageTypes } from "../lib/types";
 import { SW_BROADCAST_CHANNEL } from "../lib/constants";
 
 precacheAndRoute(self.__WB_MANIFEST || []);
