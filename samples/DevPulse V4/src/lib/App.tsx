@@ -1,10 +1,11 @@
-import viteLogo from "/vite.svg";
-import { useState } from "react";
-import { ServiceWorkerControllerComponent } from "lib/ServiceWorkerControllerComponent.tsx";
-import "lib/App.css";
 import reactLogo from "assets/react.svg";
-import { BroadcastMessageRenderer } from "lib/BroadcastMessageRenderer.tsx";
-import { SW_BROADCAST_CHANNEL } from "lib/constants.ts";
+import { useState } from "react";
+import "~/lib/App.css";
+import { BroadcastMessageTypes } from "~/lib/BroadcastMessage.tsx";
+import { BroadcastMessageRenderer } from "~/lib/BroadcastMessageRenderer.tsx";
+import { ServiceWorkerControllerComponent } from "~/lib/ServiceWorkerControllerComponent.tsx";
+import { SW_BROADCAST_CHANNEL } from "~/lib/constants.ts";
+import viteLogo from "/vite.svg";
 
 function InputRequestsRenderer(_props: { channelId: string }) {
 	return null;
@@ -34,12 +35,16 @@ function App() {
 			<p className="read-the-docs">
 				Click on the Vite and React logos to learn more
 			</p>
-			<InputRequestsRenderer channelId={SW_BROADCAST_CHANNEL}/>
+			<InputRequestsRenderer channelId={SW_BROADCAST_CHANNEL} />
 			<ServiceWorkerControllerComponent />
-			<BroadcastMessageRenderer channelId={SW_BROADCAST_CHANNEL} />
+			<BroadcastMessageRenderer
+				channelId={SW_BROADCAST_CHANNEL}
+				ignoreMatchers={[
+					(message) => message.messageType != BroadcastMessageTypes.OUTPUT,
+				]}
+			/>
 		</>
 	);
 }
 
 export default App;
-
