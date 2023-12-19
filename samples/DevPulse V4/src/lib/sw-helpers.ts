@@ -34,3 +34,5 @@ export function initSW() {
 		});
 	}
 }
+
+export default initSW;
