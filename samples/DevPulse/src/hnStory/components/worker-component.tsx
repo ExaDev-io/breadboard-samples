@@ -1,17 +1,8 @@
 import React from "react";
-import { useWorkerControllerContext } from "worker/useWorkerControllerContext.tsx";
 import styles from "./worker-component.module.scss";
-import Button from "~/components/button";
-import OutputAccordion from "~/hnStory/components/output-accordion";
 import { SW_CONTROL_CHANNEL } from "../../lib/constants";
-import {
-	BROADCAST_SOURCE,
-	ClientInputResponseData,
-	InputResponse,
-	BROADCAST_TARGET,
-	ClientBroadcastType,
-} from "../../lib/sw/types";
-import { Schema } from "@google-labs/breadboard";
+import BroadcastMessageRenderer from "~/v4/service-worker/components/BroadcastMessageRenderer";
+import { ServiceWorkerControllerComponent } from "~/v4/service-worker/components/ServiceWorkerControllerComponent";
 
 export const WorkerStatus = {
 	idle: "idle",
@@ -25,7 +16,7 @@ export const WorkerStatus = {
 export type WorkerStatus = (typeof WorkerStatus)[keyof typeof WorkerStatus];
 
 export const WorkerComponent: React.FC = () => {
-	const { broadcastChannel, workerSteps } = useWorkerControllerContext();
+	/* const { broadcastChannel, workerSteps } = useWorkerControllerContext();
 	const handleSubmit = (
 		e: React.FormEvent<HTMLFormElement>,
 		node: string,
@@ -50,74 +41,20 @@ export const WorkerComponent: React.FC = () => {
 			value: inputObject,
 		};
 		new BroadcastChannel(SW_CONTROL_CHANNEL).postMessage(message);
-	};
-	const running =
-		broadcastChannel.status.active &&
-		!broadcastChannel.status.paused &&
-		!broadcastChannel.status.finished;
+	}; */
+
 	//const inputField = useSelector((state: RootState) => selectInput(state))
 	return (
 		<div>
 			<header className={styles.header}>
-				<h6>
-					Service Worker{" "}
-					<span>
-						Status:{" "}
-						{running
-							? "running"
-							: broadcastChannel.status.paused
-							? "paused"
-							: broadcastChannel.status.finished
-							? "finished"
-							: "idle"}
-					</span>
-				</h6>
-				<div className={styles.ccontrols}>
-					<Button onClick={broadcastChannel.start}>Start</Button>
-					<Button onClick={broadcastChannel.pause} disabled={!running}>
-						Pause
-					</Button>
-					<Button onClick={broadcastChannel.stop} disabled={!running}>
-						Stop
-					</Button>
-				</div>
+				<BroadcastMessageRenderer channelId={SW_CONTROL_CHANNEL} />
+				<ServiceWorkerControllerComponent />
 			</header>
 
-			<main className={styles.main}>
-				{running && (
-					<form
-						className={styles.form}
-						onSubmit={(e) =>
-							handleSubmit(
-								e,
-								broadcastChannel.input?.node || "",
-								broadcastChannel.input!.schema!,
-								broadcastChannel.input?.attribute || ""
-							)
-						}
-					>
-						<label htmlFor="input" className={styles.label}>
-							{JSON.stringify(broadcastChannel.input?.value) || ""}
-						</label>
-
-						<input
-							type="text"
-							name="input"
-							placeholder={`${broadcastChannel.input?.node}`}
-							className={styles.input}
-						/>
-
-						<Button type="submit" className={styles.button}>
-							Submit
-						</Button>
-					</form>
-				)}
-			</main>
-
-			<OutputAccordion
+			{/* <OutputAccordion
 				data={broadcastChannel.output}
 				nodeId="searchResultData"
-			/>
+			/> */}
 		</div>
 	);
 };

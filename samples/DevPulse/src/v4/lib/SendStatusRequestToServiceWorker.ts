@@ -1,4 +1,4 @@
-import { SW_BROADCAST_CHANNEL } from "./constants";
+import { SW_CONTROL_CHANNEL } from "~/lib/constants";
 import { sendBroadcastMessageToServiceWorker } from "./SendBroadcastMessageToServiceWorker";
 import { BroadcastChannelEventHandler, BroadcastChannelMember, BroadcastMessage, BroadcastMessageTypes, ResponseForMessage, ServiceWorkerStatus } from "./types";
 
@@ -17,7 +17,7 @@ export function sendStatusRequestToServiceWorker<
 		source: BroadcastChannelMember.ServiceWorker;
 	},
 	H extends BroadcastChannelEventHandler<R> = BroadcastChannelEventHandler<R>
->(channelId: string = SW_BROADCAST_CHANNEL, responseHandler?: H) {
+>(channelId: string = SW_CONTROL_CHANNEL, responseHandler?: H) {
 	return sendBroadcastMessageToServiceWorker<M, R, H>(
 		channelId,
 		{

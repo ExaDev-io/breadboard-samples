@@ -13,7 +13,7 @@ export default defineConfig({
 			filename: "sw.ts",
 			includeManifestIcons: false,
 			injectRegister: false,
-			srcDir: "src/service-worker",
+			srcDir: "src/v4/service-worker",
 			strategies: "injectManifest",
 			devOptions: {
 				enabled: true,

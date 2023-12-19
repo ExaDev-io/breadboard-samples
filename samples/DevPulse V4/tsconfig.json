@@ -30,7 +30,7 @@
 		}
 	},
 	"include": [
-		"src",
+		"src", "../DevPulse/src/v4/App.tsx", "../DevPulse/src/v4/lib",
 	],
 	"exclude": [
 		"src/service-worker"
