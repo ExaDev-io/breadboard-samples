@@ -39,7 +39,7 @@ export function InputRequestsRenderer<
 	useEffect(() => {
 		const channel = new BroadcastChannel(channelId);
 
-		const handleMessage = (e: MessageEvent) => {
+		function handleMessage(e: MessageEvent) {
 			if (e.data.messageType !== BroadcastMessageType.INPUT_REQUEST) return;
 
 			const newMessage = e.data as M;
@@ -53,7 +53,7 @@ export function InputRequestsRenderer<
 				const isDuplicate = prevMessages.some(m => m.id === newMessage.id);
 				return isDuplicate ? prevMessages : [...prevMessages, newMessage];
 			});
-		};
+		}
 
 		channel.addEventListener("message", handleMessage);
 
