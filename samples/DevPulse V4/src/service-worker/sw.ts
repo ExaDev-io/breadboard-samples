@@ -1,7 +1,8 @@
 /// <reference lib="webworker" />
 declare const self: ServiceWorkerGlobalScope;
 
-import { Board, Edge, RunResult, Schema } from "@google-labs/breadboard";
+import { Edge, RunResult, Schema } from "@google-labs/breadboard";
+import board from "../lib/board";
 import { precacheAndRoute } from "workbox-precaching";
 import { ControllableAsyncGeneratorRunner } from "../lib/classes/ControllableAsyncGeneratorRunner";
 import { SW_BROADCAST_CHANNEL } from "../lib/constants";
@@ -35,53 +36,6 @@ self.addEventListener("activate", () => {
 	console.log("ServiceWorker", "activate");
 	return self.clients.claim();
 });
-
-const board = new Board();
-
-// for (let i = 0; i < 3; i++) {
-// 	board
-// 		.input({ $id: `input_${i}` })
-// 		.wire(`message_${i}`, board.output({ $id: `output_${i}` }));
-// }
-
-const schema2: Schema = {
-	type: "object",
-	properties: {
-		"message_2": {
-			title: "Message 2",
-			type: "string",
-		},
-	},
-};
-
-const multi_input: Schema = {
-	type: "object",
-	properties: {
-		"message_1": {
-			title: "Message 1",
-			type: "string",
-		},
-		"message_2": {
-			title: "Message 2",
-			type: "string",
-		},
-	},
-};
-
-board.input({ $id: `input_1`, }).wire(`message_1`, board.output({ $id: `output_1` }));
-board.input({ $id: `input_2`, schema: schema2 }).wire(`message_2`, board.output({ $id: `output_2` }));
-
-board.input({ $id: `input_3` }).wire(`message_3`, board.output({ $id: `output_3` }));
-board.input({ $id: `input_3` }).wire(`message_4`, board.output({ $id: `output_3` }));
-
-board.input({ $id: `multi_input_1`, schema: multi_input }).wire(`*`, board.output({ $id: `multi_output_1` }));
-
-const multi_input_2 = board.input({ $id: `multi_input_2`, schema: multi_input });
-
-const multiOutput2 = board.output({ $id: `multi_output_2` });
-
-multi_input_2.wire(`message_1`, multiOutput2);
-multi_input_2.wire(`message_2`, multiOutput2);
 
 const channel = new BroadcastChannel(SW_BROADCAST_CHANNEL);
 channel.onmessage = (event): void => handleCommand(event.data);
