@@ -40,14 +40,8 @@ export function addBroadcastListener<T extends BroadcastMessage>({
 		}
 		console.debug("handling", data);
 		handler(event);
-		channel.removeEventListener("message", intermediateHandler);
 		channel.close();
 	}
 
-	channel.addEventListener("message", intermediateHandler);
-
-	return () => {
-		channel.removeEventListener("message", intermediateHandler);
-		channel.close();
-	};
+	channel.onmessage = intermediateHandler;
 }
