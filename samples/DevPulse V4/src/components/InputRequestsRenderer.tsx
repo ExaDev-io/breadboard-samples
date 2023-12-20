@@ -35,14 +35,16 @@ export function InputRequestsRenderer<
 			if (e.data.messageType !== BroadcastMessageType.INPUT_REQUEST) return;
 
 			const newMessage = e.data as M;
-			if (
-				ignoreMatchers &&
-				!ignoreMatchers.some((matcher: (arg0: M) => boolean) =>
-					matcher(newMessage)
-				)
-			) {
-				setRequests((prevMessages) => [...prevMessages, newMessage]);
+			// Check if the message should be ignored based on ignoreMatchers
+			if (ignoreMatchers && ignoreMatchers.some(matcher => matcher(newMessage))) {
+				return;
 			}
+
+			// Update the requests state only if the new message's ID is not already present
+			setRequests(prevMessages => {
+				const isDuplicate = prevMessages.some(m => m.id === newMessage.id);
+				return isDuplicate ? prevMessages : [...prevMessages, newMessage];
+			});
 		};
 
 		channel.addEventListener("message", handleMessage);
