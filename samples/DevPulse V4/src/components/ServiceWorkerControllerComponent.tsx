@@ -9,12 +9,7 @@ import { BroadcastMessageType } from "~/lib/types/BroadcastMessageType.ts";
 import { ServiceWorkerControllerCommand } from "~/lib/types/ServiceWorkerControllerCommand.ts";
 import { ServiceWorkerStatus } from "~/lib/types/ServiceWorkerStatus.ts";
 
-
-export function ServiceWorkerControllerComponent({
-	channelId = SW_BROADCAST_CHANNEL,
-}: {
-	channelId?: string;
-}): ReactNode {
+export function ServiceWorkerControllerComponent(): ReactNode {
 	const [currentState, setCurrentState] = useState<ServiceWorkerStatus>();
 
 	type ServiceWorkerStatusResponse = BroadcastMessage & {
@@ -24,21 +19,22 @@ export function ServiceWorkerControllerComponent({
 	};
 
 	useEffect(() => {
-		addBroadcastListener<ServiceWorkerStatusResponse>(
-			channelId,
-			(evt: MessageEvent<ServiceWorkerStatusResponse>) => {
+		addBroadcastListener<ServiceWorkerStatusResponse>({
+			handler: (evt: MessageEvent<ServiceWorkerStatusResponse>) => {
 				setCurrentState(evt.data.content);
 			},
-			BroadcastChannelMember.Client,
-			BroadcastChannelMember.ServiceWorker,
-			BroadcastMessageType.STATUS
-		);
-	}, [channelId, currentState]);
+			messageTarget: BroadcastChannelMember.ServiceWorker,
+			messageType: BroadcastMessageType.STATUS,
+		});
+	}, [currentState]);
 
 	useEffect(() => {
-		sendStatusRequestToServiceWorker(SW_BROADCAST_CHANNEL, (evt: MessageEvent) => {
-			setCurrentState(evt.data.content);
-		});
+		sendStatusRequestToServiceWorker(
+			SW_BROADCAST_CHANNEL,
+			(evt: MessageEvent) => {
+				setCurrentState(evt.data.content);
+			}
+		);
 	}, []);
 
 	return (
@@ -47,66 +43,62 @@ export function ServiceWorkerControllerComponent({
 				<div>
 					<p>Current state:</p>
 					<pre
-						style={
-							{
-								fontFamily: "monospace",
-								textAlign: "left",
-								padding: "10px",
-								margin: "5px",
-								border: "1px solid grey",
-								borderRadius: "5px"
-							}
-						}
-					>{JSON.stringify(currentState, null, "\t")}
+						style={{
+							fontFamily: "monospace",
+							textAlign: "left",
+							padding: "10px",
+							margin: "5px",
+							border: "1px solid grey",
+							borderRadius: "5px",
+						}}
+					>
+						{JSON.stringify(currentState, null, 2)}
 					</pre>
 				</div>
 			)}
 			<div>
-			<button
-				onClick={() =>
-					sendControlCommandToServiceWorker(
-						SW_BROADCAST_CHANNEL,
-						ServiceWorkerControllerCommand.START,
-						(evt): void => {
-							setCurrentState(evt.data.content);
-						}
-					)
-				}
-			>
-				Start
-			</button>
-			<button
-				onClick={() =>
-					sendControlCommandToServiceWorker(
-						SW_BROADCAST_CHANNEL,
-						ServiceWorkerControllerCommand.PAUSE,
-						(evt): void => {
-							setCurrentState(evt.data.content);
-						})
-				}
-			>
-				Pause
-			</button>
-			<button
-				onClick={() =>
-					sendControlCommandToServiceWorker(
-						SW_BROADCAST_CHANNEL,
-						ServiceWorkerControllerCommand.STOP,
-						(evt): void => {
-							setCurrentState(evt.data.content);
-						}
-					)
-				}
-			>
-				Stop
-			</button>
 				<button
 					onClick={() =>
-						sendStatusRequestToServiceWorker(SW_BROADCAST_CHANNEL, (evt: MessageEvent) => {
-							setCurrentState(evt.data.content);
-						})
+						sendControlCommandToServiceWorker(
+							SW_BROADCAST_CHANNEL,
+							ServiceWorkerControllerCommand.START
+						)
 					}
-				>Status</button>
+				>
+					Start
+				</button>
+				<button
+					onClick={() =>
+						sendControlCommandToServiceWorker(
+							SW_BROADCAST_CHANNEL,
+							ServiceWorkerControllerCommand.PAUSE
+						)
+					}
+				>
+					Pause
+				</button>
+				<button
+					onClick={() =>
+						sendControlCommandToServiceWorker(
+							SW_BROADCAST_CHANNEL,
+							ServiceWorkerControllerCommand.STOP
+						)
+					}
+				>
+					Stop
+				</button>
+				<button
+					onClick={() =>
+						sendStatusRequestToServiceWorker(
+							SW_BROADCAST_CHANNEL,
+							(evt: MessageEvent) => {
+								setCurrentState(evt.data.content);
+							}
+						)
+					}
+				>
+					Status
+				</button>
 			</div>
 		</div>
 	);
