@@ -1,12 +1,12 @@
 import viteLogo from "/vite.svg";
-import reactLogo from "assets/react.svg";
+import reactLogo from "~/assets/react.svg";
 import { useState } from 'react';
-import "~/lib/App.css";
-import { BroadcastMessageRenderer } from "~/lib/BroadcastMessageRenderer.tsx";
+import "~/components/App.css";
+import { BroadcastMessageRenderer } from "~/components/BroadcastMessageRenderer.tsx";
 import { BroadcastMessageType } from "~/lib/BroadcastMessageType.ts";
 import { SW_BROADCAST_CHANNEL } from "~/lib/constants.ts";
-import { InputRequestsRenderer } from "~/lib/InputRequestsRenderer.tsx";
-import { ServiceWorkerControllerComponent } from "~/lib/ServiceWorkerControllerComponent.tsx";
+import { InputRequestsRenderer } from "~/components/InputRequestsRenderer.tsx";
+import { ServiceWorkerControllerComponent } from "~/components/ServiceWorkerControllerComponent.tsx";
 
 function App() {
 	const [count, setCount] = useState(0);

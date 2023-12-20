@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "~/index.css";
-import App from "~/lib/App.tsx";
+import App from "~/components/App.tsx";
 import initSW from '~/lib/sw-helpers.ts';
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

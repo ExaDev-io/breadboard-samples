@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BasicInput } from "~/lib/BasicInput.tsx";
+import { BasicInput } from "~/components/BasicInput.tsx";
 import { BroadcastMessageType } from "~/lib/BroadcastMessageType.ts";
 import { SW_BROADCAST_CHANNEL } from "~/lib/constants.ts";
 import { InputRequest } from "~/lib/InputRequest.ts";

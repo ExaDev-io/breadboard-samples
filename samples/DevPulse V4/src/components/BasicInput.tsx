@@ -1,6 +1,6 @@
 import { BroadcastMessageType } from "~/lib/BroadcastMessageType.ts";
 import { SW_BROADCAST_CHANNEL } from "~/lib/constants.ts";
-import { FormComponent } from "~/lib/FormComponent.tsx";
+import { FormComponent } from "~/components/FormComponent.tsx";
 import { InputRequest } from "~/lib/InputRequest.ts";
 import { InputResponse } from "~/lib/InputResponse.ts";
 
