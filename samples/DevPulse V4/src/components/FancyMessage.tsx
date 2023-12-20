@@ -1,11 +1,11 @@
-import React from "react";
+import { ReactNode } from "react";
 import { BroadcastMessage } from "~/lib/types/BroadcastMessage.ts";
 
 type FancyMessageProps = {
 	message: BroadcastMessage;
 };
 
-function FancyMessage({message}: FancyMessageProps): React.JSX.Element {
+export function FancyMessage({message}: FancyMessageProps): ReactNode {
 	return <div style={{color: "blue"}}>
 		<p>{message.content as string}</p>
 	</div>;
