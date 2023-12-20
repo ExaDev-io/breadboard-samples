@@ -1,10 +1,11 @@
 import { Board, Schema } from "@google-labs/breadboard";
 import { HTMLInputTypeAttribute } from "react";
-
+import { ValidHTMLInputTypeAttributes } from "./types/ValidHTMLInputTypeAttributes";
 
 type EnhancedSchema = Schema & {
 	type: HTMLInputTypeAttribute;
 };
+
 const board = new Board();
 
 // for (let i = 0; i < 3; i++) {
@@ -37,6 +38,17 @@ const multi_input: EnhancedSchema = {
 	},
 };
 
+board.input({
+	schema: {
+		type: "object",
+		properties: {
+			"message_1": {
+				type: "number",
+			},
+		},
+	}
+}).wire(`*`, board.output());
+
 board.input({ $id: `input_1`, }).wire(`message_1`, board.output({ $id: `output_1` }));
 board.input({ $id: `input_2`, schema: schema2 }).wire(`message_2`, board.output({ $id: `output_2` }));
 
@@ -51,5 +63,19 @@ const multiOutput2 = board.output({ $id: `multi_output_2` });
 
 multi_input_2.wire(`message_1`, multiOutput2);
 multi_input_2.wire(`message_2`, multiOutput2);
+
+
+board.input({
+	schema: {
+		type: "object",
+		properties: ValidHTMLInputTypeAttributes.reduce((acc: { [key: string]: EnhancedSchema; }, curr) => {
+			acc[curr] = {
+				title: curr,
+				type: curr
+			};
+			return acc;
+		}, {})
+	}
+}).wire(`*`, board.output({ $id: `output_all_types` }));
 
 export default board;
