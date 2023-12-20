@@ -31,18 +31,18 @@ export class ControllableAsyncGeneratorRunner<
 		const handler = this.handler;
 		(async (): Promise<void> => {
 			try {
-				for await (const value of generator) {
-					if (this.state.active) {
-						if (this.state.paused) {
-							await new Promise((resolve): void => {
-								this.pausePromiseResolve = resolve;
-							});
-						}
-						await handler(value);
-					} else {
-						break;
+				let next = await generator.next();
+				while (this.state.active && !next.done) {
+					if (this.state.paused) {
+						await new Promise((resolve): void => {
+							this.pausePromiseResolve = resolve;
+						});
 					}
+					await handler(next.value);
+					next = await generator.next();
 				}
+				console.debug("ServiceWorker", "generator done");
+				this.state.finished = true
 			} catch (error) {
 				console.error(error);
 			} finally {
