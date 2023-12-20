@@ -2,7 +2,7 @@
 declare const self: ServiceWorkerGlobalScope;
 
 import { Board, Edge, RunResult, Schema } from "@google-labs/breadboard";
-import { InputRequest } from "src/lib/InputRequest";
+import { InputRequest } from "../lib/InputRequest";
 import { BroadcastMessageType } from "../lib/BroadcastMessageType";
 import { precacheAndRoute } from "workbox-precaching";
 import { BroadcastChannelMember } from "../lib/BroadcastChannelMember";
