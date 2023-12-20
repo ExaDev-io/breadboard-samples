@@ -7,6 +7,7 @@ import React, {
 	useState
 } from "react";
 import { InputRequest } from "~/lib/types/InputRequest";
+import { ValidHTMLInputTypeAttributes } from "~/lib/types/ValidHTMLInputTypeAttributes";
 
 export function FormComponent<T extends InputRequest>({
 	// schema,
@@ -96,22 +97,17 @@ export function FormComponent<T extends InputRequest>({
 		</form>
 	);
 }
+
 function getInputType(inputType: string | string[] | undefined): React.HTMLInputTypeAttribute | undefined {
-	const validTypes = [
-		"button", "checkbox", "color", "date", "datetime-local", "email",
-		"file", "hidden", "image", "month", "number", "password", "radio",
-		"range", "reset", "search", "submit", "tel", "text", "time",
-		"url", "week"
-	];
 	// return validTypes.includes(input as HTMLInputTypeAttribute);
 	if (typeof inputType === 'string') {
-		return validTypes.includes(inputType) ? inputType : undefined;
+		return ValidHTMLInputTypeAttributes.includes(inputType) ? inputType : undefined;
 	} else if (Array.isArray(inputType)) {
 		if (inputType.length === 1) {
-			return validTypes.includes(inputType[0]) ? inputType[0] : undefined;
+			return ValidHTMLInputTypeAttributes.includes(inputType[0]) ? inputType[0] : undefined;
 		} else if (inputType.length > 1) {
 			// all of the types must exist in validTypes
-			if (inputType.every((type) => validTypes.includes(type))) {
+			if (inputType.every((type) => ValidHTMLInputTypeAttributes.includes(type))) {
 				return "text";
 			} else {
 				console.warn(`Invalid input types: ${inputType}`);
