@@ -43,10 +43,12 @@ export function FormComponent<T>({
 		return Object.entries(properties).map(([key, value]) => (
 			<div key={key}>
 				<label htmlFor={key}>{value.title || key}</label>
+				<br />
 				<input
 					type={value.type === 'string' ? 'text' : 'number'}
 					name={key}
 					id={key}
+					placeholder={key}
 					value={
 						(formData as Record<string, unknown>)[key] as string | number | readonly string[] | undefined || ''
 					}

@@ -2,13 +2,13 @@
 declare const self: ServiceWorkerGlobalScope;
 
 import { Board, Edge, RunResult, Schema } from "@google-labs/breadboard";
-import { SW_BROADCAST_CHANNEL } from "../lib/constants";
-import { InputRequest } from "../lib/types/InputRequest";
-import { BroadcastMessageType } from "../lib/types/BroadcastMessageType";
 import { precacheAndRoute } from "workbox-precaching";
+import { ControllableAsyncGeneratorRunner } from "../lib/classes/ControllableAsyncGeneratorRunner";
+import { SW_BROADCAST_CHANNEL } from "../lib/constants";
 import { BroadcastChannelMember } from "../lib/types/BroadcastChannelMember";
 import { BroadcastMessage, } from "../lib/types/BroadcastMessage";
-import { ControllableAsyncGeneratorRunner } from "../lib/classes/ControllableAsyncGeneratorRunner";
+import { BroadcastMessageType } from "../lib/types/BroadcastMessageType";
+import { InputRequest } from "../lib/types/InputRequest";
 import { ServiceWorkerStatus } from "../lib/types/ServiceWorkerStatus";
 
 precacheAndRoute(self.__WB_MANIFEST || []);
@@ -37,11 +37,31 @@ self.addEventListener("activate", () => {
 });
 
 const board = new Board();
-for (let i = 0; i < 3; i++) {
-	board
-		.input({ $id: `input_${i}` })
-		.wire(`message_${i}`, board.output({ $id: `output_${i}` }));
-}
+
+// for (let i = 0; i < 3; i++) {
+// 	board
+// 		.input({ $id: `input_${i}` })
+// 		.wire(`message_${i}`, board.output({ $id: `output_${i}` }));
+// }
+
+const schema2: Schema = {
+	type: "object",
+	properties: {
+		"message_2": {
+			title: "Message 2",
+			type: "string",
+		},
+	},
+};
+
+board.input({ $id: `input_1`, }).wire(`message_1`, board.output({ $id: `output_1` }));
+board.input({ $id: `input_2`, schema: schema2 }).wire(`message_2`, board.output({ $id: `output_2` }));
+
+board.input({ $id: `input_3` }).wire(`message_3`, board.output({ $id: `output_3` }));
+board.input({ $id: `input_3` }).wire(`message_4`, board.output({ $id: `output_3` }));
+
+// import fs from "fs";
+// fs.writeFileSync("board.md", ["```mermaid", board.mermaid(), "```"].join("\n"))
 
 const channel = new BroadcastChannel(SW_BROADCAST_CHANNEL);
 channel.onmessage = (event): void => handleCommand(event.data);
@@ -123,6 +143,8 @@ export function getInputAttributeSchemaFromNodeSchema(schema: Schema): {
 	const key = Object.keys(schema.properties!)[0];
 	// const key = schema.title ?? ""
 	// return first property in schema
+	// schema.properties.message_2.title
+	// const firstPropertyTitle = schema.properties![firstProperty].title ?? firstProperty;
 	return {
 		key,
 		schema
