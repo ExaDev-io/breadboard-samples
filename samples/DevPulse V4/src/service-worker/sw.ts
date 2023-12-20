@@ -54,14 +54,34 @@ const schema2: Schema = {
 	},
 };
 
+const multi_input: Schema = {
+	type: "object",
+	properties: {
+		"message_1": {
+			title: "Message 1",
+			type: "string",
+		},
+		"message_2": {
+			title: "Message 2",
+			type: "string",
+		},
+	},
+};
+
 board.input({ $id: `input_1`, }).wire(`message_1`, board.output({ $id: `output_1` }));
 board.input({ $id: `input_2`, schema: schema2 }).wire(`message_2`, board.output({ $id: `output_2` }));
 
 board.input({ $id: `input_3` }).wire(`message_3`, board.output({ $id: `output_3` }));
 board.input({ $id: `input_3` }).wire(`message_4`, board.output({ $id: `output_3` }));
 
-// import fs from "fs";
-// fs.writeFileSync("board.md", ["```mermaid", board.mermaid(), "```"].join("\n"))
+board.input({ $id: `multi_input_1`, schema: multi_input }).wire(`*`, board.output({ $id: `multi_output_1` }));
+
+const multi_input_2 = board.input({ $id: `multi_input_2`, schema: multi_input });
+
+const multiOutput2 = board.output({ $id: `multi_output_2` });
+
+multi_input_2.wire(`message_1`, multiOutput2);
+multi_input_2.wire(`message_2`, multiOutput2);
 
 const channel = new BroadcastChannel(SW_BROADCAST_CHANNEL);
 channel.onmessage = (event): void => handleCommand(event.data);
@@ -121,6 +141,9 @@ export function getInputSchemaFromNode(runResult: RunResult): Schema {
 
 	if (runResult.inputArguments.schema) {
 		schema = runResult.inputArguments.schema as Schema;
+		if (inputAttribute == "*") {
+			return schema;
+		}
 		if (!Object.keys(schema.properties!).includes(inputAttribute)) {
 			throw new Error(
 				`Input attribute "${inputAttribute}" not found in schema:\n${JSON.stringify(
