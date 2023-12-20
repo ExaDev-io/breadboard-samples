@@ -20,7 +20,8 @@ export function BasicInput({request}: { request: InputRequest; }): ReactNode {
 			borderRadius: "5px"
 		}}>
 			<FormComponent
-				schema={schema}
+				// schema={schema}
+				request={request}
 				handleSubmit={(formData) => {
 					const message: InputResponse = {
 						id: request.id,

@@ -1,4 +1,3 @@
-import { Schema } from "@google-labs/breadboard";
 import React, {
 	FormEvent,
 	FormEventHandler,
@@ -7,15 +6,18 @@ import React, {
 	ReactNode,
 	useState
 } from "react";
+import { InputRequest } from "~/lib/types/InputRequest";
 
-export function FormComponent<T>({
-	schema,
+export function FormComponent<T extends InputRequest>({
+	// schema,
+	request,
 	handleSubmit,
 	onKeyUp,
 	onClick,
 	onSubmit
 }: {
-	schema: Schema;
+		// schema: Schema;
+		request: T;
 	handleSubmit: (t: T) => void;
 	onKeyUp?: KeyboardEventHandler;
 	onClick?: MouseEventHandler;
@@ -36,28 +38,36 @@ export function FormComponent<T>({
 	// 	console.log('Form Data Submitted:', formData);
 	// });
 
+	const schema = request.content.schema;
 	const renderInputs = () => {
-		const {properties} = schema;
+		const { properties } = schema;
 		if (!properties) return null;
-
-		return Object.entries(properties).map(([key, value]) => (
-			<div key={key}>
-				<label htmlFor={key}>{value.title || key}</label>
-				<br />
-				<input
-					type={value.type === 'string' ? 'text' : 'number'}
-					name={key}
-					id={key}
-					placeholder={key}
-					value={
-						(formData as Record<string, unknown>)[key] as string | number | readonly string[] | undefined || ''
-					}
-					onChange={handleChange}
-					onKeyUp={onKeyUp}
+		return (<div className="inputRequest" key={request.id}>
+			{/* <h3>Node: {request.content.node}</h3> */}
+			<details>
+				<summary>Request</summary>
+				<pre>{JSON.stringify(request, null, 2)}</pre>
+			</details>
+			{/* map from properties */}
+			{Object.entries(properties).map(([key, value]) => (
+				<div key={key}>
+					<label htmlFor={key}>{value.title || key}</label>
+					<br />
+					<input
+						type={value.type === 'string' ? 'text' : 'number'}
+						name={key}
+						id={key}
+						placeholder={key}
+						value={
+							(formData as Record<string, unknown>)[key] as string | number | readonly string[] | undefined || ''
+						}
+						onChange={handleChange}
+						onKeyUp={onKeyUp}
 					// onClick={onClick}
-				/>
-			</div>
-		));
+					/>
+				</div>
+			))}
+		</div>);
 	};
 
 	onKeyUp ??= ((event) => {
