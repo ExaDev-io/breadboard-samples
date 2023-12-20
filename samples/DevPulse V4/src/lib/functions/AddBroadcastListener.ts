@@ -3,13 +3,13 @@ import { BroadcastMessage } from "~/lib/types/BroadcastMessage.ts";
 
 
 export function addBroadcastListener<T extends BroadcastMessage>(
-	channeld: string,
+	channelId: string,
 	handler: BroadcastChannelEventHandler<T>,
 	messageSource?: T["messageSource"],
 	messageTarget?: T["messageTarget"],
 	messageType?: T["messageType"]
 ) {
-	const channel = new BroadcastChannel(channeld);
+	const channel = new BroadcastChannel(channelId);
 
 	function intermediateHandler(evt: MessageEvent<T> | Event) {
 		console.debug("intermediateHandler", "evt", evt);
