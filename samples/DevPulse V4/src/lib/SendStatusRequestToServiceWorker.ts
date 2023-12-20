@@ -1,12 +1,12 @@
-import { BroadcastChannelEventHandler } from "~/lib/BroadcastChannelEventHandler.ts";
-import { BroadcastChannelMember } from "~/lib/BroadcastChannelMember.ts";
-import { BroadcastMessage } from "~/lib/BroadcastMessage.ts";
+import { SW_BROADCAST_CHANNEL } from "~/lib/constants/SW_BROADCAST_CHANNEL.ts";
+import { BroadcastChannelEventHandler } from "~/lib/types/BroadcastChannelEventHandler.ts";
+import { BroadcastChannelMember } from "~/lib/types/BroadcastChannelMember.ts";
+import { BroadcastMessage } from "~/lib/types/BroadcastMessage.ts";
 
-import { BroadcastMessageType } from "~/lib/BroadcastMessageType.ts";
-import { SW_BROADCAST_CHANNEL } from "~/lib/constants.ts";
-import { ResponseForMessage } from "~/lib/ResponseForMessage.ts";
+import { BroadcastMessageType } from "~/lib/types/BroadcastMessageType.ts";
+import { ResponseForMessage } from "~/lib/types/ResponseForMessage.ts";
 import { sendBroadcastMessageToServiceWorker } from "~/lib/SendBroadcastMessageToServiceWorker.ts";
-import { ServiceWorkerStatus } from "~/lib/ServiceWorkerStatus.ts";
+import { ServiceWorkerStatus } from "~/lib/types/ServiceWorkerStatus.ts";
 
 
 export function sendStatusRequestToServiceWorker<

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { BasicInput } from "~/components/BasicInput.tsx";
-import { BroadcastMessageType } from "~/lib/BroadcastMessageType.ts";
-import { SW_BROADCAST_CHANNEL } from "~/lib/constants.ts";
-import { InputRequest } from "~/lib/InputRequest.ts";
-import { InputResponse } from "~/lib/InputResponse.ts";
+import { SW_BROADCAST_CHANNEL } from "~/lib/constants/SW_BROADCAST_CHANNEL.ts";
+import { BroadcastMessageType } from "~/lib/types/BroadcastMessageType.ts";
+import { InputRequest } from "~/lib/types/InputRequest.ts";
+import { InputResponse } from "~/lib/types/InputResponse.ts";
 
 export function InputRequestsRenderer<
 	M extends InputRequest,

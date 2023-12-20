@@ -1,6 +1,5 @@
-import { BroadcastChannelMember } from "~/lib/BroadcastChannelMember.ts";
-
-import { BroadcastMessageType } from "~/lib/BroadcastMessageType.ts";
+import { BroadcastChannelMember } from "~/lib/types/BroadcastChannelMember.ts";
+import { BroadcastMessageType } from "~/lib/types/BroadcastMessageType.ts";
 
 export type BroadcastMessage = {
 	id?: string;

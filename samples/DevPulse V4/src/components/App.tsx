@@ -3,8 +3,8 @@ import reactLogo from "~/assets/react.svg";
 import { useState } from 'react';
 import "~/components/App.css";
 import { BroadcastMessageRenderer } from "~/components/BroadcastMessageRenderer.tsx";
-import { BroadcastMessageType } from "~/lib/BroadcastMessageType.ts";
-import { SW_BROADCAST_CHANNEL } from "~/lib/constants.ts";
+import { SW_BROADCAST_CHANNEL } from "~/lib/constants/SW_BROADCAST_CHANNEL.ts";
+import { BroadcastMessageType } from "~/lib/types/BroadcastMessageType.ts";
 import { InputRequestsRenderer } from "~/components/InputRequestsRenderer.tsx";
 import { ServiceWorkerControllerComponent } from "~/components/ServiceWorkerControllerComponent.tsx";
 

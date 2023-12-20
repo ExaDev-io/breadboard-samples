@@ -1,5 +1,5 @@
 import React from "react";
-import { BroadcastMessage } from "~/lib/BroadcastMessage.ts";
+import { BroadcastMessage } from "~/lib/types/BroadcastMessage.ts";
 
 type FancyMessageProps = {
 	message: BroadcastMessage;

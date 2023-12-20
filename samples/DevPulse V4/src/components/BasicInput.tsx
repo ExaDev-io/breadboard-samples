@@ -1,8 +1,8 @@
-import { BroadcastMessageType } from "~/lib/BroadcastMessageType.ts";
-import { SW_BROADCAST_CHANNEL } from "~/lib/constants.ts";
+import { SW_BROADCAST_CHANNEL } from "~/lib/constants/SW_BROADCAST_CHANNEL.ts";
+import { BroadcastMessageType } from "~/lib/types/BroadcastMessageType.ts";
 import { FormComponent } from "~/components/FormComponent.tsx";
-import { InputRequest } from "~/lib/InputRequest.ts";
-import { InputResponse } from "~/lib/InputResponse.ts";
+import { InputRequest } from "~/lib/types/InputRequest.ts";
+import { InputResponse } from "~/lib/types/InputResponse.ts";
 
 export function BasicInput({request}: { request: InputRequest; }) {
 	const schema = request.content.schema;

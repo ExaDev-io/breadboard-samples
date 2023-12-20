@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { addBroadcastListener } from "~/lib/AddBroadcastListener.ts";
-import { BroadcastChannelMember } from "~/lib/BroadcastChannelMember.ts";
-import { BroadcastMessage } from "~/lib/BroadcastMessage.ts";
-import { BroadcastMessageType } from "~/lib/BroadcastMessageType.ts";
-import { SW_BROADCAST_CHANNEL } from "~/lib/constants.ts";
+import { SW_BROADCAST_CHANNEL } from "~/lib/constants/SW_BROADCAST_CHANNEL.ts";
+import { BroadcastChannelMember } from "~/lib/types/BroadcastChannelMember.ts";
+import { BroadcastMessage } from "~/lib/types/BroadcastMessage.ts";
+import { BroadcastMessageType } from "~/lib/types/BroadcastMessageType.ts";
 import { sendControlCommandToServiceWorker } from "~/lib/SendControlCommandToServiceWorker.ts";
 import { sendStatusRequestToServiceWorker } from "~/lib/SendStatusRequestToServiceWorker.ts";
-import { ServiceWorkerControllerCommand } from "~/lib/ServiceWorkerControllerCommand.ts";
-import { ServiceWorkerStatus } from "~/lib/ServiceWorkerStatus.ts";
+import { ServiceWorkerControllerCommand } from "~/lib/types/ServiceWorkerControllerCommand.ts";
+import { ServiceWorkerStatus } from "~/lib/types/ServiceWorkerStatus.ts";
 
 
 export function ServiceWorkerControllerComponent({

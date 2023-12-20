@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import BasicMessage from "~/components/BasicMessage.tsx";
-import { BroadcastMessage } from "~/lib/BroadcastMessage.ts";
-import { SW_BROADCAST_CHANNEL } from "~/lib/constants.ts";
+import { SW_BROADCAST_CHANNEL } from "~/lib/constants/SW_BROADCAST_CHANNEL.ts";
+import { BroadcastMessage } from "~/lib/types/BroadcastMessage.ts";
 
 
 export function BroadcastMessageRenderer({
