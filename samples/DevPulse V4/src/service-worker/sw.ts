@@ -91,9 +91,9 @@ function handleCommand<M extends BroadcastMessage = BroadcastMessage>(
 					default:
 						throw new Error(`Unknown command: ${message.content}`);
 				}
-				broadcastStatus<M>(message);
+				broadcastStatus(message.id);
 			} else if (message.messageType === BroadcastMessageType.STATUS) {
-				broadcastStatus<M>(message);
+				broadcastStatus(message.id);
 			}
 		}
 	}
@@ -140,28 +140,23 @@ export function getInputAttributeSchemaFromNodeSchema(schema: Schema): {
 	schema: Schema;
 } {
 	const key = Object.keys(schema.properties!)[0];
-	// const key = schema.title ?? ""
-	// return first property in schema
-	// schema.properties.message_2.title
-	// const firstPropertyTitle = schema.properties![firstProperty].title ?? firstProperty;
 	return {
 		key,
 		schema
-		// schema: schema.properties![key],
 	};
 }
 
-function broadcastStatus<M extends BroadcastMessage>(message: M & ExtendableMessageEvent) {
+function broadcastStatus(id: BroadcastMessage["id"]) {
 	const content: Omit<RunnerState, "pendingInputs"> & {
 		pendingInputs: RunnerState["pendingInputs"]["requests"];
 	} = {
 		active: boardRunner?.state.active ?? false,
 		paused: boardRunner?.state.paused ?? false,
 		finished: boardRunner?.state.finished ?? false,
-		pendingInputs: boardRunner.state.pendingInputs.requests
+		pendingInputs: boardRunner.state.pendingInputs.requests ?? {}
 	};
 	const response: BroadcastMessage = {
-		id: message.id,
+		id,
 		messageType: BroadcastMessageType.STATUS,
 		messageSource: BroadcastChannelMember.ServiceWorker,
 		content,
@@ -196,12 +191,15 @@ async function handler(runResult: RunResult): Promise<void> {
 		boardRunner.state.pendingInputs.requests[message.id] = message;
 
 		new BroadcastChannel(SW_BROADCAST_CHANNEL).postMessage(message);
+		broadcastStatus(message.id);
+
 		new BroadcastChannel(SW_BROADCAST_CHANNEL).addEventListener("message", (event): void => {
 			if (event.data.messageType === BroadcastMessageType.INPUT_RESPONSE) {
 				if (event.data.content?.attribute == key && event.data.content?.node == runResult.node.id) {
 					const { node, attribute, value } = event.data.content;
 					boardRunner.state.pendingInputs.resolvers[`${node}-${attribute}`](value);
 					delete boardRunner.state.pendingInputs.requests[message.id];
+					broadcastStatus(message.id);
 				}
 			}
 		})
