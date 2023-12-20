@@ -1,28 +1,30 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ComponentType, ReactNode, useEffect, useState } from "react";
 import { BasicInput } from "~/components/BasicInput.tsx";
 import { SW_BROADCAST_CHANNEL } from "~/lib/constants/SW_BROADCAST_CHANNEL.ts";
 import { BroadcastMessageType } from "~/lib/types/BroadcastMessageType.ts";
 import { InputRequest } from "~/lib/types/InputRequest.ts";
-import { InputResponse } from "~/lib/types/InputResponse.ts";
 
 export function InputRequestsRenderer<
 	M extends InputRequest,
-	I extends InputResponse
 >({
 	channelId = SW_BROADCAST_CHANNEL,
 	matchers = [],
 	ignoreMatchers = [],
 	defaultMessageComponent = BasicInput,
-	// defaultHandler
 }: {
 	channelId?: string;
 	matchers?: [
 		matcher: (request: M) => boolean,
-		component: React.ComponentType<{ request: M; }>,
-		handler: (response: I) => void
+		component: ComponentType<{
+			request: M;
+			onResponseSent: () => void;
+		}>
 	][];
 	ignoreMatchers?: ((request: M) => boolean)[];
-	defaultMessageComponent?: React.ComponentType<{ request: M; }>;
+		defaultMessageComponent?: ComponentType<{
+			request: M;
+			onResponseSent: () => void;
+		}>;
 }): ReactNode {
 	const [requests, setRequests] = useState<M[]>([]);
 
@@ -55,12 +57,25 @@ export function InputRequestsRenderer<
 			{requests.map((request) => {
 				for (const [matcher, Component] of matchers) {
 					if (matcher(request)) {
-						return <Component key={request.id} request={request}/>;
+						return <Component
+							key={request.id}
+							request={request}
+							onResponseSent={() => {
+								setRequests((prevMessages) =>
+									prevMessages.filter((m) => m.id !== request.id)
+								);
+							}}
+						/>;
 					}
 				}
 				return React.createElement(defaultMessageComponent, {
 					key: request.id,
 					request: request,
+					onResponseSent: () => {
+						setRequests((prevMessages) =>
+							prevMessages.filter((m) => m.id !== request.id)
+						);
+					},
 				});
 			})}
 		</div>
