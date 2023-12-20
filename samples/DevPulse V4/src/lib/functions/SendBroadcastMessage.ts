@@ -3,7 +3,6 @@ import { BroadcastChannelEventHandler } from "~/lib/types/BroadcastChannelEventH
 import { BroadcastMessage } from "~/lib/types/BroadcastMessage.ts";
 import { ResponseForMessage } from "~/lib/types/ResponseForMessage.ts";
 
-
 export function sendBroadcastMessage<
 	M extends BroadcastMessage,
 	R extends BroadcastMessage = ResponseForMessage<M>,
@@ -11,21 +10,21 @@ export function sendBroadcastMessage<
 >(channelId: string, message: M, responseHandler?: H) {
 	new BroadcastChannel(channelId).postMessage(message);
 	if (responseHandler) {
-		return addBroadcastListener<R>(
+		return addBroadcastListener<R>({
 			channelId,
-			responseHandler,
-			message.messageTarget,
-			message.messageSource,
-			message.messageType
-		);
+			handler: responseHandler,
+			messageSource: message.messageTarget,
+			messageTarget: message.messageSource,
+			messageType: message.messageType,
+		});
 	} else {
 		return (h: BroadcastChannelEventHandler<R>) =>
-			addBroadcastListener<R>(
+			addBroadcastListener<R>({
 				channelId,
-				h,
-				message.messageTarget,
-				message.messageSource,
-				message.messageType
-			);
+				handler: h,
+				messageSource: message.messageTarget,
+				messageTarget: message.messageSource,
+				messageType: message.messageType,
+			});
 	}
 }

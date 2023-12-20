@@ -1,14 +1,20 @@
+import { SW_BROADCAST_CHANNEL } from '~/lib/constants';
 import { BroadcastChannelEventHandler } from "~/lib/types/BroadcastChannelEventHandler.ts";
 import { BroadcastMessage } from "~/lib/types/BroadcastMessage.ts";
 
-
-export function addBroadcastListener<T extends BroadcastMessage>(
-	channelId: string,
-	handler: BroadcastChannelEventHandler<T>,
-	messageSource?: T["messageSource"],
-	messageTarget?: T["messageTarget"],
-	messageType?: T["messageType"]
-) {
+export function addBroadcastListener<T extends BroadcastMessage>({
+	channelId = SW_BROADCAST_CHANNEL,
+	handler,
+	messageSource,
+	messageTarget,
+	messageType,
+}: {
+	channelId?: string;
+	handler: BroadcastChannelEventHandler<T>;
+	messageSource?: T["messageSource"];
+	messageTarget?: T["messageTarget"];
+	messageType?: T["messageType"];
+}) {
 	const channel = new BroadcastChannel(channelId);
 
 	function intermediateHandler(evt: MessageEvent<T> | Event) {
