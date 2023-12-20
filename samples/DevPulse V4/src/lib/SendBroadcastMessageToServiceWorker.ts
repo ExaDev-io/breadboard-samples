@@ -1,6 +1,6 @@
 import { BroadcastChannelEventHandler } from "~/lib/BroadcastChannelEventHandler.ts";
 import { BroadcastChannelMember } from "~/lib/BroadcastChannelMember.ts";
-import { BroadcastMessage } from "~/lib/BroadcastMessage.tsx";
+import { BroadcastMessage } from "~/lib/BroadcastMessage.ts";
 import { ResponseForMessage } from "~/lib/ResponseForMessage.ts";
 import { sendBroadcastMessage } from "~/lib/SendBroadcastMessage.ts";
 

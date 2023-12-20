@@ -1,4 +1,4 @@
-import { BroadcastMessage } from "~/lib/BroadcastMessage.tsx";
+import { BroadcastMessage } from "~/lib/BroadcastMessage.ts";
 
 export type ResponseForMessage<T extends BroadcastMessage> = {
 	id?: T["id"];

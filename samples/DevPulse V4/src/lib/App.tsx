@@ -2,11 +2,12 @@ import { Schema } from '@google-labs/breadboard';
 import reactLogo from "assets/react.svg";
 import React, { FormEvent, FormEventHandler, KeyboardEventHandler, MouseEventHandler, useEffect, useState } from 'react';
 import "~/lib/App.css";
-import { BroadcastMessageTypes } from "~/lib/BroadcastMessage.tsx";
 import { BroadcastMessageRenderer } from "~/lib/BroadcastMessageRenderer.tsx";
+import { BroadcastMessageType } from "~/lib/BroadcastMessageType.ts";
+import { InputRequest } from "~/lib/InputRequest.ts";
+import { InputResponse } from "~/lib/InputResponse.ts";
 import { ServiceWorkerControllerComponent } from "~/lib/ServiceWorkerControllerComponent.tsx";
 import { SW_BROADCAST_CHANNEL } from "~/lib/constants.ts";
-import { InputRequest, InputResponse } from './BroadcastMessage';
 import viteLogo from "/vite.svg";
 
 // function InputWithSubmit<T>({
@@ -150,7 +151,7 @@ function BasicInput({ request }: { request: InputRequest; }) {
 				handleSubmit={(formData) => {
 					const message: InputResponse = {
 						id: request.id,
-						messageType: BroadcastMessageTypes.INPUT_RESPONSE,
+						messageType: BroadcastMessageType.INPUT_RESPONSE,
 						messageSource: request.messageTarget,
 						messageTarget: request.messageSource,
 						content: {
@@ -190,7 +191,7 @@ function InputRequestsRenderer<
 		const channel = new BroadcastChannel(channelId);
 
 		const handleMessage = (e: MessageEvent) => {
-			if (e.data.messageType !== BroadcastMessageTypes.INPUT_REQUEST) return;
+			if (e.data.messageType !== BroadcastMessageType.INPUT_REQUEST) return;
 
 			const newMessage = e.data as M;
 			if (
@@ -256,7 +257,7 @@ function App() {
 			<BroadcastMessageRenderer
 				channelId={SW_BROADCAST_CHANNEL}
 				ignoreMatchers={[
-					(message) => message.messageType != BroadcastMessageTypes.OUTPUT,
+					(message) => message.messageType != BroadcastMessageType.OUTPUT,
 				]}
 			/>
 		</>

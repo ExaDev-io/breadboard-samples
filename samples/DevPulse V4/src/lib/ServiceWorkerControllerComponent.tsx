@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { addBroadcastListener } from "~/lib/AddBroadcastListener.ts";
 import { BroadcastChannelMember } from "~/lib/BroadcastChannelMember.ts";
-import { BroadcastMessage, BroadcastMessageTypes } from "~/lib/BroadcastMessage.tsx";
+import { BroadcastMessage } from "~/lib/BroadcastMessage.ts";
+
+import { BroadcastMessageType } from "~/lib/BroadcastMessageType.ts";
 import { SW_BROADCAST_CHANNEL } from "~/lib/constants.ts";
 import { sendControlCommandToServiceWorker } from "~/lib/SendControlCommandToServiceWorker.ts";
 import { sendStatusRequestToServiceWorker } from "~/lib/SendStatusRequestToServiceWorker.ts";
@@ -17,7 +19,7 @@ export function ServiceWorkerControllerComponent({
 	const [currentState, setCurrentState] = useState<ServiceWorkerStatus>();
 
 	type ServiceWorkerStatusResponse = BroadcastMessage & {
-		type: BroadcastMessageTypes.STATUS;
+		type: BroadcastMessageType.STATUS;
 		content: ServiceWorkerStatus;
 		source: BroadcastChannelMember.ServiceWorker;
 	};
@@ -30,7 +32,7 @@ export function ServiceWorkerControllerComponent({
 			},
 			BroadcastChannelMember.Client,
 			BroadcastChannelMember.ServiceWorker,
-			BroadcastMessageTypes.STATUS
+			BroadcastMessageType.STATUS
 		);
 	}, [channelId, currentState]);
 

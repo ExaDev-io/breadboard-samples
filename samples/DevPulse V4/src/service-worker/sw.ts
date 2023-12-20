@@ -2,16 +2,14 @@
 declare const self: ServiceWorkerGlobalScope;
 
 import { Board, Edge, RunResult, Schema } from "@google-labs/breadboard";
+import { InputRequest } from "src/lib/InputRequest";
+import { BroadcastMessageType } from "../lib/BroadcastMessageType";
 import { precacheAndRoute } from "workbox-precaching";
 import { BroadcastChannelMember } from "../lib/BroadcastChannelMember";
-import {
-	BroadcastMessage,
-	BroadcastMessageTypes,
-	InputRequest,
-} from "../lib/BroadcastMessage";
+import { BroadcastMessage, } from "../lib/BroadcastMessage";
+import { SW_BROADCAST_CHANNEL } from "../lib/constants";
 import { ControllableAsyncGeneratorRunner } from "../lib/ControllableAsyncGeneratorRunner";
 import { ServiceWorkerStatus } from "../lib/ServiceWorkerStatus";
-import { SW_BROADCAST_CHANNEL } from "../lib/constants";
 
 precacheAndRoute(self.__WB_MANIFEST || []);
 
@@ -57,7 +55,7 @@ function handleCommand<M extends BroadcastMessage = BroadcastMessage>(
 	console.log("ServiceWorker", "message", message);
 	if (message.messageSource !== BroadcastChannelMember.ServiceWorker) {
 		if (message.messageType) {
-			if (message.messageType === BroadcastMessageTypes.COMMAND) {
+			if (message.messageType === BroadcastMessageType.COMMAND) {
 				switch (message.content) {
 					case "start":
 						if (!boardRunner) {
@@ -78,7 +76,7 @@ function handleCommand<M extends BroadcastMessage = BroadcastMessage>(
 						throw new Error(`Unknown command: ${message.content}`);
 				}
 				broadcastStatus<M>(message);
-			} else if (message.messageType === BroadcastMessageTypes.STATUS) {
+			} else if (message.messageType === BroadcastMessageType.STATUS) {
 				broadcastStatus<M>(message);
 			}
 		}
@@ -141,7 +139,7 @@ function broadcastStatus<M extends BroadcastMessage = BroadcastMessage>(message:
 	};
 	const response: BroadcastMessage = {
 		id: message.id,
-		messageType: BroadcastMessageTypes.STATUS,
+		messageType: BroadcastMessageType.STATUS,
 		messageSource: BroadcastChannelMember.ServiceWorker,
 		content,
 	};
@@ -171,7 +169,7 @@ async function handler(runResult: RunResult): Promise<void> {
 
 		const message: InputRequest = {
 			id: `${runResult.node.id}-${key}`,
-			messageType: BroadcastMessageTypes.INPUT_REQUEST,
+			messageType: BroadcastMessageType.INPUT_REQUEST,
 			messageSource: BroadcastChannelMember.ServiceWorker,
 			messageTarget: BroadcastChannelMember.Client,
 			content: {
@@ -182,7 +180,7 @@ async function handler(runResult: RunResult): Promise<void> {
 		};
 		new BroadcastChannel(SW_BROADCAST_CHANNEL).postMessage(message);
 		new BroadcastChannel(SW_BROADCAST_CHANNEL).addEventListener("message", (event): void => {
-			if (event.data.messageType === BroadcastMessageTypes.INPUT_RESPONSE) {
+			if (event.data.messageType === BroadcastMessageType.INPUT_RESPONSE) {
 				// if (event.data.content?.attribute !== key) return;
 				// if (event.data.content?.node !== runResult.node.id) return;
 
@@ -209,7 +207,7 @@ async function handler(runResult: RunResult): Promise<void> {
 		console.log(runResult.node.id, "output", runResult.outputs);
 		const message: BroadcastMessage = {
 			id: new Date().getTime().toString(),
-			messageType: BroadcastMessageTypes.OUTPUT,
+			messageType: BroadcastMessageType.OUTPUT,
 			messageSource: BroadcastChannelMember.ServiceWorker,
 			messageTarget: BroadcastChannelMember.Client,
 			content: runResult.outputs,

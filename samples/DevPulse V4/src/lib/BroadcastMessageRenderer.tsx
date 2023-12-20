@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import BasicMessage from "~/lib/BasicMessage.tsx";
-import { BroadcastMessage } from "~/lib/BroadcastMessage.tsx";
+import { BroadcastMessage } from "~/lib/BroadcastMessage.ts";
 import { SW_BROADCAST_CHANNEL } from "~/lib/constants.ts";
 
 
