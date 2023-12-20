@@ -2,8 +2,8 @@
 declare const self: ServiceWorkerGlobalScope;
 
 import { Edge, RunResult, Schema } from "@google-labs/breadboard";
-import board from "../lib/board";
 import { precacheAndRoute } from "workbox-precaching";
+import board from "../lib/board";
 import { ControllableAsyncGeneratorRunner } from "../lib/classes/ControllableAsyncGeneratorRunner";
 import { SW_BROADCAST_CHANNEL } from "../lib/constants";
 import { BroadcastChannelMember } from "../lib/types/BroadcastChannelMember";
@@ -135,6 +135,7 @@ function broadcastStatus<M extends BroadcastMessage = BroadcastMessage>(message:
 		active: boardRunner?.active ?? false,
 		paused: boardRunner?.paused ?? false,
 		finished: boardRunner?.finished ?? false,
+		inputRequests: pendingInputRequests
 	};
 	const response: BroadcastMessage = {
 		id: message.id,
@@ -142,10 +143,11 @@ function broadcastStatus<M extends BroadcastMessage = BroadcastMessage>(message:
 		messageSource: BroadcastChannelMember.ServiceWorker,
 		content,
 	};
-	channel.postMessage(response);
+	new BroadcastChannel(SW_BROADCAST_CHANNEL).postMessage(response);
 }
 
-export const pendingInputResolvers: { [key: string]: (input: string) => void; } = {};
+const pendingInputResolvers: { [key: string]: (input: string) => void; } = {};
+const pendingInputRequests: { [key: string]: InputRequest; } = {};
 
 export function waitForInput(node: string, attrib: string): Promise<string> {
 	return new Promise<string>((resolve) => {
@@ -157,11 +159,7 @@ export function waitForInput(node: string, attrib: string): Promise<string> {
 async function handler(runResult: RunResult): Promise<void> {
 	console.log("=".repeat(80));
 	if (runResult.type === "input") {
-		// const input = {
-		// 	node: runResult.node.id,
-		// };
-		// console.log(runResult.node.id, "input", input);
-		// runResult.inputs = input;
+
 		const inputSchema = getInputSchemaFromNode(runResult);
 		const { key, schema } = getInputAttributeSchemaFromNodeSchema(inputSchema);
 
@@ -177,23 +175,15 @@ async function handler(runResult: RunResult): Promise<void> {
 				schema,
 			},
 		};
+		pendingInputRequests[message.id] = message;
 		new BroadcastChannel(SW_BROADCAST_CHANNEL).postMessage(message);
 		new BroadcastChannel(SW_BROADCAST_CHANNEL).addEventListener("message", (event): void => {
 			if (event.data.messageType === BroadcastMessageType.INPUT_RESPONSE) {
-				// if (event.data.content?.attribute !== key) return;
-				// if (event.data.content?.node !== runResult.node.id) return;
-
-
-				// const { node, attribute, value } = event.data.content;
-				// pendingInputResolvers[`${node}-${attribute}`](value);
-
-				// const { node, attribute, value } = event.data.content;
-				// pendingInputResolvers[`${node}-${attribute}`](value);
 				if (event.data.content?.attribute == key && event.data.content?.node == runResult.node.id) {
 					const { node, attribute, value } = event.data.content;
 					pendingInputResolvers[`${node}-${attribute}`](value);
+					delete pendingInputRequests[message.id];
 				}
-
 			}
 		})
 

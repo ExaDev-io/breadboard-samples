@@ -1,6 +1,8 @@
+import { InputRequest } from "./InputRequest";
+
 export type ServiceWorkerStatus = {
 	active: boolean;
 	paused: boolean;
 	finished: boolean;
-	pendingInputResolvers?: Record<string, unknown>;
+	inputRequests?: { [key: string]: InputRequest; };
 };
