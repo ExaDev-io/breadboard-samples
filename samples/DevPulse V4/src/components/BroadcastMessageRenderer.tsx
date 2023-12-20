@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import BasicMessage from "~/components/BasicMessage.tsx";
 import { SW_BROADCAST_CHANNEL } from "~/lib/constants/SW_BROADCAST_CHANNEL.ts";
 import { BroadcastMessage } from "~/lib/types/BroadcastMessage.ts";
@@ -17,7 +17,7 @@ export function BroadcastMessageRenderer({
 	][]; // Array of tuples of matcher functions and components
 	ignoreMatchers?: ((message: BroadcastMessage) => boolean)[];
 	defaultMessageComponent?: React.ComponentType<{ message: BroadcastMessage }>;
-}) {
+}): ReactNode {
 	const [messages, setMessages] = useState<BroadcastMessage[]>([]);
 
 	useEffect(() => {

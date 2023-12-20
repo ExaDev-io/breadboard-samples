@@ -1,20 +1,27 @@
 import { Schema } from "@google-labs/breadboard";
-import React, { FormEvent, FormEventHandler, KeyboardEventHandler, MouseEventHandler, useState } from "react";
+import React, {
+	FormEvent,
+	FormEventHandler,
+	KeyboardEventHandler,
+	MouseEventHandler,
+	ReactNode,
+	useState
+} from "react";
 
 export function FormComponent<T>({
-	                                 schema,
-	                                 handleSubmit,
-	                                 onKeyUp,
-	                                 onClick,
-	                                 onSubmit
-                                 }: {
+	schema,
+	handleSubmit,
+	onKeyUp,
+	onClick,
+	onSubmit
+}: {
 	schema: Schema;
 	handleSubmit: (t: T) => void;
 	onKeyUp?: KeyboardEventHandler;
 	onClick?: MouseEventHandler;
 	onSubmit?: FormEventHandler<HTMLFormElement>;
 	// handleSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
-}) {
+}): ReactNode {
 	const [formData, setFormData] = useState<T>({} as T);
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

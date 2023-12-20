@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { BasicInput } from "~/components/BasicInput.tsx";
 import { SW_BROADCAST_CHANNEL } from "~/lib/constants/SW_BROADCAST_CHANNEL.ts";
 import { BroadcastMessageType } from "~/lib/types/BroadcastMessageType.ts";
@@ -9,12 +9,12 @@ export function InputRequestsRenderer<
 	M extends InputRequest,
 	I extends InputResponse
 >({
-	  channelId = SW_BROADCAST_CHANNEL,
-	  matchers = [],
-	  ignoreMatchers = [],
-	  defaultMessageComponent = BasicInput,
-	  // defaultHandler
-  }: {
+	channelId = SW_BROADCAST_CHANNEL,
+	matchers = [],
+	ignoreMatchers = [],
+	defaultMessageComponent = BasicInput,
+	// defaultHandler
+}: {
 	channelId: string;
 	matchers?: [
 		matcher: (request: M) => boolean,
@@ -23,7 +23,7 @@ export function InputRequestsRenderer<
 	][];
 	ignoreMatchers?: ((request: M) => boolean)[];
 	defaultMessageComponent?: React.ComponentType<{ request: M; }>;
-}) {
+}): ReactNode {
 	const [requests, setRequests] = useState<M[]>([]);
 
 	useEffect(() => {

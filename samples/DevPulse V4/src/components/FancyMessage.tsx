@@ -5,10 +5,10 @@ type FancyMessageProps = {
 	message: BroadcastMessage;
 };
 
-const FancyMessage = ({ message }: FancyMessageProps): React.JSX.Element => (
-	<div style={{ color: "blue" }}>
+function FancyMessage({message}: FancyMessageProps): React.JSX.Element {
+	return <div style={{color: "blue"}}>
 		<p>{message.content as string}</p>
-	</div>
-);
+	</div>;
+}
 
 export default FancyMessage;

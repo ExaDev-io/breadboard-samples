@@ -1,10 +1,11 @@
+import { ReactNode } from "react";
 import { BroadcastMessage } from "~/lib/types/BroadcastMessage.ts";
 
 type BasicMessageProps = {
 	message: BroadcastMessage;
 };
 
-const BasicMessage = ({ message }: BasicMessageProps): React.JSX.Element => {
+function BasicMessage({message}: BasicMessageProps): ReactNode {
 	const renderContent = () => {
 		if (typeof message === "object" && message !== null) {
 			return <pre>{JSON.stringify(message, null, "\t")}</pre>;
@@ -24,6 +25,6 @@ const BasicMessage = ({ message }: BasicMessageProps): React.JSX.Element => {
 			{renderContent()}
 		</div>
 	);
-};
+}
 
 export default BasicMessage;
