@@ -7,7 +7,7 @@ import { BroadcastMessageType } from "~/lib/types/BroadcastMessageType.ts";
 
 export function BreadboardComponent(): ReactNode {
 	return <div className="Breadboard">
-		<InputRequestsRenderer channelId={SW_BROADCAST_CHANNEL}/>
+		<InputRequestsRenderer />
 		<ServiceWorkerControllerComponent/>
 		<BroadcastMessageRenderer
 			channelId={SW_BROADCAST_CHANNEL}

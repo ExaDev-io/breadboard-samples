@@ -15,7 +15,7 @@ export function InputRequestsRenderer<
 	defaultMessageComponent = BasicInput,
 	// defaultHandler
 }: {
-	channelId: string;
+	channelId?: string;
 	matchers?: [
 		matcher: (request: M) => boolean,
 		component: React.ComponentType<{ request: M; }>,
