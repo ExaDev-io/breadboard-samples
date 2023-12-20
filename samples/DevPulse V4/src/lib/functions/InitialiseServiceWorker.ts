@@ -1,14 +1,4 @@
-interface PeriodicSyncManager {
-	register(tag: string, options?: { minInterval: number }): Promise<void>;
-}
-
-declare global {
-	interface ServiceWorkerRegistration {
-		readonly periodicSync: PeriodicSyncManager;
-	}
-}
-
-export function initSW() {
+export function initialiseServiceWorker() {
 	if ("serviceWorker" in navigator) {
 		const basePath = import.meta.env.BASE_URL;
 		const workerPath =
@@ -35,4 +25,4 @@ export function initSW() {
 	}
 }
 
-export default initSW;
+export default initialiseServiceWorker;

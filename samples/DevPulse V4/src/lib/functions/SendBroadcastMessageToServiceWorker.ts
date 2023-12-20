@@ -2,7 +2,7 @@ import { BroadcastChannelEventHandler } from "~/lib/types/BroadcastChannelEventH
 import { BroadcastChannelMember } from "~/lib/types/BroadcastChannelMember.ts";
 import { BroadcastMessage } from "~/lib/types/BroadcastMessage.ts";
 import { ResponseForMessage } from "~/lib/types/ResponseForMessage.ts";
-import { sendBroadcastMessage } from "~/lib/SendBroadcastMessage.ts";
+import { sendBroadcastMessage } from "~/lib/functions/SendBroadcastMessage.ts";
 
 
 export function sendBroadcastMessageToServiceWorker<

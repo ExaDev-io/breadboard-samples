@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { addBroadcastListener } from "~/lib/AddBroadcastListener.ts";
+import { addBroadcastListener } from "~/lib/functions/AddBroadcastListener.ts";
 import { SW_BROADCAST_CHANNEL } from "~/lib/constants/SW_BROADCAST_CHANNEL.ts";
 import { BroadcastChannelMember } from "~/lib/types/BroadcastChannelMember.ts";
 import { BroadcastMessage } from "~/lib/types/BroadcastMessage.ts";
 import { BroadcastMessageType } from "~/lib/types/BroadcastMessageType.ts";
-import { sendControlCommandToServiceWorker } from "~/lib/SendControlCommandToServiceWorker.ts";
-import { sendStatusRequestToServiceWorker } from "~/lib/SendStatusRequestToServiceWorker.ts";
+import { sendControlCommandToServiceWorker } from "~/lib/functions/SendControlCommandToServiceWorker.ts";
+import { sendStatusRequestToServiceWorker } from "~/lib/functions/SendStatusRequestToServiceWorker.ts";
 import { ServiceWorkerControllerCommand } from "~/lib/types/ServiceWorkerControllerCommand.ts";
 import { ServiceWorkerStatus } from "~/lib/types/ServiceWorkerStatus.ts";
 

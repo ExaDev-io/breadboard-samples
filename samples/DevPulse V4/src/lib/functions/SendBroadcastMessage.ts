@@ -1,4 +1,4 @@
-import { addBroadcastListener } from "~/lib/AddBroadcastListener.ts";
+import { addBroadcastListener } from "~/lib/functions/AddBroadcastListener.ts";
 import { BroadcastChannelEventHandler } from "~/lib/types/BroadcastChannelEventHandler.ts";
 import { BroadcastMessage } from "~/lib/types/BroadcastMessage.ts";
 import { ResponseForMessage } from "~/lib/types/ResponseForMessage.ts";

@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "~/index.css";
 import App from "~/components/App.tsx";
-import initSW from '~/lib/sw-helpers.ts';
+import initialiseServiceWorker from "~/lib/functions/InitialiseServiceWorker.ts";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
 	<React.StrictMode>
@@ -10,4 +10,4 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 	</React.StrictMode>
 );
 
-initSW();
+initialiseServiceWorker();
