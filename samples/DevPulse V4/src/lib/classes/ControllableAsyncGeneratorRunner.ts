@@ -30,25 +30,25 @@ export class ControllableAsyncGeneratorRunner<
 	) {}
 
 	run(): void {
-		const generator = this.generatorGenerator(this.generatorParams);
+		const generator: AsyncGenerator<TReturn, TNext, TNextReturn | undefined> = this.generatorGenerator(this.generatorParams)
 		const handler = this.handler;
 		this._active = true;
 		this._paused = false;
 		this._finished = false;
 		(async (): Promise<void> => {
 			try {
-				let next = await generator.next();
-				while (this._active && !next.done) {
-					if (this._paused) {
-						await new Promise((resolve): void => {
-							this.pausePromiseResolve = resolve;
-						});
+				for await (const value of generator) {
+					if (this.state.active) {
+						if (this.state.paused) {
+							await new Promise((resolve): void => {
+								this.pausePromiseResolve = resolve;
+							});
+						}
+						await handler(value);
+					} else {
+						break;
 					}
-					await handler(next.value);
-					next = await generator.next();
 				}
-				console.debug("ServiceWorker", "generator done");
-				this._finished = true
 			} catch (error) {
 				console.error(error);
 			} finally {
