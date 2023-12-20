@@ -76,24 +76,24 @@ export function InputRequestsRenderer<
 						return <Component
 							key={request.id}
 							request={request}
-							onResponseSent={() => {
-								setRequests((prevMessages) =>
-									prevMessages.filter((m) => m.id !== request.id)
-								);
-							}}
+							onResponseSent={dismissInputOnSend<M>(setRequests, request)}
 						/>;
 					}
 				}
 				return React.createElement(defaultMessageComponent, {
 					key: request.id,
 					request: request,
-					onResponseSent: () => {
-						setRequests((prevMessages) =>
-							prevMessages.filter((m) => m.id !== request.id)
-						);
-					},
+					onResponseSent: dismissInputOnSend<M>(setRequests, request)
 				});
 			})}
 		</div>
 	);
 }
+
+function dismissInputOnSend<M extends InputRequest>(setRequests: React.Dispatch<React.SetStateAction<M[]>>, request: M): () => void {
+	return () => {
+		setRequests((prevMessages) => prevMessages.filter((m) => m.id !== request.id)
+		);
+	};
+}
+
