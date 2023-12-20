@@ -4,6 +4,10 @@ import { SW_BROADCAST_CHANNEL } from "~/lib/constants/SW_BROADCAST_CHANNEL.ts";
 import { BroadcastMessageType } from "~/lib/types/BroadcastMessageType.ts";
 import { InputRequest } from "~/lib/types/InputRequest.ts";
 
+const localStorageKeys = {
+	inputRequests: "inputRequests",
+} as const
+
 export function InputRequestsRenderer<
 	M extends InputRequest,
 >({
@@ -26,7 +30,11 @@ export function InputRequestsRenderer<
 			onResponseSent: () => void;
 		}>;
 }): ReactNode {
-	const [requests, setRequests] = useState<M[]>([]);
+	const [requests, setRequests] = useState<M[]>(() => {
+		// Initialize state from local storage
+		const savedRequests = localStorage.getItem(localStorageKeys.inputRequests);
+		return savedRequests ? JSON.parse(savedRequests) : [];
+	});
 
 	useEffect(() => {
 		const channel = new BroadcastChannel(channelId);
@@ -53,7 +61,13 @@ export function InputRequestsRenderer<
 			channel.removeEventListener("message", handleMessage);
 			channel.close();
 		};
-	}, [channelId, ignoreMatchers, requests]);
+	}, [channelId, ignoreMatchers]);
+
+	useEffect(() => {
+		// Save to local storage whenever 'requests' changes
+		localStorage.setItem(localStorageKeys.inputRequests, JSON.stringify(requests));
+	}, [requests]);
+
 	return (
 		<div>
 			{requests.map((request) => {
