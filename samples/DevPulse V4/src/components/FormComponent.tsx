@@ -57,7 +57,10 @@ export function FormComponent<T extends InputRequest>({
 		const { properties } = schema;
 		if (!properties) return null;
 		return (
-			<div className="inputRequest" key={request.id}>
+			<div
+				className="inputRequest"
+				key={request.id}
+			>
 				<h3>Node: {request.content.node}</h3>
 				<details>
 					<summary>Request</summary>
@@ -66,7 +69,12 @@ export function FormComponent<T extends InputRequest>({
 				{Object.entries(properties).map(([key, value]) => {
 					const propertyId = `${request.content.node}.${key}`;
 					return (
-						<div key={key}>
+						<div
+							key={key}
+							style={{
+								margin: "5px"
+							}}
+						>
 							<label htmlFor={key}>{value.title || key}</label>
 							<br />
 							<input
@@ -78,14 +86,26 @@ export function FormComponent<T extends InputRequest>({
 								onChange={handleChange}
 								onKeyUp={onKeyUp}
 							/>
-							<label>
-								Remember
+							<br />
+							<label
+								htmlFor={`${propertyId}_remember`}
+								style={{ marginLeft: "10px" }}
+							>
 								<input
+									id={`${propertyId}_remember`}
 									type="checkbox"
 									name={propertyId}
 									checked={rememberInput[propertyId] || false}
 									onChange={handleRememberChange}
 								/>
+								<p
+									style={{
+										display: "inline-block",
+										marginLeft: "5px"
+									}}
+								>
+									Remember
+								</p>
 							</label>
 						</div>
 					);
