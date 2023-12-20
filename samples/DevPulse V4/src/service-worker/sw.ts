@@ -1,12 +1,13 @@
 /// <reference lib="webworker" />
 declare const self: ServiceWorkerGlobalScope;
 
-import { Board, RunResult } from "@google-labs/breadboard";
+import { Board, Edge, RunResult, Schema } from "@google-labs/breadboard";
 import { precacheAndRoute } from "workbox-precaching";
 import { BroadcastChannelMember } from "../lib/BroadcastChannelMember";
 import {
 	BroadcastMessage,
 	BroadcastMessageTypes,
+	InputRequest,
 } from "../lib/BroadcastMessage";
 import { ControllableAsyncGeneratorRunner } from "../lib/ControllableAsyncGeneratorRunner";
 import { ServiceWorkerStatus } from "../lib/ServiceWorkerStatus";
@@ -41,7 +42,7 @@ const board = new Board();
 for (let i = 0; i < 3; i++) {
 	board
 		.input({ $id: `input_${i}` })
-		.wire("*", board.output({ $id: `output_${i}` }));
+		.wire(`message_${i}`, board.output({ $id: `output_${i}` }));
 }
 
 const channel = new BroadcastChannel(SW_BROADCAST_CHANNEL);
@@ -84,6 +85,54 @@ function handleCommand<M extends BroadcastMessage = BroadcastMessage>(
 	}
 }
 
+export function getInputSchemaFromNode(runResult: RunResult): Schema {
+	let schema: Schema;
+	const inputAttribute: string = runResult.state.newOpportunities.find(
+		(op: Edge) => op.from == runResult.node.id
+	)!.out!;
+
+	const schemaFromOpportunity = {
+		type: "object",
+		properties: {
+			[inputAttribute]: {
+				title: inputAttribute,
+				type: "string",
+			},
+		},
+	};
+
+	if (runResult.inputArguments.schema) {
+		schema = runResult.inputArguments.schema as Schema;
+		if (!Object.keys(schema.properties!).includes(inputAttribute)) {
+			throw new Error(
+				`Input attribute "${inputAttribute}" not found in schema:\n${JSON.stringify(
+					schema,
+					null,
+					2
+				)}`
+			);
+		}
+	} else {
+		schema = schemaFromOpportunity;
+	}
+	return schema;
+}
+
+export function getInputAttributeSchemaFromNodeSchema(schema: Schema): {
+	key: string;
+	schema: Schema;
+} {
+	const key = Object.keys(schema.properties!)[0];
+	// const key = schema.title ?? ""
+	// return first property in schema
+	return {
+		key,
+		schema
+		// schema: schema.properties![key],
+	};
+}
+
+
 function broadcastStatus<M extends BroadcastMessage = BroadcastMessage>(message: M & ExtendableMessageEvent) {
 	const content: ServiceWorkerStatus = {
 		active: boardRunner?.active ?? false,
@@ -99,14 +148,63 @@ function broadcastStatus<M extends BroadcastMessage = BroadcastMessage>(message:
 	channel.postMessage(response);
 }
 
+export const pendingInputResolvers: { [key: string]: (input: string) => void; } = {};
+
+export function waitForInput(node: string, attrib: string): Promise<string> {
+	return new Promise<string>((resolve) => {
+		pendingInputResolvers[`${node}-${attrib}`] = resolve;
+	});
+}
+
+
 async function handler(runResult: RunResult): Promise<void> {
 	console.log("=".repeat(80));
 	if (runResult.type === "input") {
-		const input = {
-			node: runResult.node.id,
+		// const input = {
+		// 	node: runResult.node.id,
+		// };
+		// console.log(runResult.node.id, "input", input);
+		// runResult.inputs = input;
+		const inputSchema = getInputSchemaFromNode(runResult);
+		const { key, schema } = getInputAttributeSchemaFromNodeSchema(inputSchema);
+
+
+		const message: InputRequest = {
+			id: `${runResult.node.id}-${key}`,
+			messageType: BroadcastMessageTypes.INPUT_REQUEST,
+			messageSource: BroadcastChannelMember.ServiceWorker,
+			messageTarget: BroadcastChannelMember.Client,
+			content: {
+				node: runResult.node.id,
+				attribute: key,
+				schema,
+			},
 		};
-		console.log(runResult.node.id, "input", input);
-		runResult.inputs = input;
+		new BroadcastChannel(SW_BROADCAST_CHANNEL).postMessage(message);
+		new BroadcastChannel(SW_BROADCAST_CHANNEL).addEventListener("message", (event): void => {
+			if (event.data.messageType === BroadcastMessageTypes.INPUT_RESPONSE) {
+				// if (event.data.content?.attribute !== key) return;
+				// if (event.data.content?.node !== runResult.node.id) return;
+
+
+				// const { node, attribute, value } = event.data.content;
+				// pendingInputResolvers[`${node}-${attribute}`](value);
+
+				// const { node, attribute, value } = event.data.content;
+				// pendingInputResolvers[`${node}-${attribute}`](value);
+				if (event.data.content?.attribute == key && event.data.content?.node == runResult.node.id) {
+					const { node, attribute, value } = event.data.content;
+					pendingInputResolvers[`${node}-${attribute}`](value);
+				}
+
+			}
+		})
+
+
+		const userInput = await waitForInput(runResult.node.id, key);
+
+		runResult.inputs = { [key]: userInput };
+		console.log(runResult.inputs);
 	} else if (runResult.type === "output") {
 		console.log(runResult.node.id, "output", runResult.outputs);
 		const message: BroadcastMessage = {
