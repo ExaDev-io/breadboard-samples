@@ -101,18 +101,13 @@ export function FormComponent<T extends InputRequest>({
 function getInputType(inputType: string | string[] | undefined): React.HTMLInputTypeAttribute | undefined {
 	// return validTypes.includes(input as HTMLInputTypeAttribute);
 	if (typeof inputType === 'string') {
-		return ValidHTMLInputTypeAttributes.includes(inputType) ? inputType : undefined;
+		return (ValidHTMLInputTypeAttributes).includes(inputType) ? inputType : undefined;
 	} else if (Array.isArray(inputType)) {
-		if (inputType.length === 1) {
-			return ValidHTMLInputTypeAttributes.includes(inputType[0]) ? inputType[0] : undefined;
-		} else if (inputType.length > 1) {
-			// all of the types must exist in validTypes
-			if (inputType.every((type) => ValidHTMLInputTypeAttributes.includes(type))) {
-				return "text";
-			} else {
-				console.warn(`Invalid input types: ${inputType}`);
-				return undefined;
-			}
+		if (inputType.every((type) => ValidHTMLInputTypeAttributes.includes(type))) {
+			return "text";
+		} else {
+			console.warn(`Input type "${inputType}" not found in "${ValidHTMLInputTypeAttributes}"`);
+			return undefined;
 		}
 	} else {
 		console.warn(`Invalid input type: ${inputType}`);
