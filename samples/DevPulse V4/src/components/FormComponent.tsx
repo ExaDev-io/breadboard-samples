@@ -54,7 +54,7 @@ export function FormComponent<T extends InputRequest>({
 					<label htmlFor={key}>{value.title || key}</label>
 					<br />
 					<input
-						type={value.type === 'string' ? 'text' : 'number'}
+						type={getInputType(value.type)}
 						name={key}
 						id={key}
 						placeholder={key}
@@ -96,3 +96,31 @@ export function FormComponent<T extends InputRequest>({
 		</form>
 	);
 }
+function getInputType(inputType: string | string[] | undefined): React.HTMLInputTypeAttribute | undefined {
+	const validTypes = [
+		"button", "checkbox", "color", "date", "datetime-local", "email",
+		"file", "hidden", "image", "month", "number", "password", "radio",
+		"range", "reset", "search", "submit", "tel", "text", "time",
+		"url", "week"
+	];
+	// return validTypes.includes(input as HTMLInputTypeAttribute);
+	if (typeof inputType === 'string') {
+		return validTypes.includes(inputType) ? inputType : undefined;
+	} else if (Array.isArray(inputType)) {
+		if (inputType.length === 1) {
+			return validTypes.includes(inputType[0]) ? inputType[0] : undefined;
+		} else if (inputType.length > 1) {
+			// all of the types must exist in validTypes
+			if (inputType.every((type) => validTypes.includes(type))) {
+				return "text";
+			} else {
+				console.warn(`Invalid input types: ${inputType}`);
+				return undefined;
+			}
+		}
+	} else {
+		console.warn(`Invalid input type: ${inputType}`);
+		return undefined;
+	}
+}
+
