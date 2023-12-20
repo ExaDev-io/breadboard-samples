@@ -43,7 +43,7 @@ export function FormComponent<T extends InputRequest>({
 		const { properties } = schema;
 		if (!properties) return null;
 		return (<div className="inputRequest" key={request.id}>
-			{/* <h3>Node: {request.content.node}</h3> */}
+			<h3>Node: {request.content.node}</h3>
 			<details>
 				<summary>Request</summary>
 				<pre>{JSON.stringify(request, null, 2)}</pre>
