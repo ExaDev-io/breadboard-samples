@@ -13,4 +13,5 @@ export interface InputRequest extends BroadcastMessage {
 		attribute: string;
 		schema: Schema;
 	};
+	[key: string]: unknown;
 }
