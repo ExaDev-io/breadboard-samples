@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import BroadcastMessageRenderer from "~/components/BroadcastMessageRenderer.tsx";
 import { InputRequestsRenderer } from "~/components/InputRequestsRenderer.tsx";
-import { ServiceWorkerControllerComponent } from "~/components/ServiceWorkerControllerComponent.tsx";
+import { ServiceWorkerControllerComponent } from '~/components/ServiceWorkerControllerComponent.tsx';
 import { SW_BROADCAST_CHANNEL } from "~/lib/constants";
 import { BroadcastMessageType } from "~/lib/types/BroadcastMessageType.ts";
 

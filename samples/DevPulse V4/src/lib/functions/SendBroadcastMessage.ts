@@ -1,7 +1,7 @@
-import { addBroadcastListener } from "~/lib/functions/AddBroadcastListener.ts";
 import { BroadcastChannelEventHandler } from "~/lib/types/BroadcastChannelEventHandler.ts";
 import { BroadcastMessage } from "~/lib/types/BroadcastMessage.ts";
 import { ResponseForMessage } from "~/lib/types/ResponseForMessage.ts";
+import { addBroadcastListener } from "./AddBroadcastListener";
 
 export function sendBroadcastMessage<
 	M extends BroadcastMessage,

@@ -6,26 +6,16 @@ import { precacheAndRoute } from "workbox-precaching";
 import board from "../lib/board";
 import { ControllableAsyncGeneratorRunner } from "../lib/classes/ControllableAsyncGeneratorRunner";
 import { SW_BROADCAST_CHANNEL } from "../lib/constants";
+import { SendStatus } from "../lib/functions/SendStatus";
 import { BroadcastChannelMember } from "../lib/types/BroadcastChannelMember";
 import { BroadcastMessage, } from "../lib/types/BroadcastMessage";
 import { BroadcastMessageType } from "../lib/types/BroadcastMessageType";
 import { InputRequest } from "../lib/types/InputRequest";
-import { ServiceWorkerStatus } from "../lib/types/ServiceWorkerStatus";
+import { RunnerState } from "../lib/types/RunnerState";
 
 precacheAndRoute(self.__WB_MANIFEST || []);
 
-type RunnerState = {
-	pendingInputs: {
-		resolvers: {
-			[key: string]: (input: string) => void;
-		};
-		requests: {
-			[key: string]: InputRequest;
-		};
-	};
-} & ServiceWorkerStatus
-
-let boardRunner: ControllableAsyncGeneratorRunner<
+export let boardRunner: ControllableAsyncGeneratorRunner<
 	RunResult,
 	unknown,
 	unknown,
@@ -91,9 +81,9 @@ function handleCommand<M extends BroadcastMessage = BroadcastMessage>(
 					default:
 						throw new Error(`Unknown command: ${message.content}`);
 				}
-				broadcastStatus(message.id);
+				// SendStatus(message.id);
 			} else if (message.messageType === BroadcastMessageType.STATUS) {
-				broadcastStatus(message.id);
+				SendStatus(message.id);
 			}
 		}
 	}
@@ -146,24 +136,6 @@ export function getInputAttributeSchemaFromNodeSchema(schema: Schema): {
 	};
 }
 
-function broadcastStatus(id: BroadcastMessage["id"]) {
-	const content: Omit<RunnerState, "pendingInputs"> & {
-		pendingInputs: RunnerState["pendingInputs"]["requests"];
-	} = {
-		active: boardRunner?.state.active ?? false,
-		paused: boardRunner?.state.paused ?? false,
-		finished: boardRunner?.state.finished ?? false,
-		pendingInputs: boardRunner.state.pendingInputs.requests ?? {}
-	};
-	const response: BroadcastMessage = {
-		id,
-		messageType: BroadcastMessageType.STATUS,
-		messageSource: BroadcastChannelMember.ServiceWorker,
-		content,
-	};
-	new BroadcastChannel(SW_BROADCAST_CHANNEL).postMessage(response);
-}
-
 export function waitForInput(node: string, attrib: string): Promise<string> {
 	return new Promise<string>((resolve) => {
 		boardRunner.state.pendingInputs.resolvers[`${node}-${attrib}`] = resolve;
@@ -173,7 +145,6 @@ export function waitForInput(node: string, attrib: string): Promise<string> {
 async function handler(runResult: RunResult): Promise<void> {
 	console.log("=".repeat(80));
 	if (runResult.type === "input") {
-
 		const inputSchema = getInputSchemaFromNode(runResult);
 		const { key, schema } = getInputAttributeSchemaFromNodeSchema(inputSchema);
 
@@ -189,9 +160,7 @@ async function handler(runResult: RunResult): Promise<void> {
 			},
 		};
 		boardRunner.state.pendingInputs.requests[message.id] = message;
-
-		new BroadcastChannel(SW_BROADCAST_CHANNEL).postMessage(message);
-		broadcastStatus(message.id);
+		SendStatus();
 
 		new BroadcastChannel(SW_BROADCAST_CHANNEL).addEventListener("message", (event): void => {
 			if (event.data.messageType === BroadcastMessageType.INPUT_RESPONSE) {
@@ -199,11 +168,12 @@ async function handler(runResult: RunResult): Promise<void> {
 					const { node, attribute, value } = event.data.content;
 					boardRunner.state.pendingInputs.resolvers[`${node}-${attribute}`](value);
 					delete boardRunner.state.pendingInputs.requests[message.id];
-					broadcastStatus(message.id);
+					SendStatus(message.id);
 				}
 			}
 		})
 
+		// SendStatus();
 
 		const userInput = await waitForInput(runResult.node.id, key);
 

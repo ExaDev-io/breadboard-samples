@@ -1,4 +1,5 @@
 import { ServiceWorkerStatus } from '~/lib/types/ServiceWorkerStatus.ts';
+import SendStatus from '../functions/SendStatus';
 export class ControllableAsyncGeneratorRunner<
 	TReturn,
 	TNext,
@@ -57,14 +58,20 @@ export class ControllableAsyncGeneratorRunner<
 			this.state.active = true;
 			this.run();
 		} else if (this.state.paused) {
+			console.debug("ServiceWorker", "resuming");
 			this.state.paused = false;
 			this.state.finished = false;
+			SendStatus();
 			this.pausePromiseResolve?.();
+		} else {
+			console.warn("ServiceWorker", "already started");
+			SendStatus();
 		}
 	}
 
 	pause(): void {
 		this.state.paused = true;
+		SendStatus();
 	}
 
 	stop() {
@@ -72,5 +79,6 @@ export class ControllableAsyncGeneratorRunner<
 			this._state = this.stateInitialiser();
 			this.pausePromiseResolve?.();
 		}
+		SendStatus();
 	}
 }

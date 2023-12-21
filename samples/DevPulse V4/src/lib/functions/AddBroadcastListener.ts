@@ -27,18 +27,15 @@ export function addBroadcastListener<T extends BroadcastMessage>({
 		const data: T = event.data;
 		console.debug("intermediateHandler", "data", data);
 		if (messageSource && data.messageSource !== messageSource) {
-			console.debug(
-				`Ignoring message from ${messageSource}`,
-				data.messageSource
-			);
+			console.debug("messageSource", data.messageSource, "!=", messageSource, "ignoring", data);
 			return;
 		}
 		if (messageTarget && data.messageTarget !== messageTarget) {
-			console.debug(`Ignoring message to ${messageTarget}`, data.messageTarget);
+			console.debug("messageTarget", data.messageTarget, "!=", messageTarget, "ignoring", data);
 			return;
 		}
 		if (messageType && data.messageType !== messageType) {
-			console.debug(`Skipping message of type ${data.messageType}`);
+			console.debug("messageType", data.messageType, "!=", messageType, "ignoring", data);
 			return;
 		}
 		console.debug("handling", data);
