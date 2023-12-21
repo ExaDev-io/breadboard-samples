@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setOutput, selectOutput } from "~/hnStory/outputSlice";
 import { RootState } from "~/core/redux/store";
 import useWorkerSteps from "~/hnStory/components/useWorkerSteps";
-import { SW_CONTROL_CHANNEL } from "~/lib/constants";
+import { SW_BROADCAST_CHANNEL } from "~/lib/constants";
 
 import {
 	BROADCAST_SOURCE,
@@ -46,7 +46,7 @@ const useWorkerController = (
 		if (bcChannel) {
 			return bcChannel;
 		}
-		return new BroadcastChannel(SW_CONTROL_CHANNEL);
+		return new BroadcastChannel(SW_BROADCAST_CHANNEL);
 	}, [bcChannel]);
 	const [input, setInput] = useState<InputResponse | null>(null);
 

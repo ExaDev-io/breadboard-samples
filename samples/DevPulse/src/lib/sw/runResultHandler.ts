@@ -3,7 +3,7 @@ import {
 	getInputSchemaFromNode,
 	getInputAttributeSchemaFromNodeSchema,
 } from "../getNodeInputSchema";
-import { SW_CONTROL_CHANNEL } from "../constants";
+import { SW_BROADCAST_CHANNEL } from "../constants";
 import { waitForInput } from "./waitForInput.ts";
 import {
 	ServiceWorkerInputRequestData,
@@ -16,7 +16,7 @@ import {
 } from "./types";
 
 export function serviceWorkerOutputBroadcast(data: ServiceWorkerBroadcastData) {
-	const channel = new BroadcastChannel(SW_CONTROL_CHANNEL);
+	const channel = new BroadcastChannel(SW_BROADCAST_CHANNEL);
 	channel.postMessage(data);
 }
 

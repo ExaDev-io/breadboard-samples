@@ -1,32 +1,32 @@
-import React, { useEffect, useState } from "react";
-import BasicMessage from "./BasicMessage.tsx";
-import { BroadcastData } from "~/lib/sw/types.ts";
-import { SW_CONTROL_CHANNEL } from "~/lib/constants.ts";
+import React, { ReactNode, useEffect, useState } from "react";
+import { BroadcastMessage } from "~/lib/types/BroadcastMessage.ts";
+import BasicMessage from "./BasicMessage";
+import { SW_BROADCAST_CHANNEL } from "../constants";
 
 export function BroadcastMessageRenderer({
-	channelId = SW_CONTROL_CHANNEL,
+	channelId = SW_BROADCAST_CHANNEL,
 	matchers = [],
 	ignoreMatchers = [],
 	defaultMessageComponent = BasicMessage,
 }: {
 	channelId: string;
 	matchers?: [
-		matcher: (message: BroadcastData) => boolean,
-		component: React.ComponentType<{ message: BroadcastData }>
+		matcher: (message: BroadcastMessage) => boolean,
+		component: React.ComponentType<{ message: BroadcastMessage }>
 	][]; // Array of tuples of matcher functions and components
-	ignoreMatchers?: ((message: BroadcastData) => boolean)[];
-	defaultMessageComponent?: React.ComponentType<{ message: BroadcastData }>;
-}) {
-	const [messages, setMessages] = useState<BroadcastData[]>([]);
+	ignoreMatchers?: ((message: BroadcastMessage) => boolean)[];
+	defaultMessageComponent?: React.ComponentType<{ message: BroadcastMessage }>;
+}): ReactNode {
+	const [messages, setMessages] = useState<BroadcastMessage[]>([]);
 
 	useEffect(() => {
 		const channel = new BroadcastChannel(channelId);
 
 		const handleMessage = (e: MessageEvent) => {
-			const newMessage = e.data as BroadcastData;
+			const newMessage = e.data as BroadcastMessage;
 			if (
 				ignoreMatchers &&
-				!ignoreMatchers.some((matcher: (arg0: BroadcastData) => boolean) =>
+				!ignoreMatchers.some((matcher: (arg0: BroadcastMessage) => boolean) =>
 					matcher(newMessage)
 				)
 			) {
@@ -42,18 +42,17 @@ export function BroadcastMessageRenderer({
 		};
 	}, [channelId, ignoreMatchers]);
 
-	const renderMessage = (message: BroadcastData) => {
+	const renderMessage = (message: BroadcastMessage) => {
 		for (const [matcher, Component] of matchers) {
 			if (matcher(message)) {
-				return <Component message={message} />;
+				return <Component key={message.id} message={message} />;
 			}
 		}
 		return React.createElement(defaultMessageComponent, {
+			key: message.id,
 			message: message,
 		});
 	};
-
-	console.log(messages);
 
 	return <div>{messages.map(renderMessage)}</div>;
 }

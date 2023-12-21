@@ -1,1 +1,1 @@
-export const SW_CONTROL_CHANNEL: string = "sw-control";
+export const SW_BROADCAST_CHANNEL: string = "service_worker_channel";

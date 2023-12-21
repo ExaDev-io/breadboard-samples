@@ -1,12 +1,12 @@
 import { Route, Routes } from "react-router";
 import SavedStoryOutputs from "./hnStory/components/saved-story-outputs";
 import SearchQueryHistory from "./hnStory/components/search-query-history";
-import WorkerComponent from "./hnStory/components/worker-component";
+import { BreadboardComponent } from "./lib/components/BreadboardComponent";
 
 const routeItems: { path: string; element: React.ReactNode }[] = [
 	{
 		path: "/search",
-		element: <WorkerComponent />,
+		element: <BreadboardComponent />,
 	},
 	{
 		path: "/saved-results",

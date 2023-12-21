@@ -14,7 +14,7 @@ const board = new Board();
 // 		.wire(`message_${i}`, board.output({ $id: `output_${i}` }));
 // }
 
-const schema2: EnhancedSchema = {
+/* const schema2: EnhancedSchema = {
 	type: "object",
 	properties: {
 		"message_2": {
@@ -22,9 +22,9 @@ const schema2: EnhancedSchema = {
 			type: "string",
 		},
 	},
-};
+}; */
 
-/* const multi_input: EnhancedSchema = {
+const multi_input: EnhancedSchema = {
 	type: "object",
 	properties: {
 		"message_1": {
@@ -37,33 +37,37 @@ const schema2: EnhancedSchema = {
 		},
 	},
 };
- */
-board.input({
+
+/* board.input({
 	schema: {
 		type: "object",
 		properties: {
 			"message_1": {
-				type: "number",
+				title: "Message 1",
+				type: "string",
+			},
+			"message_2": {
+				title: "Message 2",
+				type: "string",
 			},
 		},
 	}
-}).wire(`*`, board.output());
+}).wire(`*`, board.output()); */
 
-board.input({ $id: `input_1`, }).wire(`message_1`, board.output({ $id: `output_1` }));
-board.input({ $id: `input_2`, schema: schema2 }).wire(`message_2`, board.output({ $id: `output_2` }));
+//board.input({ $id: `input_1`, }).wire(`message_1`, board.output({ $id: `output_1` }));
+//board.input({ $id: `input_2`, schema: schema2 }).wire(`message_2`, board.output({ $id: `output_2` }));
 
-/* board.input({ $id: `input_3` }).wire(`message_3`, board.output({ $id: `output_3` }));
-board.input({ $id: `input_3` }).wire(`message_4`, board.output({ $id: `output_3` }));
+//board.input({ $id: `input_3` }).wire(`message_3`, board.output({ $id: `output_3` }));
+//board.input({ $id: `input_3` }).wire(`message_4`, board.output({ $id: `output_3` }));
 
 board.input({ $id: `multi_input_1`, schema: multi_input }).wire(`*`, board.output({ $id: `multi_output_1` }));
 
-const multi_input_2 = board.input({ $id: `multi_input_2`, schema: multi_input });
+const multiInput = board.input({ $id: `multi_input_2`, schema: multi_input });
 
-const multiOutput2 = board.output({ $id: `multi_output_2` });
+const multiOutput = board.output({ $id: `multi_output_2` });
 
-multi_input_2.wire(`message_1`, multiOutput2);
-multi_input_2.wire(`message_2`, multiOutput2); */
-
+multiInput.wire(`message_1`, multiOutput);
+multiInput.wire(`message_2`, multiOutput);
 
 board.input({
 	schema: {
@@ -77,5 +81,6 @@ board.input({
 		}, {})
 	}
 }).wire(`*`, board.output({ $id: `output_all_types` }));
+
 
 export default board;

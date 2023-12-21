@@ -3,7 +3,7 @@ import { useWorkerControllerContext } from "worker/useWorkerControllerContext.ts
 import styles from "./worker-component.module.scss";
 import Button from "~/components/button";
 import OutputAccordion from "~/hnStory/components/output-accordion";
-import { SW_CONTROL_CHANNEL } from "../../lib/constants";
+import { SW_BROADCAST_CHANNEL } from "../../lib/constants";
 import {
 	BROADCAST_SOURCE,
 	ClientInputResponseData,
@@ -49,7 +49,7 @@ export const WorkerComponent: React.FC = () => {
 			target: BROADCAST_TARGET.SERVICE_WORKER,
 			value: inputObject,
 		};
-		new BroadcastChannel(SW_CONTROL_CHANNEL).postMessage(message);
+		new BroadcastChannel(SW_BROADCAST_CHANNEL).postMessage(message);
 	};
 	const running =
 		broadcastChannel.status.active &&

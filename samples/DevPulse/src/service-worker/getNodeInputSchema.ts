@@ -18,6 +18,9 @@ export function getInputSchemaFromNode(runResult: RunResult): Schema {
 
 	if (runResult.inputArguments.schema) {
 		schema = runResult.inputArguments.schema as Schema;
+		if (inputAttribute == "*") {
+			return schema;
+		}
 		if (!Object.keys(schema.properties!).includes(inputAttribute)) {
 			throw new Error(
 				`Input attribute "${inputAttribute}" not found in schema:\n${JSON.stringify(

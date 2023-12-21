@@ -1,5 +1,4 @@
 import { ReactNode, useEffect, useState } from "react";
-import { SW_BROADCAST_CHANNEL } from "~/lib/constants/SW_BROADCAST_CHANNEL.ts";
 import { addBroadcastListener } from "~/lib/functions/AddBroadcastListener.ts";
 import { sendControlCommandToServiceWorker } from "~/lib/functions/SendControlCommandToServiceWorker.ts";
 import { sendStatusRequestToServiceWorker } from "~/lib/functions/SendStatusRequestToServiceWorker.ts";
@@ -8,6 +7,9 @@ import { BroadcastMessage } from "~/lib/types/BroadcastMessage.ts";
 import { BroadcastMessageType } from "~/lib/types/BroadcastMessageType.ts";
 import { ServiceWorkerControllerCommand } from "~/lib/types/ServiceWorkerControllerCommand.ts";
 import { ServiceWorkerStatus } from "~/lib/types/ServiceWorkerStatus.ts";
+import { SW_BROADCAST_CHANNEL } from "../constants";
+import styles from "./ServiceWorkerControllerComponent.module.scss";
+import Button from "~/components/button";
 
 export function ServiceWorkerControllerComponent({
 	channelId = SW_BROADCAST_CHANNEL,
@@ -27,6 +29,7 @@ export function ServiceWorkerControllerComponent({
 			channelId,
 			(evt: MessageEvent<ServiceWorkerStatusResponse>) => {
 				setCurrentState(evt.data.content);
+				console.log(currentState);
 			},
 			BroadcastChannelMember.Client,
 			BroadcastChannelMember.ServiceWorker,
@@ -43,79 +46,69 @@ export function ServiceWorkerControllerComponent({
 		);
 	}, []);
 
+	const handleSwCommand = (command: ServiceWorkerControllerCommand): void => {
+		sendControlCommandToServiceWorker(
+			SW_BROADCAST_CHANNEL,
+			command,
+			(evt): void => {
+				setCurrentState(evt.data.content);
+				console.log(currentState);
+			}
+		);
+	};
+
 	return (
-		<div>
-			{currentState && (
-				<div>
-					<p>Current state:</p>
-					<pre
-						style={{
-							fontFamily: "monospace",
-							textAlign: "left",
-							padding: "10px",
-							margin: "5px",
-							border: "1px solid grey",
-							borderRadius: "5px",
-						}}
-					>
-						{JSON.stringify(currentState, null, "\t")}
-					</pre>
-				</div>
-			)}
+		<header className={styles.header}>
+			<h6>
+				Service Worker{" "}
+				{currentState && (
+					<span>
+						Status:{" "}
+						{currentState.active
+							? "active"
+							: currentState.paused
+							? "paused"
+							: currentState.finished
+							? "finished"
+							: "idle"}
+					</span>
+				)}
+			</h6>
 			<div>
-				<button
-					onClick={() =>
-						sendControlCommandToServiceWorker(
-							SW_BROADCAST_CHANNEL,
-							ServiceWorkerControllerCommand.START,
-							(evt): void => {
-								setCurrentState(evt.data.content);
-								console.log(currentState);
-							}
-						)
-					}
-				>
-					Start
-				</button>
-				<button
-					onClick={() =>
-						sendControlCommandToServiceWorker(
-							SW_BROADCAST_CHANNEL,
-							ServiceWorkerControllerCommand.PAUSE,
-							(evt): void => {
-								setCurrentState(evt.data.content);
-							}
-						)
-					}
-				>
-					Pause
-				</button>
-				<button
-					onClick={() =>
-						sendControlCommandToServiceWorker(
-							SW_BROADCAST_CHANNEL,
-							ServiceWorkerControllerCommand.STOP,
-							(evt): void => {
-								setCurrentState(evt.data.content);
-							}
-						)
-					}
-				>
-					Stop
-				</button>
-				<button
-					onClick={() =>
-						sendStatusRequestToServiceWorker(
-							SW_BROADCAST_CHANNEL,
-							(evt: MessageEvent) => {
-								setCurrentState(evt.data.content);
-							}
-						)
-					}
-				>
-					Status
-				</button>
+				<div className={styles.ccontrols}>
+					<Button
+						onClick={() =>
+							handleSwCommand(ServiceWorkerControllerCommand.START)
+						}
+					>
+						Start
+					</Button>
+					<Button
+						onClick={() =>
+							handleSwCommand(ServiceWorkerControllerCommand.PAUSE)
+						}
+					>
+						Pause
+					</Button>
+					<Button
+						onClick={() => handleSwCommand(ServiceWorkerControllerCommand.STOP)}
+					>
+						Stop
+					</Button>
+					<Button
+						onClick={() =>
+							sendStatusRequestToServiceWorker(
+								SW_BROADCAST_CHANNEL,
+								(evt: MessageEvent) => {
+									setCurrentState(evt.data.content);
+								}
+							)
+						}
+					>
+						Status
+					</Button>
+				</div>
 			</div>
-		</div>
+		</header>
 	);
 }

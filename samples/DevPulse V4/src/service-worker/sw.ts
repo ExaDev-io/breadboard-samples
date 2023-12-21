@@ -189,9 +189,7 @@ async function handler(runResult: RunResult): Promise<void> {
 
 
 		const userInput = await waitForInput(runResult.node.id, key);
-
 		runResult.inputs = { [key]: userInput };
-		console.log(runResult.inputs);
 	} else if (runResult.type === "output") {
 		console.log(runResult.node.id, "output", runResult.outputs);
 		const message: BroadcastMessage = {
