@@ -1,46 +1,32 @@
 import { ReactNode, useEffect, useState } from "react";
 import { SW_BROADCAST_CHANNEL } from "~/lib/constants/SW_BROADCAST_CHANNEL.ts";
-import { addBroadcastListener } from "~/lib/functions/AddBroadcastListener.ts";
+import { addBroadcastListener } from "~/lib/functions/AddBroadcastListener";
 import { sendControlCommandToServiceWorker } from "~/lib/functions/SendControlCommandToServiceWorker.ts";
 import { sendStatusRequestToServiceWorker } from "~/lib/functions/SendStatusRequestToServiceWorker.ts";
-import { BroadcastChannelMember } from "~/lib/types/BroadcastChannelMember.ts";
-import { BroadcastMessage } from "~/lib/types/BroadcastMessage.ts";
-import { BroadcastMessageType } from "~/lib/types/BroadcastMessageType.ts";
+import { BroadcastChannelMember } from "~/lib/types/BroadcastChannelMember";
+import { BroadcastMessageType } from "~/lib/types/BroadcastMessageType";
 import { ServiceWorkerControllerCommand } from "~/lib/types/ServiceWorkerControllerCommand.ts";
 import { ServiceWorkerStatus } from "~/lib/types/ServiceWorkerStatus.ts";
+import { ServiceWorkerStatusResponse } from "~/lib/types/ServiceWorkerStatusResponse";
 
-export function ServiceWorkerControllerComponent({
-	channelId = SW_BROADCAST_CHANNEL,
-}: {
-	channelId?: string;
-}): ReactNode {
+export function ServiceWorkerControllerComponent(): ReactNode {
 	const [currentState, setCurrentState] = useState<ServiceWorkerStatus>();
 
-	type ServiceWorkerStatusResponse = BroadcastMessage & {
-		type: BroadcastMessageType.STATUS;
-		content: ServiceWorkerStatus;
-		source: BroadcastChannelMember.ServiceWorker;
-	};
-
 	useEffect(() => {
-		addBroadcastListener<ServiceWorkerStatusResponse>(
-			channelId,
-			(evt: MessageEvent<ServiceWorkerStatusResponse>) => {
+		addBroadcastListener<ServiceWorkerStatusResponse>({
+			handler: (evt: MessageEvent<ServiceWorkerStatusResponse>) => {
 				setCurrentState(evt.data.content);
 			},
-			BroadcastChannelMember.Client,
-			BroadcastChannelMember.ServiceWorker,
-			BroadcastMessageType.STATUS
-		);
-	}, [channelId, currentState]);
+			messageSource: BroadcastChannelMember.ServiceWorker,
+			messageType: BroadcastMessageType.STATUS,
+		});
+		return () => {
+			// cleanup
+		};
+	}, [currentState]);
 
 	useEffect(() => {
-		sendStatusRequestToServiceWorker(
-			SW_BROADCAST_CHANNEL,
-			(evt: MessageEvent) => {
-				setCurrentState(evt.data.content);
-			}
-		);
+		sendStatusRequestToServiceWorker();
 	}, []);
 
 	return (
@@ -58,7 +44,7 @@ export function ServiceWorkerControllerComponent({
 							borderRadius: "5px",
 						}}
 					>
-						{JSON.stringify(currentState, null, "\t")}
+						{JSON.stringify(currentState, null, 2)}
 					</pre>
 				</div>
 			)}
@@ -67,50 +53,37 @@ export function ServiceWorkerControllerComponent({
 					onClick={() =>
 						sendControlCommandToServiceWorker(
 							SW_BROADCAST_CHANNEL,
-							ServiceWorkerControllerCommand.START,
-							(evt): void => {
-								setCurrentState(evt.data.content);
-								console.log(currentState);
-							}
+							ServiceWorkerControllerCommand.START
 						)
 					}
 				>
 					Start
 				</button>
 				<button
-					onClick={() =>
+					onClick={() => {
 						sendControlCommandToServiceWorker(
 							SW_BROADCAST_CHANNEL,
-							ServiceWorkerControllerCommand.PAUSE,
-							(evt): void => {
-								setCurrentState(evt.data.content);
-							}
-						)
-					}
+							ServiceWorkerControllerCommand.PAUSE
+						);
+					}}
 				>
 					Pause
 				</button>
 				<button
-					onClick={() =>
+					onClick={() => {
 						sendControlCommandToServiceWorker(
 							SW_BROADCAST_CHANNEL,
-							ServiceWorkerControllerCommand.STOP,
-							(evt): void => {
-								setCurrentState(evt.data.content);
-							}
-						)
-					}
+							ServiceWorkerControllerCommand.STOP
+						);
+					}}
 				>
 					Stop
 				</button>
 				<button
 					onClick={() =>
-						sendStatusRequestToServiceWorker(
-							SW_BROADCAST_CHANNEL,
-							(evt: MessageEvent) => {
-								setCurrentState(evt.data.content);
-							}
-						)
+						sendStatusRequestToServiceWorker({
+							channelId: SW_BROADCAST_CHANNEL,
+						})
 					}
 				>
 					Status
