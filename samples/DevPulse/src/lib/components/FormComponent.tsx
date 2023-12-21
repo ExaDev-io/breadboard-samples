@@ -1,21 +1,20 @@
-import React, {
-	FormEvent,
-	ReactNode,
-	useEffect,
-	useState
-} from "react";
+import React, { FormEvent, ReactNode, useEffect, useState } from "react";
 import { InputRequest } from "~/lib/types/InputRequest";
 import { ValidHTMLInputTypeAttributes } from "~/lib/types/ValidHTMLInputTypeAttributes";
+import styles from "./FormComponent.module.scss";
+import Button from "~/components/button";
 
 export function FormComponent<T extends InputRequest>({
 	request,
-	handleSubmit
+	handleSubmit,
 }: {
-		request: T;
-		handleSubmit: (t: T) => void;
+	request: T;
+	handleSubmit: (t: T) => void;
 }): ReactNode {
 	const [formData, setFormData] = useState<T>({} as T);
-	const [rememberInput, setRememberInput] = useState<Record<string, boolean>>({});
+	const [rememberInput, setRememberInput] = useState<Record<string, boolean>>(
+		{}
+	);
 
 	useEffect(() => {
 		// Retrieve remembered values from local storage
@@ -57,10 +56,7 @@ export function FormComponent<T extends InputRequest>({
 		const { properties } = schema;
 		if (!properties) return null;
 		return (
-			<div
-				className="inputRequest"
-				key={request.id}
-			>
+			<div className="inputRequest" key={request.id}>
 				<h3>Node: {request.content.node}</h3>
 				<details>
 					<summary>Request</summary>
@@ -72,24 +68,33 @@ export function FormComponent<T extends InputRequest>({
 						<div
 							key={key}
 							style={{
-								margin: "5px"
+								margin: "5px",
 							}}
 						>
-							<label htmlFor={key}>{value.title || key}</label>
+							<label htmlFor={key} className={styles.label}>
+								{value.title || key}
+							</label>
 							<br />
 							<input
 								type={getInputType(value.type)}
 								name={propertyId}
 								id={propertyId}
 								placeholder={propertyId}
-								value={formData[propertyId] as string | number | readonly string[] || undefined}
+								value={
+									(formData[propertyId] as
+										| string
+										| number
+										| readonly string[]) || undefined
+								}
 								onChange={handleChange}
 								onKeyUp={onKeyUp}
+								className={styles.input}
 							/>
 							<br />
 							<label
 								htmlFor={`${propertyId}_remember`}
 								style={{ marginLeft: "10px" }}
+								className={styles.label}
 							>
 								<input
 									id={`${propertyId}_remember`}
@@ -97,11 +102,12 @@ export function FormComponent<T extends InputRequest>({
 									name={propertyId}
 									checked={rememberInput[propertyId] || false}
 									onChange={handleRememberChange}
+									className={styles.input}
 								/>
 								<p
 									style={{
 										display: "inline-block",
-										marginLeft: "5px"
+										marginLeft: "5px",
 									}}
 								>
 									Remember
@@ -139,9 +145,7 @@ export function FormComponent<T extends InputRequest>({
 			{schema.title && <h2>{schema.title}</h2>}
 			{schema.description && <p>{schema.description}</p>}
 			{renderInputs()}
-			<button type="submit">
-				Submit
-			</button>
+			<Button type="submit">Submit</Button>
 		</form>
 	);
 }

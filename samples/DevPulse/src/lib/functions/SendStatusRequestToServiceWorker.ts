@@ -2,12 +2,11 @@ import { BroadcastChannelEventHandler } from "~/lib/types/BroadcastChannelEventH
 import { BroadcastChannelMember } from "~/lib/types/BroadcastChannelMember.ts";
 import { BroadcastMessage } from "~/lib/types/BroadcastMessage.ts";
 
+import { sendBroadcastMessageToServiceWorker } from "~/lib/functions/SendBroadcastMessageToServiceWorker.ts";
 import { BroadcastMessageType } from "~/lib/types/BroadcastMessageType.ts";
 import { ResponseForMessage } from "~/lib/types/ResponseForMessage.ts";
-import { sendBroadcastMessageToServiceWorker } from "~/lib/functions/SendBroadcastMessageToServiceWorker.ts";
 import { ServiceWorkerStatus } from "~/lib/types/ServiceWorkerStatus.ts";
 import { SW_BROADCAST_CHANNEL } from "../constants";
-
 
 export function sendStatusRequestToServiceWorker<
 	M extends BroadcastMessage & {
@@ -23,7 +22,13 @@ export function sendStatusRequestToServiceWorker<
 		type: BroadcastMessageType.STATUS;
 	},
 	H extends BroadcastChannelEventHandler<R> = BroadcastChannelEventHandler<R>
->(channelId: string = SW_BROADCAST_CHANNEL, responseHandler?: H) {
+	>({
+		channelId = SW_BROADCAST_CHANNEL,
+		responseHandler,
+	}: {
+		channelId?: string;
+		responseHandler?: H;
+	} = {}) {
 	return sendBroadcastMessageToServiceWorker<M, R, H>(
 		channelId,
 		{

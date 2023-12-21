@@ -41,9 +41,8 @@ export function getInputAttributeSchemaFromNodeSchema(schema: Schema): {
 	schema: Schema;
 } {
 	const key = Object.keys(schema.properties!)[0];
-	// return first property in schema
 	return {
 		key,
-		schema: schema.properties![key],
+		schema
 	};
 }

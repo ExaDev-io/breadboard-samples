@@ -1,17 +1,21 @@
 import React, { ComponentType, ReactNode, useEffect, useState } from "react";
 import { BroadcastMessageType } from "~/lib/types/BroadcastMessageType.ts";
 import { InputRequest } from "~/lib/types/InputRequest.ts";
-import { SW_BROADCAST_CHANNEL } from "../constants";
 import { BasicInput } from "./BasicInput";
+import { sendStatusRequestToServiceWorker } from "../functions/SendStatusRequestToServiceWorker";
+import { BroadcastChannelMember } from "../types/BroadcastChannelMember";
+import { addBroadcastListener } from "../functions/AddBroadcastListener";
+import { ServiceWorkerStatusResponse } from "../types/ServiceWorkerStatusResponse";
+import { RunnerState } from "../types/RunnerState";
+import styles from "./InputRequestRenderer.module.scss";
 
-const localStorageKeys = {
-	inputRequests: "inputRequests",
-} as const;
-
-export function InputRequestsRenderer<M extends InputRequest>({
-	channelId = SW_BROADCAST_CHANNEL,
+export function InputRequestsRenderer<
+	M extends InputRequest,
+	P extends object = {
+		[key: string]: M;
+	}
+>({
 	matchers = [],
-	ignoreMatchers = [],
 	defaultMessageComponent = BasicInput,
 }: {
 	channelId?: string;
@@ -28,60 +32,38 @@ export function InputRequestsRenderer<M extends InputRequest>({
 		onResponseSent: () => void;
 	}>;
 }): ReactNode {
-	const [requests, setRequests] = useState<M[]>(() => {
-		// Initialize state from local storage
-		const savedRequests = localStorage.getItem(localStorageKeys.inputRequests);
-		return savedRequests ? JSON.parse(savedRequests) : [];
-	});
+	const [requests, setRequests] = useState<P>({} as P);
 
 	useEffect(() => {
-		const channel = new BroadcastChannel(channelId);
-
-		const handleMessage = (e: MessageEvent) => {
-			if (e.data.messageType !== BroadcastMessageType.INPUT_REQUEST) return;
-
-			const newMessage = e.data as M;
-			// Check if the message should be ignored based on ignoreMatchers
-			if (
-				ignoreMatchers &&
-				ignoreMatchers.some((matcher) => matcher(newMessage))
-			) {
-				return;
+		addBroadcastListener<
+			ServiceWorkerStatusResponse & {
+				content: RunnerState;
 			}
-
-			// Update the requests state only if the new message's ID is not already present
-			setRequests((prevMessages) => {
-				const isDuplicate = prevMessages.some((m) => m.id === newMessage.id);
-				return isDuplicate ? prevMessages : [...prevMessages, newMessage];
-			});
-		};
-
-		channel.addEventListener("message", handleMessage);
-
-		return () => {
-			channel.removeEventListener("message", handleMessage);
-			channel.close();
-		};
-	}, [channelId, ignoreMatchers]);
-
-	useEffect(() => {
-		// Save to local storage whenever 'requests' changes
-		localStorage.setItem(
-			localStorageKeys.inputRequests,
-			JSON.stringify(requests)
-		);
+		>({
+			handler: (evt) => {
+				const pendingInputrequests: P = evt.data.content
+					.pendingInputs as unknown as P;
+				setRequests(pendingInputrequests);
+			},
+			messageSource: BroadcastChannelMember.ServiceWorker,
+			messageType: BroadcastMessageType.STATUS,
+		});
 	}, [requests]);
 
+	useEffect(() => {
+		sendStatusRequestToServiceWorker();
+	}, []);
+
 	return (
-		<div>
-			{requests.map((request) => {
+		<div className={styles.main}>
+			{Object.entries(requests).map(([, request]) => {
 				for (const [matcher, Component] of matchers) {
 					if (matcher(request)) {
 						return (
 							<Component
 								key={request.id}
 								request={request}
-								onResponseSent={dismissInputOnSend<M>(setRequests, request)}
+								onResponseSent={dismissInputOnSend<M, P>(setRequests, request)}
 							/>
 						);
 					}
@@ -89,20 +71,27 @@ export function InputRequestsRenderer<M extends InputRequest>({
 				return React.createElement(defaultMessageComponent, {
 					key: request.id,
 					request: request,
-					onResponseSent: dismissInputOnSend<M>(setRequests, request),
+					onResponseSent: dismissInputOnSend<M, P>(setRequests, request),
 				});
 			})}
 		</div>
 	);
 }
 
-function dismissInputOnSend<M extends InputRequest>(
-	setRequests: React.Dispatch<React.SetStateAction<M[]>>,
-	request: M
+function dismissInputOnSend<
+	R extends InputRequest,
+	P = {
+		[key: string]: R;
+	}
+>(
+	setRequests: React.Dispatch<React.SetStateAction<P>>,
+	request: R
 ): () => void {
 	return () => {
-		setRequests((prevMessages) =>
-			prevMessages.filter((m) => m.id !== request.id)
-		);
+		setRequests((prevMessages) => {
+			const newMessages = { ...prevMessages };
+			delete newMessages[request.id as keyof P];
+			return newMessages;
+		});
 	};
 }

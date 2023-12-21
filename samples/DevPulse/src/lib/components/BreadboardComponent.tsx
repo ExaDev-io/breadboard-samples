@@ -8,8 +8,8 @@ import { SW_BROADCAST_CHANNEL } from "../constants";
 export function BreadboardComponent(): ReactNode {
 	return (
 		<div className="Breadboard">
-			<InputRequestsRenderer />
 			<ServiceWorkerControllerComponent />
+			<InputRequestsRenderer />
 			<BroadcastMessageRenderer
 				channelId={SW_BROADCAST_CHANNEL}
 				ignoreMatchers={[

@@ -4,6 +4,7 @@ import { InputRequest } from "~/lib/types/InputRequest.ts";
 import { InputResponse } from "~/lib/types/InputResponse.ts";
 import { FormComponent } from "./FormComponent";
 import { SW_BROADCAST_CHANNEL } from "../constants";
+import styles from "./BasicInput.module.scss";
 
 export function BasicInput({
 	request,
@@ -16,18 +17,7 @@ export function BasicInput({
 	const attribute = request.content.attribute;
 
 	return (
-		<div
-			id={request.id}
-			key={request.id}
-			style={{
-				fontFamily: "monospace",
-				textAlign: "left",
-				padding: "10px",
-				margin: "5px",
-				border: "1px solid grey",
-				borderRadius: "5px",
-			}}
-		>
+		<div id={request.id} key={request.id} className={styles.form}>
 			<FormComponent
 				// schema={schema}
 				request={request}

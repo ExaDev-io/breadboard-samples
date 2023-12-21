@@ -29,17 +29,7 @@ self.addEventListener("install", () => {
 
 	boardRunner = new ControllableAsyncGeneratorRunner(
 		(): AsyncGenerator<RunResult, unknown, unknown> => board.run(),
-		handler,
-		undefined,
-		() => ({
-			pendingInputs: {
-				resolvers: {},
-				requests: {}
-			},
-			active: false,
-			paused: false,
-			finished: false
-		})
+		handler
 	);
 	return self.skipWaiting();
 });
