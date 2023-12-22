@@ -6,7 +6,7 @@ import {
 	ObjectKit,
 	StringKit,
 } from "@exadev/breadboard-kits";
-import { Board } from "@google-labs/breadboard";
+import { Board, Schema } from "@google-labs/breadboard";
 import Core from "@google-labs/core-kit";
 import { ClaudeKitBuilder } from "./ClaudeKitBuilder";
 
@@ -28,7 +28,23 @@ const claudeKit = board.addKit(ClaudeKitBuilder);
 const objectKit = board.addKit(ObjectKit);
 const stringKit = board.addKit(StringKit);
 //////////////////////////////////////////////
-const searchQuery = board.input({
+const searchParams: Schema = {
+	type: "object",
+	properties: {
+		"query": {
+			title: "Please enter a search query",
+			type: "string",
+		},
+		"claudeApiKey": {
+			title: "Please enter your API Key",
+			type: "string",
+		},
+	},
+};
+
+const searchParamsInput = board.input({ $id: `searchParams`, schema: searchParams });
+//////////////////////////////////////////////
+/* const searchQuery = board.input({
 	$id: "query",
 	schema: {
 		type: "object",
@@ -39,19 +55,19 @@ const searchQuery = board.input({
 			},
 		},
 	},
-});
+}); */
 
 const search = algolia.search({
 	tags: ["story"],
 	limit: SEARCH_RESULT_COUNT,
 });
 const searchPassthrough = core.passthrough();
-searchQuery.wire("query", searchPassthrough);
+searchParamsInput.wire("query", searchPassthrough);
 searchPassthrough.wire("*", search);
 
 const queryOutput = board.output({ $id: "algoliaSearchUrl" });
 search.wire("algoliaUrl", queryOutput);
-searchQuery.wire("query", queryOutput);
+searchParamsInput.wire("query", queryOutput);
 
 //////////////////////////////////////////////
 if (DEBUG) {
@@ -65,13 +81,6 @@ if (DEBUG) {
 const popSearchResult = listKit.pop({
 	$id: "popSearchResult",
 });
-
-// const result = {
-// 	// object: {
-// 	storyid: "asdkjahsdkjash",
-// 	created_at: "2021-08-01T00:00:00.000Z",
-// 	// }
-// }
 
 search.wire("hits->list", popSearchResult);
 popSearchResult.wire("list", popSearchResult);
@@ -160,7 +169,7 @@ story.wire("title", storyOutput);
 story.wire("type", storyOutput);
 story.wire("url", storyOutput);
 search.wire("algoliaUrl", storyOutput);
-searchQuery.wire("query", storyOutput);
+searchParamsInput.wire("query", storyOutput);
 
 if (DEBUG) {
 	story.wire("children", storyOutput);
@@ -180,9 +189,9 @@ if (DEBUG) {
 // );
 
 //////////////////////////////////////////////
-const claudeApiKey = board.input({
+/* const claudeApiKey = board.input({
 	$id: "claudeApiKey",
-});
+}); */
 
 const VITE_SERVER_PORT = 5173;
 const serverUrl = `http://localhost:${VITE_SERVER_PORT}`;
@@ -266,7 +275,7 @@ const claudePostSummarisation = claudeKit.complete({
 	url: `${serverUrl}/anthropic/v1/complete`,
 });
 
-claudeApiKey.wire("apiKey.", claudePostSummarisation);
+searchParamsInput.wire("apiKey.", claudePostSummarisation);
 instructionTemplate.wire("string->userQuestion", claudePostSummarisation);
 
 const summaryOutput = board.output({

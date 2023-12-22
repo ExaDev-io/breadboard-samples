@@ -1,6 +1,6 @@
 import { RunResult } from "@google-labs/breadboard";
-import { getInputSchemaFromNode } from "~/lib/getNodeInputSchema.ts";
-import { getInputForSchema } from "~/lib/getInputForSchema.ts";
+import { getInputSchemaFromNode } from "../../service-worker/getNodeInputSchema";
+import { getInputForSchema } from "../../service-worker/getInputForSchema";
 
 export async function cliRunResultHandler(runResult: RunResult): Promise<void> {
 	console.debug("=".repeat(80));

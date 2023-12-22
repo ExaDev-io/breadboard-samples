@@ -1,17 +1,11 @@
 import React from "react";
-import { useWorkerControllerContext } from "worker/useWorkerControllerContext.tsx";
+import { useWorkerControllerContext } from "~/old/worker/useWorkerControllerContext";
 import styles from "./worker-component.module.scss";
 import Button from "~/components/button";
 import OutputAccordion from "~/hnStory/components/output-accordion";
 import { SW_BROADCAST_CHANNEL } from "../../lib/constants";
-import {
-	BROADCAST_SOURCE,
-	ClientInputResponseData,
-	InputResponse,
-	BROADCAST_TARGET,
-	ClientBroadcastType,
-} from "../../lib/sw/types";
 import { Schema } from "@google-labs/breadboard";
+import { InputResponse } from "~/lib/types/InputResponse";
 
 export const WorkerStatus = {
 	idle: "idle",
@@ -43,12 +37,12 @@ export const WorkerComponent: React.FC = () => {
 		};
 		workerSteps.addStep(inputObject);
 
-		const message: ClientInputResponseData = {
+		/* const message: ClientInputResponseData = {
 			type: ClientBroadcastType.INPUT_RESPONSE,
 			source: BROADCAST_SOURCE.CLIENT,
 			target: BROADCAST_TARGET.SERVICE_WORKER,
 			value: inputObject,
-		};
+		}; */
 		new BroadcastChannel(SW_BROADCAST_CHANNEL).postMessage(message);
 	};
 	const running =

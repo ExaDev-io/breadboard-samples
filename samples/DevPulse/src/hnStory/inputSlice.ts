@@ -5,7 +5,7 @@ import {
 } from "@reduxjs/toolkit";
 import { RootState } from "~/core/redux/store";
 import { v4 as uuid } from "uuid";
-import { InputResponse } from "../lib/sw/types";
+import { InputResponse } from "~/lib/types/InputResponse";
 
 export type InputSteps = Record<number, InputResponse>;
 export type WorkerDataCollection = { id: string; inputSteps: InputSteps };

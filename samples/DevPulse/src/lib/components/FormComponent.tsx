@@ -52,73 +52,8 @@ export function FormComponent<T extends InputRequest>({
 	}
 
 	const schema = request.content.schema;
-	const renderInputs = () => {
-		const { properties } = schema;
-		if (!properties) return null;
-		return (
-			<div className="inputRequest" key={request.id}>
-				<h3>Node: {request.content.node}</h3>
-				<details>
-					<summary>Request</summary>
-					<pre>{JSON.stringify(request, null, 2)}</pre>
-				</details>
-				{Object.entries(properties).map(([key, value]) => {
-					const propertyId = `${request.content.node}.${key}`;
-					return (
-						<div
-							key={key}
-							style={{
-								margin: "5px",
-							}}
-						>
-							<label htmlFor={key} className={styles.label}>
-								{value.title || key}
-							</label>
-							<br />
-							<input
-								type={getInputType(value.type)}
-								name={propertyId}
-								id={propertyId}
-								placeholder={propertyId}
-								value={
-									(formData[propertyId] as
-										| string
-										| number
-										| readonly string[]) || undefined
-								}
-								onChange={handleChange}
-								onKeyUp={onKeyUp}
-								className={styles.input}
-							/>
-							<br />
-							<label
-								htmlFor={`${propertyId}_remember`}
-								style={{ marginLeft: "10px" }}
-								className={styles.label}
-							>
-								<input
-									id={`${propertyId}_remember`}
-									type="checkbox"
-									name={propertyId}
-									checked={rememberInput[propertyId] || false}
-									onChange={handleRememberChange}
-									className={styles.input}
-								/>
-								<p
-									style={{
-										display: "inline-block",
-										marginLeft: "5px",
-									}}
-								>
-									Remember
-								</p>
-							</label>
-						</div>
-					);
-				})}
-			</div>
-		);
-	};
+	const { properties } = schema;
+	if (!properties) return null;
 
 	function submitResponse() {
 		// Save to local storage if the remember option is checked
@@ -141,10 +76,38 @@ export function FormComponent<T extends InputRequest>({
 	}
 
 	return (
-		<form onSubmit={handleFormSubmit}>
-			{schema.title && <h2>{schema.title}</h2>}
-			{schema.description && <p>{schema.description}</p>}
-			{renderInputs()}
+		<form className={styles.form} onSubmit={handleFormSubmit}>
+			{Object.entries(properties).map(([key, value]) => {
+				return (
+					<div className={styles.inputLabel}>
+						<label htmlFor={key}>{value.title || key}</label>
+						<input
+							type={getInputType(value.type)}
+							name={key}
+							id={key}
+							placeholder={key}
+							value={
+								(formData[key] as string | number | readonly string[]) ||
+								undefined
+							}
+							onChange={handleChange}
+							onKeyUp={onKeyUp}
+							className={styles.input}
+						/>
+						<label htmlFor={`${key}_remember`} className={styles.checkboxLabel}>
+							<input
+								id={`${key}_remember`}
+								type="checkbox"
+								name={key}
+								checked={rememberInput[key] || false}
+								onChange={handleRememberChange}
+								className={styles.checkbox}
+							/>
+							Remember
+						</label>
+					</div>
+				);
+			})}
 			<Button type="submit">Submit</Button>
 		</form>
 	);

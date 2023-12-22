@@ -7,7 +7,7 @@ import { SW_BROADCAST_CHANNEL } from "../constants";
 
 export function BreadboardComponent(): ReactNode {
 	return (
-		<div className="Breadboard">
+		<>
 			<ServiceWorkerControllerComponent />
 			<InputRequestsRenderer />
 			<BroadcastMessageRenderer
@@ -16,6 +16,6 @@ export function BreadboardComponent(): ReactNode {
 					(message) => message.messageType != BroadcastMessageType.OUTPUT,
 				]}
 			/>
-		</div>
+		</>
 	);
 }

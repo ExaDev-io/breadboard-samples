@@ -4,7 +4,6 @@ import { InputRequest } from "~/lib/types/InputRequest.ts";
 import { InputResponse } from "~/lib/types/InputResponse.ts";
 import { FormComponent } from "./FormComponent";
 import { SW_BROADCAST_CHANNEL } from "../constants";
-import styles from "./BasicInput.module.scss";
 
 export function BasicInput({
 	request,
@@ -17,26 +16,24 @@ export function BasicInput({
 	const attribute = request.content.attribute;
 
 	return (
-		<div id={request.id} key={request.id} className={styles.form}>
-			<FormComponent
-				// schema={schema}
-				request={request}
-				handleSubmit={(formData) => {
-					const message: InputResponse = {
-						id: request.id,
-						messageType: BroadcastMessageType.INPUT_RESPONSE,
-						messageSource: request.messageTarget,
-						messageTarget: request.messageSource,
-						content: {
-							node: node,
-							attribute: attribute,
-							value: formData,
-						},
-					};
-					new BroadcastChannel(SW_BROADCAST_CHANNEL).postMessage(message);
-					onResponseSent();
-				}}
-			/>
-		</div>
+		<FormComponent
+			// schema={schema}
+			request={request}
+			handleSubmit={(formData) => {
+				const message: InputResponse = {
+					id: request.id,
+					messageType: BroadcastMessageType.INPUT_RESPONSE,
+					messageSource: request.messageTarget,
+					messageTarget: request.messageSource,
+					content: {
+						node: node,
+						attribute: attribute,
+						value: formData,
+					},
+				};
+				new BroadcastChannel(SW_BROADCAST_CHANNEL).postMessage(message);
+				onResponseSent();
+			}}
+		/>
 	);
 }

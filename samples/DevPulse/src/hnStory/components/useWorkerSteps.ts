@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { InputSteps, addInputCollection } from "../inputSlice";
 import { useAppDispatch } from "~/core/redux/hooks";
-import { InputResponse } from "../../lib/sw/types";
+import { InputResponse } from "~/lib/types/InputResponse";
 
 const useWorkerSteps = () => {
 	const [stepNumber, setStepNumber] = useState<number>(0);

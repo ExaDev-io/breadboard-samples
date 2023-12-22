@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect } from "react";
-import useWorkerController from "~/worker/useWorkerController.ts";
-import { WorkerControllerContext } from "~/worker/workerControllerContext.tsx";
-import { SW_BROADCAST_CHANNEL } from "../lib/constants";
+import useWorkerController from "~/old/worker/useWorkerController";
+import { WorkerControllerContext } from "~/old/worker/workerControllerContext";
+import { SW_BROADCAST_CHANNEL } from "../../lib/constants";
 
 export function WorkerControllerProvider({
 	broadcastChannel,

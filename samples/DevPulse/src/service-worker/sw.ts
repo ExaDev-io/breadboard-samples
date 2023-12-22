@@ -9,10 +9,12 @@ import { BroadcastMessageType } from "../lib/types/BroadcastMessageType";
 import { InputRequest } from "../lib/types/InputRequest";
 import { BroadcastChannelMember } from "../lib/types/BroadcastChannelMember";
 import {getInputSchemaFromNode, getInputAttributeSchemaFromNodeSchema} from "./getNodeInputSchema";
-import board from "../lib/board";
 import { ControllableAsyncGeneratorRunner } from "../lib/classes/ControllableAsyncGeneratorRunner";
 import { RunnerState } from "~/lib/types/RunnerState";
 import SendStatus from "../lib/functions/SendStatus";
+import board from "../breadboard/index";
+import { Stories } from "../core/Stories";
+import { StoryOutput } from "~/hnStory/domain";
 
 precacheAndRoute(self.__WB_MANIFEST || []);
 
@@ -24,6 +26,12 @@ export let boardRunner: ControllableAsyncGeneratorRunner<
 	any,
 	RunnerState
 >;
+
+const ignoredOutputNodeIds = [
+	"testCompletion",
+	"algoliaSearchUrl",
+	"postSummarisation",
+];
 
 self.addEventListener("install", () => {
 	console.log("ServiceWorker", "install");
@@ -128,20 +136,27 @@ async function handler(runResult: RunResult): Promise<void> {
 			}
 		})
 
-		// SendStatus();
-
 		const userInput = await waitForInput(runResult.node.id, key);
 
 		runResult.inputs = { [key]: userInput };
-		console.log(runResult.inputs);
 	} else if (runResult.type === "output") {
-		console.log(runResult.node.id, "output", runResult.outputs);
+		if (runResult.outputs?.story_id) {
+			const id = runResult.outputs.story_id as number;
+			Stories.add(id, runResult.outputs);
+		} else if (ignoredOutputNodeIds.includes(runResult.node.id)) {
+			//
+		} else {
+			throw new Error(`node: ${runResult.node.id}`);
+		}
+		const output = Stories.getAll() as StoryOutput[];
 		const message: BroadcastMessage = {
-			id: new Date().getTime().toString(),
 			messageType: BroadcastMessageType.OUTPUT,
 			messageSource: BroadcastChannelMember.ServiceWorker,
 			messageTarget: BroadcastChannelMember.Client,
-			content: runResult.outputs,
+			content: {
+				node: runResult.node.id,
+				outputs: output
+			}
 		};
 		new BroadcastChannel(SW_BROADCAST_CHANNEL).postMessage(message);
 	}

@@ -1,11 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { initialiseServiceWorker } from "~/lib/sw/initialiseServiceWorker.ts";
 import App from "./App.tsx";
 import "./index.css";
 import { Provider } from "react-redux";
 import { store } from "~/core/redux/store.ts";
 import { BrowserRouter } from "react-router-dom";
+import initialiseServiceWorker from "./lib/functions/InitialiseServiceWorker.ts";
 
 initialiseServiceWorker();
 
