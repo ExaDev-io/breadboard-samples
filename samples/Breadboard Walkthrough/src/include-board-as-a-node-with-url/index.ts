@@ -15,16 +15,18 @@ const core = board.addKit(Core);
 const NESTED_BOARD_URL =
 	"https://raw.githubusercontent.com/ExaDev-io/breadboard-samples/more-demos/samples/Breadboard%20Walkthrough/src/include-board-as-a-node-with-url/nestedboard.json";
 
-board
-	.input({
-		$id: "mainInputNode",
-	})
-	.wire(
-		"mainInput->nestedInput",
-		core
-			.invoke({ path: NESTED_BOARD_URL })
-			.wire("nestedOutput", board.output({ $id: "mainOutputNode" }))
-	);
+const input = board.input({
+	$id: "mainInputNode",
+});
+
+const nestedBoard = core.invoke({ path: NESTED_BOARD_URL });
+const output = board.output({ $id: "mainOutputNode" });
+const nestedBoardInvocation = nestedBoard.wire("nestedOutput", output);
+
+input.wire(
+	"mainInput->nestedInput",
+	nestedBoardInvocation
+);
 
 (async () => {
 	for await (const run of board.run()) {
