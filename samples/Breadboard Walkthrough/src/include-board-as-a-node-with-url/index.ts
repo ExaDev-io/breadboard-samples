@@ -13,7 +13,7 @@ const board = new Board({
 const core = board.addKit(Core);
 
 const NESTED_BOARD_URL =
-	"https://raw.githubusercontent.com/ExaDev-io/breadboard-samples/more-demos/samples/Breadboard%20Walkthrough/src/include-board-as-a-node-with-url/nestedboard.json";
+	"https://raw.githubusercontent.com/ExaDev-io/breadboard-samples/develop/samples/Breadboard%20Walkthrough/src/include-board-as-a-node-with-url/nestedboard.json";
 
 await fetch(NESTED_BOARD_URL).then((response) => {
 	if (!response.ok) {
