@@ -143,6 +143,7 @@ async function handler(runResult: RunResult): Promise<void> {
 		if (runResult.outputs?.story_id) {
 			const id = runResult.outputs.story_id as number;
 			Stories.add(id, runResult.outputs);
+			console.log(runResult.outputs);
 		} else if (ignoredOutputNodeIds.includes(runResult.node.id)) {
 			//
 		} else {

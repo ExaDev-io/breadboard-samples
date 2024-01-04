@@ -3,9 +3,6 @@ import { StoryOutput } from "../domain";
 import { intlFormatDate } from "../hooks/useFormattedDate";
 import styles from "./output-accordion.module.scss";
 import { useState } from "react";
-import { saveResult } from "../outputSlice";
-import IconButton from "~/components/icon-button";
-import { useDispatch } from "react-redux";
 
 type OutputAccordionItemProps = {
 	result: StoryOutput;
@@ -18,10 +15,10 @@ const OutputAccordionItem = ({
 	const handleClick = () => {
 		setOpen(!open);
 	};
-	const dispatch = useDispatch();
-	const saveStory = (result: StoryOutput) => {
+	//const dispatch = useDispatch();
+	/* const saveStory = (result: StoryOutput) => {
 		dispatch(saveResult(result));
-	};
+	}; */
 	const renderStatus = (white?: boolean) => {
 		if (result.summary === "pending") {
 			return <Spin className={white ? styles.spinnerWhite : undefined} />;
@@ -36,11 +33,7 @@ const OutputAccordionItem = ({
 					alignItems: "center",
 				}}
 			>
-				Complete |
-				<IconButton
-					onClick={(): void => saveStory(result)}
-					iconName="bookmark"
-				/>
+				Complete
 			</span>
 		);
 	};
