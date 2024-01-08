@@ -4,7 +4,7 @@
 	},
 	"devDependencies": {
 		"@types/node": "^20.9.3",
-		"typescript": "^5.3.2"
+		"typescript": "^5.3.2",
 		"wireit": "^0.14.1"
 	},
 	"engines": {
@@ -13,7 +13,27 @@
 	"engineStrict": true,
 	"name": "hello-breadboard",
 	"scripts": {
-		"start": "npx -y tsx index.ts watch"
+		"build": "wireit",
+		"start": "wireit",
+		"test": "wireit",
+		"validate": "wireit"
 	},
-	"type": "module"
+	"type": "module",
+	"wireit": {
+		"build": {
+			"command": "tsc --noEmit --listFiles | grep -v 'node_modules'"
+		},
+		"start": {
+			"command": "npx -y tsx index.ts watch"
+		},
+		"test": {
+			"command": "npx -y tsx index.ts test"
+		},
+		"validate": {
+			"dependencies": [
+				"build",
+				"test"
+			]
+		}
+	}
 }
