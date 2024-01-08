@@ -1,4 +1,4 @@
- Here is sample code to achieve explicit yielding in JavaScript using the scheduler.yield() method:
+ Here is Markdown formatted code for achieving the discussed topic based on the summary:
 
 ```js
 // Check if scheduler.yield is supported
@@ -7,14 +7,15 @@ if ('scheduler' in window && 'yield' in scheduler) {
   // Define an async function
   async function doWork() {
 
-    // Do some initial work
-    console.log('Step 1');
+    // Do some work
+    console.log('Doing some work...');
 
-    // Yield back to main thread
+    // Yield control back to main thread
     await scheduler.yield();
 
-    // Do more work after yielding
-    console.log('Step 2'); 
+    // Do some more work
+    console.log('Doing some more work...');
+
   }
 
   // Call the function
@@ -22,22 +23,25 @@ if ('scheduler' in window && 'yield' in scheduler) {
 
 } else {
 
-  // scheduler.yield is not supported, fall back to setTimeout
+  // Fallback for browsers that don't support scheduler.yield
   function doWork() {
 
-    console.log('Step 1');
-    
+    // Do some work
+    console.log('Doing some work...');
+
     setTimeout(() => {
-      console.log('Step 2');
+
+      // Do some more work
+      console.log('Doing some more work...');
+
     }, 0);
 
   }
 
+  // Call the fallback function
   doWork();
 
 }
 ```
 
-This checks if the scheduler.yield() method is available, and if so uses it to explicitly yield control back to the main thread. If not, it falls back to using setTimeout as a workaround.
-
-The key benefit of scheduler.yield() over setTimeout is that remaining work is scheduled at the front of the task queue instead of the back. This prevents other logic like intervals or timeouts from delaying resumption of work.
+This checks if `scheduler.yield` is supported, and if so calls an async function that yields with it. If not, it falls back to using `setTimeout` to yield instead.
