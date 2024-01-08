@@ -1687,21 +1687,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@exadev/breadboard-kits@npm:^0.8.3":
-  version: 0.8.3
-  resolution: "@exadev/breadboard-kits@npm:0.8.3"
-  dependencies:
-    "@google-labs/breadboard": "npm:^0.5.1"
-    "@google-labs/core-kit": "npm:^0.0.1"
-    "@google-labs/llm-starter": "npm:^0.2.1"
-    "@xenova/transformers": "npm:^2.9.0"
-    dotenv: "npm:^16.3.1"
-    jsonschema: "npm:^1.4.1"
-  checksum: 145e96b2754b6c5ac4b7ff972b34f6a1fde144d5dec85b71336d0bec9867568644acc281ff4b635ea4267be4e2ad91be5b6391c53842b5173a8e0f318f7b25fa
-  languageName: node
-  linkType: hard
-
-"@exadev/breadboard-kits@npm:^0.9.0, @exadev/breadboard-kits@npm:^0.9.1":
+"@exadev/breadboard-kits@npm:^0.9.1":
   version: 0.9.1
   resolution: "@exadev/breadboard-kits@npm:0.9.1"
   dependencies:
@@ -2863,7 +2849,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@xenova/transformers@npm:^2.10.1, @xenova/transformers@npm:^2.9.0":
+"@xenova/transformers@npm:^2.10.1":
   version: 2.12.1
   resolution: "@xenova/transformers@npm:2.12.1"
   dependencies:
@@ -3159,7 +3145,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "autobake@workspace:samples/AutoBake"
   dependencies:
-    "@exadev/breadboard-kits": "npm:^0.9.0"
+    "@exadev/breadboard-kits": "npm:^0.9.1"
     "@google-labs/breadboard": "npm:^0.6.0"
     "@types/puppeteer": "npm:^7.0.4"
     "@types/react": "npm:^18.2.45"
@@ -3708,7 +3694,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "coursecrafter@workspace:samples/CourseCrafter"
   dependencies:
-    "@exadev/breadboard-kits": "npm:^0.9.0"
+    "@exadev/breadboard-kits": "npm:^0.9.1"
     "@google-labs/breadboard": "npm:^0.6.0"
     "@google-labs/core-kit": "npm:0.1.0"
     "@google-labs/llm-starter": "npm:0.3.0"
@@ -5026,7 +5012,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "hello-react-breadboard@workspace:samples/Hello React Breadboard"
   dependencies:
-    "@exadev/breadboard-kits": "npm:^0.8.3"
+    "@exadev/breadboard-kits": "npm:^0.9.1"
     "@types/react": "npm:^18.2.42"
     "@types/react-dom": "npm:^18.2.17"
     "@typescript-eslint/eslint-plugin": "npm:^6.13.2"
@@ -8866,7 +8852,7 @@ __metadata:
   resolution: "vite-react-worker@workspace:samples/DevPulse"
   dependencies:
     "@anthropic-ai/tokenizer": "npm:^0.0.4"
-    "@exadev/breadboard-kits": "npm:^0.8.3"
+    "@exadev/breadboard-kits": "npm:^0.9.1"
     "@fontsource/roboto": "npm:^5.0.8"
     "@google-labs/breadboard": "npm:^0.6.0"
     "@paulkinlan/claude-breadboard-kit": "npm:^2.2.5"
