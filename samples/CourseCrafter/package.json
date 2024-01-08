@@ -32,10 +32,10 @@
 			"command": "tsc --noEmit --listFiles | grep -v 'node_modules'"
 		},
 		"run-board": {
-			"command": "npx -y tsx src/breadboard/runBoard.ts"
+			"command": "npx -y tsx src/single/runBoard.ts"
 		},
 		"run-board-multiple": {
-			"command": "npx -y tsx src/breadboard-multiple-url/runBoard.ts"
+			"command": "npx -y tsx src/multiple/runBoard.ts"
 		},
 		"test": {
 			"dependencies": [
@@ -50,10 +50,10 @@
 			]
 		},
 		"watch-board": {
-			"command": "npx -y tsx watch src/breadboard/runBoard.ts"
+			"command": "npx -y tsx watch src/single/runBoard.ts"
 		},
 		"watch-board-multiple": {
-			"command": "npx -y tsx watch src/breadboard-multiple-url/runBoard.ts"
+			"command": "npx -y tsx watch src/multiple/runBoard.ts"
 		}
 	}
 }
