@@ -15,15 +15,16 @@
 		"typescript": "^5.3.3",
 		"wireit": "^0.14.1"
 	},
-	"engineStrict": true,
 	"engines": {
 		"node": ">=19"
 	},
+	"engineStrict": true,
 	"name": "breadboard-walkthrough",
 	"scripts": {
 		"adding-slot-to-a-board": "tsx src/adding-slot-to-a-board/index.ts",
 		"adding-slot-to-a-board-with-url": "tsx src/adding-slot-to-a-board-with-url/index.ts",
 		"arrow-directions": "tsx src/arrow-directions/index.ts",
+		"build": "wireit",
 		"custom-kit-node-values-and-handlers": "tsx src/custom-kit-node-values-and-handlers/index.ts",
 		"hello-world": "tsx src/hello-world/index.ts",
 		"include-board-as-a-node": "tsx src/include-board-as-a-node/index.ts",
@@ -36,6 +37,8 @@
 		"one-input-multiple-outputs": "tsx src/one-input-multiple-outputs/index.ts",
 		"specific-outputs": "tsx src/specific-outputs/index.ts",
 		"start": "wireit",
+		"test": "wireit",
+		"validate": "wireit",
 		"watch": "npm-run-all --print-name --parallel 'watch-*'",
 		"watch-adding-slot-to-a-board": "tsx watch src/adding-slot-to-a-board/index.ts",
 		"watch-adding-slot-to-a-board-with-url": "tsx watch src/adding-slot-to-a-board-with-url/index.ts",
@@ -54,6 +57,9 @@
 	},
 	"type": "module",
 	"wireit": {
+		"build": {
+			"command": "tsc --noEmit --listFiles | grep -v 'node_modules'"
+		},
 		"disabled": {
 			"command": "node -e \"console.log('Disabled tests)\""
 		},
@@ -73,6 +79,18 @@
 				"nodes-by-id",
 				"one-input-multiple-outputs",
 				"specific-outputs"
+			]
+		},
+		"test": {
+			"dependencies": [
+				"build",
+				"start"
+			]
+		},
+		"validate": {
+			"dependencies": [
+				"build",
+				"test"
 			]
 		}
 	}
