@@ -1,9 +1,13 @@
-import { PayloadAction, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
+import {
+	PayloadAction,
+	createEntityAdapter,
+	createSlice,
+} from "@reduxjs/toolkit";
 import { RootState } from "~/core/redux/store";
-import { WorkerData } from "~/sw/types";
 import { v4 as uuid } from "uuid";
+import { InputResponse } from "~/lib/types/InputResponse";
 
-export type InputSteps = Record<number, WorkerData>;
+export type InputSteps = Record<number, InputResponse>;
 export type WorkerDataCollection = { id: string; inputSteps: InputSteps };
 export const inputAdaptor = createEntityAdapter<WorkerDataCollection>();
 
@@ -18,21 +22,23 @@ const inputSlice = createSlice({
 		},
 		setInputObject: (
 			state,
-			action: PayloadAction<{id: string, changes: InputSteps}>
+			action: PayloadAction<{ id: string; changes: InputSteps }>
 		) => {
 			inputAdaptor.updateOne(state, action);
+		},
+		saveLatestQueries: () => {
+			//action for saving the 10 latest search queries
 		},
 		reset: () => initialState,
 	},
 });
-
 
 export const {
 	selectById: selectInputStepById,
 	selectIds: selectInputStepIds,
 	selectEntities: selectInputStepEntities,
 	selectAll: selectAllInputSteps,
-	selectTotal: selectTotalInputSteps
+	selectTotal: selectTotalInputSteps,
 } = inputAdaptor.getSelectors<RootState>((state) => state.input);
 
 export const { addInputCollection, setInputObject, reset } = inputSlice.actions;

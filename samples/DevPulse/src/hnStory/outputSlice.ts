@@ -1,25 +1,30 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "~/core/redux/store";
 import { StoryOutput } from "~/hnStory/domain";
-import { WorkerStatus } from "~/sw/types";
+import { WorkerStatus } from "../old/components/worker-component";
 
 const initialState = {
 	output: [] as StoryOutput[],
-	status: WorkerStatus
+	savedResults: [] as StoryOutput[],
+	status: WorkerStatus,
 };
 
 const outputSlice = createSlice({
 	name: "output",
 	initialState: initialState,
 	reducers: {
-		outputSuccess: (state, action) => {
+		setOutput: (state, action) => {
 			state.output = action.payload;
-		}
+		},
+		saveResult: (state, action) => {
+			state.savedResults = action.payload;
+		},
+		reset: () => initialState,
 	},
 });
 
 export const selectOutput = (state: RootState) => state.output.output;
-export const { outputSuccess } = outputSlice.actions;
+export const selectSavedResults = (state: RootState) =>
+	state.output.savedResults;
+export const { setOutput, saveResult, reset } = outputSlice.actions;
 export default outputSlice.reducer;
-
-

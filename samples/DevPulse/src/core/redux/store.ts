@@ -4,11 +4,19 @@ import outputSlice from '../../hnStory/outputSlice';
 import storage from 'redux-persist/es/storage';
 import { persistReducer, persistStore } from 'redux-persist';
 
+/* const outputFilter = createWhitelistFilter(
+	'output',
+	['latestResult']
+  );  
+ */
 const persistConfig = {
 	key: 'root',
 	storage: storage,
-	whitelist: ['input']
-}
+	whitelist: ['input', 'output'],
+	/* transforms: [
+		outputFilter
+	] */
+} 
 
 const reducer = combineReducers({
 	input: inputSlice, //the input reducer

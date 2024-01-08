@@ -1,8 +1,7 @@
-import { type } from "os";
 import styles from "./sidebar-button.module.scss";
 import { IconName } from "./icons/IconMap";
 import Icon from "./icons/Icon";
-import React, { useRef } from "react";
+import React from "react";
 
 type SidebarButtonProps = {
 	icon: IconName;
@@ -30,7 +29,7 @@ const SidebarButton = ({
 	const handleMouseLeave = () => {
 		setHovered(false);
 	}
-	
+
 	const iconColor = getComputedStyle(document.documentElement).getPropertyValue(hovered ? "--theme-tertiary-color" : "--theme-color");
 	return (
 		<button
