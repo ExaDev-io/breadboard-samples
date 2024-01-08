@@ -1,17 +1,4 @@
 {
-	"name": "autobake",
-	"private": true,
-	"version": "0.0.0",
-	"type": "module",
-	"scripts": {
-		"dev": "vite",
-		"build": "tsc && vite build",
-		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-		"preview": "vite preview",
-		"runBoard": "tsx src/breadboard/runBoard.ts",
-		"watchBoard": "tsx watch src/breadboard/runBoard.ts",
-		"runAutoBake": "tsx src/breadboard/autobake.ts"
-	},
 	"dependencies": {
 		"@exadev/breadboard-kits": "^0.9.1",
 		"@google-labs/breadboard": "^0.6.0",
@@ -32,5 +19,33 @@
 		"tsx": "^4.6.2",
 		"typescript": "^5.3.3",
 		"vite": "^5.0.8"
+	},
+	"name": "autobake",
+	"private": true,
+	"scripts": {
+		"build": "wireit",
+		"dev": "vite",
+		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+		"preview": "vite preview",
+		"runAutoBake": "tsx src/breadboard/autobake.ts",
+		"runBoard": "tsx src/breadboard/runBoard.ts",
+		"test": "wireit",
+		"watchBoard": "tsx watch src/breadboard/runBoard.ts"
+	},
+	"type": "module",
+	"version": "0.0.0",
+	"wireit": {
+		"build": {
+			"command": "tsc --noEmit --listFiles | grep -v 'node_modules'"
+		},
+		"test": {
+			"command": "tsx src/breadboard/autobake.ts"
+		},
+		"validate": {
+			"dependencies": [
+				"test",
+				"build"
+			]
+		}
 	}
 }
