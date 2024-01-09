@@ -1,9 +1,8 @@
 {
 	"compilerOptions": {
 		"baseUrl": "./src",
-		"rootDir": "./",
-		"moduleResolution": "nodenext",
 		"module": "NodeNext",
+		"moduleResolution": "nodenext",
 		"noEmit": true,
 		"paths": {
 			"~/*": [
@@ -11,6 +10,8 @@
 			]
 		},
 		"resolveJsonModule": true,
+		"rootDir": "./",
+		"skipLibCheck": true,
 		"target": "ESNext"
 	},
 	"extends": "../../tsconfig.minimal.json"
