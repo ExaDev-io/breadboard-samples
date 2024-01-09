@@ -8,10 +8,10 @@ import { Tiktoken, TiktokenBPE } from "js-tiktoken";
 import * as puppeteer from "puppeteer";
 import { Browser, JSHandle, Page } from "puppeteer";
 import * as readline from 'readline/promises';
-import chromeStatusApiFeatures from "~/breadboard/chromeStatusApiFeatures.js";
+import chromeStatusApiFeatures, { ChromeStatusV1ApiFeature } from "~/breadboard/chromeStatusApiFeatures.js";
 import chromeStatusFeaturesV2 from "~/breadboard/chromeStatusFeaturesV2.js";
 import chromeVersions from "~/breadboard/chromeVersions.js";
-
+import { Core } from "@google-labs/core-kit";
 
 type pageContents = {
 	contents: NodeValue
@@ -62,7 +62,10 @@ export function countTokens(text: string): number {
  * @returns pageContents the html content of the web url
  */
 export async function extractContents(url: string): Promise<pageContents> {
-	const browser: Browser = await puppeteer.launch({args: ['--no-sandbox'],});
+	const browser: Browser = await puppeteer.launch({
+		headless: 'new',
+		args: ['--no-sandbox']
+	});
 	const page: Page = await browser.newPage();
 
 	console.log("Extracting Feature Resources: ", url);
@@ -87,7 +90,10 @@ export async function extractContents(url: string): Promise<pageContents> {
  * @returns  the content of the web page for the given feature
  */
 async function extractFeatureResource(id: string): Promise<pageContents> {
-	const browser = await puppeteer.launch({args: ['--no-sandbox'],});
+	const browser = await puppeteer.launch({
+		headless: 'new',
+		args: ['--no-sandbox'],
+	});
 	const page = await browser.newPage();
 
 	const baseURL = "https://chromestatus.com/feature/"
@@ -106,6 +112,12 @@ async function extractFeatureResource(id: string): Promise<pageContents> {
 	await browser.close();
 
 	return Promise.resolve({contents});
+}
+
+const TOKEN_LIMIT: number = 99_000;
+
+function getTotalTokens(featureResources: featureDocuments[]): number {
+	return featureResources.map(r => countTokens(r as string)).reduce((a, b) => a + b, 0);
 }
 
 export const FeatureKit = new KitBuilder({
@@ -192,7 +204,7 @@ export const FeatureKit = new KitBuilder({
 							tokenCount += countTokens(featureResources[i] as string);
 						}
 
-						if (tokenCount >= 99000) {
+						if (tokenCount >= TOKEN_LIMIT) {
 							for (let i = 0; i < featureResources.length; i++) {
 								// only keep 80% of the current content
 								// there's probably a better way to do that, but it's difficult to know the structure of the HTML because it all comes from different sources
@@ -220,7 +232,52 @@ export const FeatureKit = new KitBuilder({
 		}
 		return Promise.resolve({featureResources});
 	},
-})
+	async getResourcesForFeature({feature}: InputValues & { feature: ChromeStatusV1ApiFeature }): Promise<OutputValues> {
+		const featureId = feature.id
+		const featureDocs = feature.resources.docs
+		const featureSamples = feature.resources.samples
+		const resources: featureDocuments[] = []
+
+		// extract feature content
+		const webContent = await extractFeatureResource(featureId.toString())
+		resources.push(webContent["contents"])
+
+		// extract documentation contents
+		for (const doc of featureDocs) {
+			const webContent = await extractContents(doc as string)
+			resources.push(webContent["contents"])
+		}
+
+		// extract samples content
+		for (const sample of featureSamples) {
+			const webContent = await extractContents(sample as string)
+			resources.push(webContent["contents"])
+		}
+
+		let documentTokens: number[] = []
+		const getTokenCounts = () => {
+			documentTokens = resources.map(r => {
+				return countTokens(r as string);
+			})
+			return documentTokens
+		}
+		getTokenCounts()
+		let totalTokens = () => documentTokens.reduce((a, b) => a + b, 0)
+		while (totalTokens() > TOKEN_LIMIT) {
+			// TODO still has room for improvement
+			const difference = totalTokens() - TOKEN_LIMIT
+			for (let i = 0; i < resources.length; i++) {
+				const docTokens = documentTokens[i]
+				const proportionOfAllTokens: number = Math.ceil(docTokens / totalTokens());
+				const tokensToDrop: number = proportionOfAllTokens * difference;
+				const endIndex: number = (resources[i] as string).length - tokensToDrop;
+				resources[i] = (resources[i] as string).substring(0, endIndex)
+			}
+			getTokenCounts()
+		}
+		return Promise.resolve({resources});
+	}
+});
 
 export type FeatureKit = InstanceType<typeof FeatureKit>;
 export default FeatureKit;
