@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { BrowserView, ChromeBrowser } from "./chromeStatusFeaturesV2";
-import { fetchDirtyJson } from "./fetchDirtyJson";
+
+import { BrowserView, ChromeBrowser } from "~/breadboard/chromeStatusFeaturesV2.js";
+import fetchDirtyJson from "~/breadboard/fetchDirtyJson.js";
 
 type UserAction = {
 	by: string;

@@ -1,5 +1,5 @@
-import { BrowserInfo } from "./chromeStatusApiFeatures";
-import fetchJson from "./fetchJson";
+import { BrowserInfo } from "~/breadboard/chromeStatusApiFeatures.js";
+import fetchJson from "~/breadboard/fetchJson.js";
 
 export type ChromeStatusV2ApiFeature = {
 	blink_components: string[];

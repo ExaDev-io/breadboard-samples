@@ -8,35 +8,23 @@
 		"react-dom": "^18.2.0"
 	},
 	"devDependencies": {
-		"@types/react": "^18.2.45",
-		"@types/react-dom": "^18.2.17",
-		"@typescript-eslint/eslint-plugin": "^6.14.0",
-		"@typescript-eslint/parser": "^6.14.0",
-		"@vitejs/plugin-react-swc": "^3.5.0",
-		"eslint": "^8.55.0",
-		"eslint-plugin-react-hooks": "^4.6.0",
-		"eslint-plugin-react-refresh": "^0.4.5",
 		"tsx": "^4.6.2",
 		"typescript": "^5.3.3",
-		"vite": "^5.0.8"
+		"wireit": "^0.14.1"
 	},
 	"name": "autobake",
 	"private": true,
 	"scripts": {
 		"build": "wireit",
-		"dev": "vite",
-		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-		"preview": "vite preview",
-		"runAutoBake": "tsx src/breadboard/autobake.ts",
-		"runBoard": "tsx src/breadboard/runBoard.ts",
 		"test": "wireit",
-		"watchBoard": "tsx watch src/breadboard/runBoard.ts"
+		"validate": "wireit",
+		"watch": "wireit"
 	},
 	"type": "module",
 	"version": "0.0.0",
 	"wireit": {
 		"build": {
-			"command": "tsc --noEmit --listFiles | grep -v 'node_modules'"
+			"command": "bash -c 'set -o pipefail; tsc --noEmit --listFiles | grep -v \"node_modules\"'"
 		},
 		"test": {
 			"command": "tsx src/breadboard/autobake.ts"
@@ -46,6 +34,9 @@
 				"test",
 				"build"
 			]
+		},
+		"watch": {
+			"command": "tsx watch src/breadboard/runBoard.ts"
 		}
 	}
 }

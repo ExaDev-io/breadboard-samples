@@ -1,4 +1,4 @@
-import { readCache, writeCache } from "~/breadboard/crossEnvCache.ts";
+import { readCache, writeCache } from "~/breadboard/crossEnvCache.js";
 
 export async function fetchJson(url: string): Promise<unknown> {
 	let jsonData = readCache(url);

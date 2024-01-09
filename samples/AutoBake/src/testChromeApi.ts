@@ -4,12 +4,12 @@ import {
 	getChromeStatusApiFeatureids,
 	getChromeStatusApiFeatures,
 	getChromeStatusV1Feature,
-} from "./breadboard/chromeStatusApiFeatures";
+} from "~/breadboard/chromeStatusApiFeatures.js";
 import chromeStatusFeaturesV2, {
 	ChromeStatusV2ApiFeature,
 	getChromeStatusV2Feature,
 	getChromeStatusV2FeatureIds,
-} from "./breadboard/chromeStatusFeaturesV2";
+} from "~/breadboard/chromeStatusFeaturesV2.js";
 
 export async function getUniqueChromeFeatureIds() {
 	const v1 = await getChromeStatusApiFeatureids();

@@ -1,4 +1,4 @@
-import fetchJson from "~/breadboard/fetchJson.ts";
+import fetchJson from "~/breadboard/fetchJson.js";
 
 export const versionsUrl = "https://chromestatus.com/omaha_data";
 export type Channel = "stable" | "beta" | "dev";
