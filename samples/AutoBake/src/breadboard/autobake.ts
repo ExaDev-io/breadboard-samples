@@ -26,8 +26,21 @@ const claudeCompletion = claudeKit.generateCompletion({
 });
 
 const prompt = [
-	"Based on these documents, give me a script that can be used to teach a junior developer about the discussed topic in the document, output in markdown format?:",
-	"{{featureResources}}",
+	"Create a markdown document that can be used to teach a junior developer about the feature discussed in the `feature` code block.",
+	"Base the script on the content of the `resources` code block.",
+	"The first line of the document should be a heading with the name of the feature.",
+	"\n",
+	"Provide your response formatted as raw markdown.",
+	"Only respond with the result of this request.",
+	"Do not add any additional information to the script",
+	"\n",
+	"```resources",
+	"{{resources}}",
+	"```",
+	"\n",
+	"```feature",
+	"{{feature}}",
+	"```",
 ].join("/n");
 const instructionTemplate = stringKit.template({
 	$id: "claudePromptConstructor",
