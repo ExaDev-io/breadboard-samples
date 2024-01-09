@@ -1,8 +1,10 @@
-import { ConfigKit, StringKit } from "@exadev/breadboard-kits";
+import { ConfigKit, ObjectKit, StringKit } from "@exadev/breadboard-kits";
 import { generateAndWriteCombinedMarkdown } from "@exadev/breadboard-kits/util/files/generateAndWriteCombinedMarkdown";
 import { Board } from "@google-labs/breadboard";
+import starter from "@google-labs/llm-starter"
 import { ClaudeKit } from "@paulkinlan/claude-breadboard-kit";
-import fs from "fs";
+import fs from "fs"
+import path from "path";
 import { FeatureKit } from "~/breadboard/featurekit.js";
 
 const board: Board = new Board({title: "AutoBake"});
@@ -11,7 +13,6 @@ const claudeKit: ClaudeKit = board.addKit(ClaudeKit);
 const stringKit: StringKit = board.addKit(StringKit);
 const config: ConfigKit = board.addKit(ConfigKit);
 
-const getFeatureContent = featureKit.getFeatureResources({$id: "featureResources"});
 const features = featureKit.chromeStatusApiFeatures({$id: "chromeApiFeatures"});
 
 const serverUrl = "https://api.anthropic.com/v1/complete";
@@ -51,14 +52,87 @@ const claudeApiKey = config.readEnvVar({
 	$id: "getClaudeAPIKey",
 	key: "CLAUDE_API_KEY"
 });
-
+const llm = board.addKit(starter)
 //TODO refactor to take feature ID as a board input
-features.wire("features->list", getFeatureContent);
 
-getFeatureContent.wire("featureResources->featureResources", instructionTemplate);
+type identifiable = { id: number }
+type identifiableArray = identifiable[]
+
+const selectRandom = llm.runJavascript({
+	$id: "selectRandom",
+	raw: true,
+	code: (function run({list}: { list: identifiableArray }): {
+		id: number,
+		selected: identifiable,
+		list: identifiableArray
+	} {
+		const selected = list[Math.floor(Math.random() * list.length)]
+		return {id: selected.id, selected, list}
+	}).toString()
+})
+const objectKit = board.addKit(ObjectKit)
+const spread = objectKit.spread()
+
+// features.wire("*",board.output())
+features.wire("features->object", spread)
+// spread.wire("features", board.output())
+spread.wire("features->list", selectRandom);
+selectRandom.wire("selected", board.output({$id: "selectedFeature"}));
+const getFeatureContent = featureKit.getResourcesForFeature({$id: "getResourcesForFeature"});
+selectRandom.wire("selected->feature", getFeatureContent);
+getFeatureContent.wire("resources", board.output({$id: "resources"}));
+
+function filterAttributes(obj: any) {
+	// recursively remove any falsy attributes
+
+	if (!obj) {
+		return
+	} else if (typeof obj === "object") {
+		const newObj: any = {}
+		for (const [key, value] of Object.entries(obj)) {
+			const newValue = filterAttributes(value)
+			if (newValue) {
+				newObj[key] = newValue
+			}
+		}
+		if (Object.keys(newObj).length > 0) {
+			return newObj
+		} else {
+			return
+		}
+	}
+	// 	if array
+	else if (Array.isArray(obj)) {
+		const newArray: any[] = []
+		for (const value of obj) {
+			const newValue = filterAttributes(value)
+			if (newValue) {
+				newArray.push(newValue)
+			}
+		}
+		return newArray
+	}
+	return obj
+}
+
+const recursivelyFilterEmptyAttributes = llm.runJavascript({
+	name: "filterAttributes",
+	code: filterAttributes.toString(),
+	raw: true
+})
+
+// selectRandom.wire("selected->feature", instructionTemplate)
+selectRandom.wire("selected->feature", recursivelyFilterEmptyAttributes)
+recursivelyFilterEmptyAttributes.wire("feature", board.output({$id: "filteredFeature"}))
+recursivelyFilterEmptyAttributes.wire("feature", instructionTemplate)
+
+getFeatureContent.wire("resources", instructionTemplate)
+instructionTemplate.wire("string", board.output({$id: "prompt"}));
 claudeApiKey.wire("CLAUDE_API_KEY", claudeCompletion);
 instructionTemplate.wire("string->text", claudeCompletion);
-claudeCompletion.wire("completion->", board.output({$id: "claudeOutput"}));
+const claudeOutput: any = board.output({$id: "claudeOutput"});
+recursivelyFilterEmptyAttributes.wire("feature", claudeOutput);
+claudeCompletion.wire("completion", claudeOutput);
 
 // const result = await board.runOnce({});
 generateAndWriteCombinedMarkdown({
