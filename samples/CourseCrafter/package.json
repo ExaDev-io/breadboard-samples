@@ -29,13 +29,13 @@
 	"version": "0.0.0",
 	"wireit": {
 		"build": {
-			"command": "tsc --noEmit --listFiles | grep -v 'node_modules'"
+			"command": "bash -c 'set -o pipefail; tsc --noEmit --listFiles | grep -v \"node_modules\"'"
 		},
 		"run-board": {
-			"command": "npx -y tsx src/single/runBoard.ts"
+			"command": "npx -y tsx src/single/index.ts"
 		},
 		"run-board-multiple": {
-			"command": "npx -y tsx src/multiple/runBoard.ts"
+			"command": "npx -y tsx src/multiple/index.ts"
 		},
 		"test": {
 			"dependencies": [
@@ -50,10 +50,10 @@
 			]
 		},
 		"watch-board": {
-			"command": "npx -y tsx watch src/single/runBoard.ts"
+			"command": "npx -y tsx watch src/single/index.ts"
 		},
 		"watch-board-multiple": {
-			"command": "npx -y tsx watch src/multiple/runBoard.ts"
+			"command": "npx -y tsx watch src/multiple/index.ts"
 		}
 	}
 }

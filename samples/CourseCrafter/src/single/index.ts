@@ -1,21 +1,22 @@
-import {
-	CourseCrafterKit,
-	StringKit,
-	XenovaKit,
-	ConfigKit,
-} from "@exadev/breadboard-kits";
+#!/usr/bin/env npx -y tsx
+import { ConfigKit, CourseCrafterKit, StringKit, XenovaKit } from "@exadev/breadboard-kits";
+
+import generateAndWriteCombinedMarkdown from "@exadev/breadboard-kits/util/files/generateAndWriteCombinedMarkdown";
 import { Board } from "@google-labs/breadboard";
 import { ClaudeKit } from "@paulkinlan/claude-breadboard-kit";
+import fs from "fs";
+import path from "path";
+import * as url from "url";
 
 const board = new Board({
 	title: "CourseCrafter",
 });
 
-const courseCraftKit = board.addKit(CourseCrafterKit);
-const xenovaKit = board.addKit(XenovaKit);
-const claudeKit = board.addKit(ClaudeKit);
-const stringKit = board.addKit(StringKit);
-const config = board.addKit(ConfigKit);
+const courseCraftKit: CourseCrafterKit = board.addKit(CourseCrafterKit);
+const xenovaKit: XenovaKit = board.addKit(XenovaKit);
+const claudeKit: ClaudeKit = board.addKit(ClaudeKit);
+const stringKit: StringKit = board.addKit(StringKit);
+const config: ConfigKit = board.addKit(ConfigKit);
 
 const input = board.input({
 	$id: "blogDetails",
@@ -62,7 +63,7 @@ const taskDetails = board.input({
 const getBlogContentForTask = courseCraftKit.getBlogContentForTask({
 	$id: "getBlogContents",
 });
-const pipeline = xenovaKit.pipeline({ $id: "summaryLanguageModel" });
+const pipeline = xenovaKit.pipeline({$id: "summaryLanguageModel"});
 const instructionTemplate = stringKit.template({
 	$id: "claudePromptConstructor",
 });
@@ -101,5 +102,47 @@ instructionTemplate.wire("string->text", claudeCompletion);
 
 claudeCompletion.wire("completion->", board.output());
 
-export default board;
-export { board };
+generateAndWriteCombinedMarkdown({
+	board,
+	filename: "README",
+	dir: url.fileURLToPath(new URL(".", import.meta.url)),
+});
+
+const blogUrl =
+	"https://developer.chrome.com/blog/introducing-scheduler-yield-origin-trial/";
+
+for await (const runResult of board.run({})) {
+	if (runResult.type === "input") {
+		if (runResult.node.id == "blogDetails") {
+			runResult.inputs = {
+				url: blogUrl,
+			};
+		} else if (runResult.node.id == "taskDetails") {
+			runResult.inputs = {
+				model: "Xenova/distilbart-cnn-6-6",
+				task: "summarization",
+			};
+		} else if (runResult.node.id == "promptDetails") {
+			const instruction =
+				"Based on this summary and original text, give me code sample on how to achieve the discussed topic. Output result in markdown format, do not include the summary text in the output: ";
+
+			runResult.inputs = {
+				template: [
+					instruction,
+					"{{summary}}",
+					"the original text is the following: ",
+					"{{blogContent}}",
+				].join("/n"),
+			};
+		}
+	} else if (runResult.type === "output") {
+		const outputs = runResult.outputs;
+		fs.writeFileSync(
+			path.join(
+				url.fileURLToPath(new URL(".", import.meta.url)),
+				"summary.md"
+			),
+			outputs["completion"] as string
+		);
+	}
+}

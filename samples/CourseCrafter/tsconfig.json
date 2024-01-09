@@ -1,6 +1,16 @@
 {
 	"compilerOptions": {
-		"moduleResolution": "Node",
+		"baseUrl": "./src",
+		"rootDir": "./",
+		"moduleResolution": "nodenext",
+		"module": "NodeNext",
+		"noEmit": true,
+		"paths": {
+			"~/*": [
+				"./*"
+			]
+		},
+		"resolveJsonModule": true,
 		"target": "ESNext"
 	},
 	"extends": "../../tsconfig.minimal.json"
