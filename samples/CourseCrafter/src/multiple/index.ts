@@ -95,11 +95,12 @@ instructionTemplate.wire("string->text", claudeCompletion);
 
 const output: BreadboardNode<InputValues, OutputValues> = board.output();
 claudeCompletion.wire("completion->", output);
+const workingDir: string = url.fileURLToPath(new URL(".", import.meta.url));
 
 generateAndWriteCombinedMarkdown({
 	board,
 	filename: "README",
-	dir: url.fileURLToPath(new URL('.', import.meta.url))
+	dir: workingDir
 });
 
 // if we get weird errors, check the blog still exists
@@ -108,6 +109,9 @@ const urls = [
 	"https://developer.chrome.com/blog/automatic-picture-in-picture/",
 	"https://developer.chrome.com/blog/new-in-webgpu-120/"
 ];
+
+fs.writeFileSync(path.join(workingDir,"board.json"),JSON.stringify(board, null, "\t"));
+
 
 for await (const runResult of board.run()) {
 	if (runResult.type === "input") {
@@ -131,7 +135,7 @@ for await (const runResult of board.run()) {
 		const outputs = runResult.outputs
 		fs.writeFileSync(
 			path.join(
-				url.fileURLToPath(new URL(".", import.meta.url)),
+				workingDir,
 				"summary.md"
 			),
 			outputs["completion"] as string

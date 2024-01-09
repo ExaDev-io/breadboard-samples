@@ -102,14 +102,17 @@ instructionTemplate.wire("string->text", claudeCompletion);
 
 claudeCompletion.wire("completion->", board.output());
 
+const workingDir: string = url.fileURLToPath(new URL(".", import.meta.url));
 generateAndWriteCombinedMarkdown({
 	board,
 	filename: "README",
-	dir: url.fileURLToPath(new URL(".", import.meta.url)),
+	dir: workingDir,
 });
 
 const blogUrl =
 	"https://developer.chrome.com/blog/introducing-scheduler-yield-origin-trial/";
+
+fs.writeFileSync(path.join(workingDir, "board.json"), JSON.stringify(board, null, "\t"));
 
 for await (const runResult of board.run({})) {
 	if (runResult.type === "input") {
@@ -139,7 +142,7 @@ for await (const runResult of board.run({})) {
 		const outputs = runResult.outputs;
 		fs.writeFileSync(
 			path.join(
-				url.fileURLToPath(new URL(".", import.meta.url)),
+				workingDir,
 				"summary.md"
 			),
 			outputs["completion"] as string
