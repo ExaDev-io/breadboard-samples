@@ -1,33 +1,3 @@
-# AutoBake
-
-```mermaid
-%%{init: 'themeVariables': { 'fontFamily': 'Fira Code, monospace' }}%%
-graph TD;
-chromeApiFeatures["chromeStatusApiFeatures <br> id='chromeApiFeatures'"] -- "features->object" --> spread1["spread <br> id='spread-1'"]
-spread1["spread <br> id='spread-1'"] -- "features->list" --> selectRandom["runJavascript <br> id='selectRandom'"]
-selectRandom["runJavascript <br> id='selectRandom'"] -- "selected->selected" --> selectedFeature{{"output <br> id='selectedFeature'"}}:::output
-selectRandom["runJavascript <br> id='selectRandom'"] -- "selected->feature" --> getResourcesForFeature["getResourcesForFeature <br> id='getResourcesForFeature'"]
-getResourcesForFeature["getResourcesForFeature <br> id='getResourcesForFeature'"] -- "resources->resources" --> resources{{"output <br> id='resources'"}}:::output
-selectRandom["runJavascript <br> id='selectRandom'"] -- "selected->feature" --> runJavascript2["runJavascript <br> id='runJavascript-2'"]
-runJavascript2["runJavascript <br> id='runJavascript-2'"] -- "feature->feature" --> filteredFeature{{"output <br> id='filteredFeature'"}}:::output
-runJavascript2["runJavascript <br> id='runJavascript-2'"] -- "feature->feature" --> claudePromptConstructor["template <br> id='claudePromptConstructor'"]
-getResourcesForFeature["getResourcesForFeature <br> id='getResourcesForFeature'"] -- "resources->resources" --> claudePromptConstructor["template <br> id='claudePromptConstructor'"]
-claudePromptConstructor["template <br> id='claudePromptConstructor'"] -- "string->string" --> prompt{{"output <br> id='prompt'"}}:::output
-getClaudeAPIKey["readEnvVar <br> id='getClaudeAPIKey'"] -- "CLAUDE_API_KEY->CLAUDE_API_KEY" --> claudeAPI["generateCompletion <br> id='claudeAPI'"]
-claudePromptConstructor["template <br> id='claudePromptConstructor'"] -- "string->text" --> claudeAPI["generateCompletion <br> id='claudeAPI'"]
-runJavascript2["runJavascript <br> id='runJavascript-2'"] -- "feature->feature" --> claudeOutput{{"output <br> id='claudeOutput'"}}:::output
-claudeAPI["generateCompletion <br> id='claudeAPI'"] -- "completion->completion" --> claudeOutput{{"output <br> id='claudeOutput'"}}:::output
-classDef default stroke:#ffab40,fill:#fff2ccff,color:#000
-classDef input stroke:#3c78d8,fill:#c9daf8ff,color:#000
-classDef output stroke:#38761d,fill:#b6d7a8ff,color:#000
-classDef passthrough stroke:#a64d79,fill:#ead1dcff,color:#000
-classDef slot stroke:#a64d79,fill:#ead1dcff,color:#000
-classDef config stroke:#a64d79,fill:#ead1dcff,color:#000
-classDef secrets stroke:#db4437,fill:#f4cccc,color:#000
-classDef slotted stroke:#a64d79
-```
-
-```json
 {
 	"title": "AutoBake",
 	"edges": [
@@ -210,4 +180,3 @@ classDef slotted stroke:#a64d79
 		}
 	]
 }
-```
