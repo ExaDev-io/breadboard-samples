@@ -60,23 +60,35 @@ claudeApiKey.wire("CLAUDE_API_KEY", claudeCompletion);
 instructionTemplate.wire("string->text", claudeCompletion);
 claudeCompletion.wire("completion->", board.output({$id: "claudeOutput"}));
 
-const result = await board.runOnce({});
+// const result = await board.runOnce({});
 generateAndWriteCombinedMarkdown({
 	board,
 	filename: "README",
 	dir: "./"
 });
 
-if (result.completion){
+fs.writeFileSync("board.json", JSON.stringify(board, null, "\t"));
 
-fs.writeFileSync(
-	"./featureScript.md",
-	result.completion?.toString()
-);
-} else {
-	console.error("No completion found");
-	if(!process.env.CLAUDE_API_KEY) {
-		console.error("No CLAUDE_API_KEY found");
+(async () => {
+	for await (const runResult of board.run({})) {
+		if (runResult.type === "input") {
+
+		} else if (runResult.type === "output") {
+			console.log(runResult.node.id, runResult.outputs);
+			if (runResult.node.id === "claudeOutput") {
+				const feature = runResult.outputs.feature
+				const featureId = feature["id"]
+				const featureName = feature["name"]
+				const dest: string = `./output/${featureId}.md`
+				fs.mkdirSync(path.dirname(dest), {recursive: true})
+				const content = [,
+					runResult.outputs.completion as string,
+					"---",
+					`[${featureId}: ${featureName}](https://chromestatus.com/feature/${featureId})`,
+				].join("\n\n")
+				fs.writeFileSync(dest, content);
+				console.log("Wrote to", dest);
+			}
+		}
 	}
-	throw new Error("No completion found");
-}
+})();
