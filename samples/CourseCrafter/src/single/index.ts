@@ -9,7 +9,7 @@ import path from "path";
 import * as url from "url";
 
 const board = new Board({
-	title: "CourseCrafter",
+	title: "CourseCrafter Single",
 });
 
 const courseCraftKit: CourseCrafterKit = board.addKit(CourseCrafterKit);

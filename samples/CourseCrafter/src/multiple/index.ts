@@ -8,7 +8,7 @@ import path from "path";
 import * as url from 'url';
 
 const board = new Board({
-	title: "CourseCrafter",
+	title: "CourseCrafter Multiple",
 });
 
 const courseCraftKit = board.addKit(CourseCrafterKit);
