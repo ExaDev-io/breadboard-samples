@@ -3,6 +3,7 @@
 		"@exadev/breadboard-kits": "^0.9.1",
 		"@google-labs/breadboard": "^0.6.0",
 		"@google-labs/llm-starter": "^0.3.0",
+		"@paulkinlan/claude-breadboard-kit": "^2.2.5",
 		"@types/puppeteer": "^7.0.4",
 		"puppeteer": "^21.6.1",
 		"react": "^18.2.0",
