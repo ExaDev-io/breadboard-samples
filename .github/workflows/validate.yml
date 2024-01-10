@@ -22,7 +22,15 @@ jobs:
         package-manager:
           - yarn
           - npm
-    name: Node ${{ matrix.node-version }} ${{ matrix.package-manager }}
+        package:
+          - ./
+          - ./samples/AutoBake
+          - ./samples/Breadboard Walkthrough
+          - ./samples/CourseCrafter
+          - ./samples/Hello World
+          - ./samples/TheCritic
+
+    name: ${{ matrix.package }} with Node ${{ matrix.node-version }} ${{ matrix.package-manager }} 
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
@@ -34,7 +42,9 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "${{ matrix.package-manager }}"
 
-      - run: yarn install --frozen-lockfile
+      - name: "${{ matrix.package }}"
+        run: cd "${{ matrix.package }}"
+
         if: matrix.package-manager == 'yarn'
       - run: yarn validate
         if: matrix.package-manager == 'yarn'
