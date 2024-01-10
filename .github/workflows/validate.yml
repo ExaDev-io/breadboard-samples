@@ -48,7 +48,7 @@ jobs:
           cache: "${{ matrix.package-manager }}"
 
       - name: Root Yarn install
-        run: yarn install --immutable --immutable-cache
+        run: yarn install
         if: matrix.package-manager == 'yarn'
       - name: Root NPM install
         run: npm install
@@ -57,7 +57,7 @@ jobs:
       - name: "${{ matrix.package }}"
         run: cd "${{ matrix.package }}"
 
-      - run: yarn install --immutable --immutable-cache
+      - run: yarn install
         if: matrix.package-manager == 'yarn'
       - run: yarn validate
         if: matrix.package-manager == 'yarn'
