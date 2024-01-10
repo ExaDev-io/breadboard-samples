@@ -1,4 +1,4 @@
-# CourseCrafter
+# CourseCrafter Single
 
 ```mermaid
 %%{init: 'themeVariables': { 'fontFamily': 'Fira Code, monospace' }}%%
@@ -27,7 +27,7 @@ classDef slotted stroke:#a64d79
 
 ```json
 {
-	"title": "CourseCrafter",
+	"title": "CourseCrafter Single",
 	"edges": [
 		{
 			"from": "promptDetails",
