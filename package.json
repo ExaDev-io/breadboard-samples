@@ -9,27 +9,51 @@
 		"typescript": "^5.3.3",
 		"wireit": "^0.14.1"
 	},
-	"engineStrict": true,
 	"engines": {
 		"node": ">=19"
 	},
+	"engineStrict": true,
 	"name": "breadboard-samples",
 	"packageManager": "yarn@4.0.2",
 	"private": true,
 	"repository": "https://github.com/GoogleChromeLabs/breadboard-samples",
 	"scripts": {
 		"build": "wireit",
-		"start": "wireit",
+		"test": "wireit",
+		"validate": "wireit",
 		"watch": "wireit"
 	},
 	"wireit": {
 		"build": {
-			"command": "yarn workspaces foreach -A run build"
-		},
-		"start": {
-			"command": "yarn workspaces foreach -A run start",
+			"command": "yarn workspaces foreach -A run build",
 			"dependencies": [
-				"./samples/Breadboard Walkthrough:start"
+				"./samples/AutoBake:build",
+				"./samples/Breadboard Walkthrough:build",
+				"./samples/CourseCrafter:build",
+				"./samples/Hello World:build",
+				"./samples/TheCritic:build"
+			]
+		},
+		"test": {
+			"command": "yarn workspaces foreach -A run test",
+			"dependencies": [
+				"build",
+				"./samples/AutoBake:test",
+				"./samples/Breadboard Walkthrough:test",
+				"./samples/CourseCrafter:test",
+				"./samples/Hello World:test",
+				"./samples/TheCritic:test"
+			]
+		},
+		"validate": {
+			"dependencies": [
+				"build",
+				"test",
+				"./samples/AutoBake:validate",
+				"./samples/Breadboard Walkthrough:validate",
+				"./samples/CourseCrafter:validate",
+				"./samples/Hello World:validate",
+				"./samples/TheCritic:validate"
 			]
 		},
 		"watch": {
