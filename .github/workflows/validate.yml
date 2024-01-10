@@ -8,6 +8,10 @@ env:
   WIREIT_FAILURES: "continue"
   WIREIT_LOGGER: "metrics"
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   validate:
     timeout-minutes: 5
@@ -30,7 +34,7 @@ jobs:
           - ./samples/Hello World
           - ./samples/TheCritic
 
-    name: ${{ matrix.package }} with Node ${{ matrix.node-version }} ${{ matrix.package-manager }} 
+    name: ${{ matrix.package }} with Node ${{ matrix.node-version }} ${{ matrix.package-manager }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
