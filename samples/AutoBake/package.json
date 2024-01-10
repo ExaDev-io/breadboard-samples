@@ -2,6 +2,7 @@
 	"dependencies": {
 		"@exadev/breadboard-kits": "^0.9.1",
 		"@google-labs/breadboard": "^0.6.0",
+		"@google-labs/core-kit": "^0.1.0",
 		"@google-labs/llm-starter": "^0.3.0",
 		"@paulkinlan/claude-breadboard-kit": "^2.2.5",
 		"@types/puppeteer": "^7.0.4",
