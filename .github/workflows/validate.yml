@@ -54,8 +54,12 @@ jobs:
         if: matrix.package-manager == 'yarn'
       - run: yarn validate
         if: matrix.package-manager == 'yarn'
+        env:
+          CLAUDE_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
 
       - run: npm install
         if: matrix.package-manager == 'npm'
       - run: npm run validate
         if: matrix.package-manager == 'npm'
+        env:
+          CLAUDE_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
