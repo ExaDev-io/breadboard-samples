@@ -1712,7 +1712,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@google-labs/breadboard@npm:^0.5.0, @google-labs/breadboard@npm:^0.5.1":
+"@google-labs/breadboard@npm:^0.5.0":
   version: 0.5.1
   resolution: "@google-labs/breadboard@npm:0.5.1"
   checksum: 335735132f25ac6f46e4f4e6e1b51de4b95f21dbffdf5c521162863c7d20248837694dd775fd64fc3bd627be9f5dc0e4907890ac30855ae7fea42f83ac2c725c
@@ -1726,15 +1726,6 @@ __metadata:
     zod: "npm:^3.22.4"
     zod-to-json-schema: "npm:^3.22.1"
   checksum: bad6b96e287c27ed24f7612469db7c7dfb3eebd7148aeda608074b42bd93d5e3a3b467691d7e7a14879be7e1bccd65faf03da35605b7753fd46de0f148e28de4
-  languageName: node
-  linkType: hard
-
-"@google-labs/core-kit@npm:0.0.1":
-  version: 0.0.1
-  resolution: "@google-labs/core-kit@npm:0.0.1"
-  dependencies:
-    "@google-labs/breadboard": "npm:^0.5.0"
-  checksum: 4b59ec435c6068843c17f3f68707c8a853f36e6fd1f9d1055901c2bfa8016658f6b54f9238cfcf6a9ef7dcd7a0a27795218783617a2b435b82229312042f67b7
   languageName: node
   linkType: hard
 
@@ -6005,10 +5996,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ms@npm:2.1.2, ms@npm:^2.0.0":
+"ms@npm:2.1.2":
   version: 2.1.2
   resolution: "ms@npm:2.1.2"
   checksum: 673cdb2c3133eb050c745908d8ce632ed2c02d85640e2edb3ace856a2266a813b30c613569bf3354fdf4ea7d1a1494add3bfa95e2713baa27d0c2c71fc44f58f
+  languageName: node
+  linkType: hard
+
+"ms@npm:^2.0.0":
+  version: 2.1.3
+  resolution: "ms@npm:2.1.3"
+  checksum: aa92de608021b242401676e35cfa5aa42dd70cbdc082b916da7fb925c542173e36bce97ea3e804923fe92c0ad991434e4a38327e15a1b5b5f945d66df615ae6d
   languageName: node
   linkType: hard
 
@@ -8330,9 +8328,9 @@ __metadata:
   resolution: "the-critic@workspace:samples/TheCritic"
   dependencies:
     "@esbuild-plugins/node-globals-polyfill": "npm:^0.2.3"
-    "@google-labs/breadboard": "npm:^0.5.1"
-    "@google-labs/core-kit": "npm:0.0.1"
-    "@google-labs/llm-starter": "npm:^0.2.1"
+    "@google-labs/breadboard": "npm:^0.6.0"
+    "@google-labs/core-kit": "npm:^0.1.0"
+    "@google-labs/llm-starter": "npm:^0.3.0"
     "@paulkinlan/claude-breadboard-kit": "npm:^2.2.5"
     "@types/dompurify": "npm:^3.0.5"
     "@types/node": "npm:^20.10.7"
