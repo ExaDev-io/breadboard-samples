@@ -52,7 +52,7 @@
 			"command": "tsc --noEmit --listFiles | grep -v 'node_modules'"
 		},
 		"run": {
-			"command": "tsx run.ts"
+			"command": "tsx ./run.ts"
 		},
 		"test": {
 			"dependencies": [
