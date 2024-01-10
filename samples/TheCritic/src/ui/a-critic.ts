@@ -6,7 +6,7 @@ export class ACritic extends HTMLElement {
 		return ['name', 'persona'];
 	}
 
-	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+	attributeChangedCallback(name: string, newValue: string) {
 		if (name === 'persona') {
 			const personaElement = this.#root.querySelector(`#${name}`) as HTMLTextAreaElement;
 			if (personaElement===null) return;

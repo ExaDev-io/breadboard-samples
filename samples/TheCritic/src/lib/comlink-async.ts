@@ -8,7 +8,7 @@ export const asyncGeneratorTransferHandler:
 	canHandle: (value: any): value is AsyncGenerator<any> =>
 		value && typeof value.next === 'function' && typeof value[Symbol.asyncIterator] === 'function',
 	async *deserialize(obj) {
-		const iterator = proxyTransferHandler.deserialize(obj) as AsyncIterator<any>;
+		const iterator = proxyTransferHandler!.deserialize(obj) as AsyncIterator<any>;
 		for (; ;) {
 			const { value, done } = await iterator.next();
 			if (done) {
@@ -19,7 +19,7 @@ export const asyncGeneratorTransferHandler:
 		}
 	},
 	serialize(obj) {
-		return proxyTransferHandler.serialize(proxy(obj));
+		return proxyTransferHandler!.serialize(proxy(obj));
 	},
 };
 

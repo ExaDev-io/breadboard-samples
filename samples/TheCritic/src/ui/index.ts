@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { Remote } from "comlink";
 import { Panel } from "../boards/the-panel";
 import { ACritic } from "./a-critic";
 import { TheArticle } from "./the-article";
@@ -51,7 +50,7 @@ export const run = async () => {
 
 	const panelElement = app.getElementsByTagName("the-panel")[0] as ThePanel;
 
-	panelElement.addEventListener("criticadded", (async (e: CustomEvent) => {
+	panelElement.addEventListener("criticadded", (async () => {
 		const critics = panelElement.critics;
 		localStorage.setItem("critics", JSON.stringify(critics));
 	}) as (e: Event) => Promise<void>);
@@ -70,11 +69,11 @@ export const run = async () => {
 				if (name == null || persona == null) {
 					continue;
 				}
-				const criticData = await panel.addCritic(name, persona);
+				const criticData = panel.addCritic(name, persona);
 				critic.id = criticData.id;
 			}
 
-			const ittr = await panel.critique(article);
+			const ittr = panel.critique(article);
 
 			for await (const response of ittr) {
 				console.log(`## ${response.name}\n`)
