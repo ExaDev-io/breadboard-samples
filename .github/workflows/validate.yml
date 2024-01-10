@@ -30,13 +30,13 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "${{ matrix.package-manager }}"
+
       - run: yarn install --frozen-lockfile
         if: matrix.package-manager == 'yarn'
-      - run: npm ci
+      - run: yarn validate
+        if: matrix.package-manager == 'yarn'
+
+      - run: npm install
         if: matrix.package-manager == 'npm'
-      - run: |
-          if [ "${{ matrix.package-manager }}" = "yarn" ]; then
-            yarn validate
-          else
-            npm run validate
-          fi
+      - run: npm run validate
+        if: matrix.package-manager == 'npm'
