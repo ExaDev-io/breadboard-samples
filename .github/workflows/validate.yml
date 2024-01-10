@@ -45,6 +45,7 @@ jobs:
       - name: "${{ matrix.package }}"
         run: cd "${{ matrix.package }}"
 
+      - run: yarn install --immutable --immutable-cache --check-cache # see https://yarnpkg.com/cli/install
         if: matrix.package-manager == 'yarn'
       - run: yarn validate
         if: matrix.package-manager == 'yarn'
