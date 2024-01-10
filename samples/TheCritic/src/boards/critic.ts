@@ -48,8 +48,13 @@ const inputCritic = board.input({
   }
 });
 
-const secret = starterKit.secrets(["CLAUDE_API_KEY"]);
-const criticPrompt = starterKit.promptTemplate(`
+// const secret = starterKit.secrets({keys: ["CLAUDE_API_KEY"]});
+const secret = starterKit.secrets({
+	CLAUDE_API_KEY: "CLAUDE_API_KEY"
+});
+
+const criticPrompt = starterKit.promptTemplate({
+	template: `
 Your name is {{name}} and you are a {{persona}}.
 
 You will create a markdown bulleted critique of the following input:
@@ -57,7 +62,8 @@ You will create a markdown bulleted critique of the following input:
 {{article}}
 
 Critique:
-`);
+`
+});
 
 const claudeCompletion = claudeKit.generateCompletion({ model: "claude-2.1", baseURL: globalThis.location?.origin || "http://localhost:5173" });
 
