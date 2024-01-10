@@ -3134,6 +3134,7 @@ __metadata:
   dependencies:
     "@exadev/breadboard-kits": "npm:^0.9.1"
     "@google-labs/breadboard": "npm:^0.6.0"
+    "@google-labs/llm-starter": "npm:^0.3.0"
     "@types/puppeteer": "npm:^7.0.4"
     puppeteer: "npm:^21.6.1"
     react: "npm:^18.2.0"
