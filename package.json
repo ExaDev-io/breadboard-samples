@@ -1,8 +1,4 @@
 {
-	"config": {
-		"WIREIT_FAILURES": "continue",
-		"WIREIT_LOGGER": "metrics"
-	},
 	"dependencies": {
 		"@exadev/breadboard-kits": "^0.9.1",
 		"@google-labs/breadboard": "^0.6.0"
