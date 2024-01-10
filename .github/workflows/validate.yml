@@ -9,7 +9,7 @@ env:
   WIREIT_LOGGER: "metrics"
 
 jobs:
-  Validate_Root:
+  validate:
     timeout-minutes: 5
     runs-on: ubuntu-latest
     strategy:
