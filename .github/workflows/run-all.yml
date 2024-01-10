@@ -4,6 +4,10 @@ on:
   pull_request:
   workflow_dispatch:
 
+env:
+  WIREIT_FAILURES: "continue"
+  WIREIT_LOGGER: "metrics"
+
 jobs:
   build:
     timeout-minutes: 5
