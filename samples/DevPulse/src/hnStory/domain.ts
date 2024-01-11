@@ -9,5 +9,5 @@ export interface StoryOutput extends BaseDTO {
 	created_at_i: Date;
 	points: number;
 	hnUrl: string;
-	summary?: string;
+	summary?: string | "pending";
 }
