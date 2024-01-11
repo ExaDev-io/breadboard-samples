@@ -29,7 +29,6 @@ jobs:
           - yarn
           - npm
         package:
-          - ./
           - ./samples/AutoBake
           - ./samples/Breadboard Walkthrough
           - ./samples/CourseCrafter
