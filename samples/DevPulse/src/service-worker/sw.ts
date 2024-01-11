@@ -31,6 +31,7 @@ const ignoredOutputNodeIds = [
 	"testCompletion",
 	"algoliaSearchUrl",
 	"postSummarisation",
+	"searchInProgress",
 ];
 
 self.addEventListener("install", () => {
