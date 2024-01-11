@@ -64,6 +64,7 @@ const search = algolia.search({
 const searchPassthrough = core.passthrough();
 searchParamsInput.wire("query", searchPassthrough);
 searchPassthrough.wire("*", search);
+searchParamsInput.wire("query", board.output({ $id: "searchInProgress" }));
 
 const queryOutput = board.output({ $id: "algoliaSearchUrl" });
 search.wire("algoliaUrl", queryOutput);
