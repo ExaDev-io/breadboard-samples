@@ -4,6 +4,7 @@
 		"@exadev/breadboard-kits": "^0.9.1",
 		"@fontsource/roboto": "^5.0.8",
 		"@google-labs/breadboard": "^0.6.0",
+		"@google-labs/core-kit": "^0.1.0",
 		"@paulkinlan/claude-breadboard-kit": "^2.2.5",
 		"@reduxjs/toolkit": "^2.0.1",
 		"antd": "^5.12.1",
@@ -35,6 +36,7 @@
 		"vite": "^5.0.7",
 		"vite-plugin-pwa": "^0.17.4",
 		"vite-tsconfig-paths": "^4.2.2",
+		"wireit": "^0.14.3",
 		"workbox-core": "^7.0.0"
 	},
 	"engines": {
@@ -44,12 +46,21 @@
 	"name": "vite-react-worker",
 	"private": true,
 	"scripts": {
-		"board": "npx -y tsx src/lib/runBoard.ts",
+		"cli": "npx -y tsx src/lib/cli/runBoard.ts",
+		"headless": "wireit",
 		"build": "tsc && vite build",
 		"dev": "vite --open",
 		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
 		"preview": "vite preview --open"
 	},
 	"type": "module",
-	"version": "0.0.0"
+	"version": "0.0.0",
+	"wireit": {
+		"headless": {
+			"env": {
+				"VITE_CLAUDE_URL": "https://api.anthropic.com/v1/complete"
+			},
+			"command": "npx -y tsx src/breadboard/headless.ts"
+		}
+	}
 }
