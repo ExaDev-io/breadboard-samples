@@ -39,6 +39,11 @@ const searchParams: Schema = {
 			title: "Please enter your API Key",
 			type: "string",
 		},
+		limit: {
+			title: "Please enter the number of results to return",
+			type: "number",
+			default: SEARCH_RESULT_COUNT.toString(),
+		}
 	},
 };
 
@@ -62,9 +67,14 @@ const search = algolia.search({
 	limit: SEARCH_RESULT_COUNT,
 });
 const searchPassthrough = core.passthrough();
+
 searchParamsInput.wire("query", searchPassthrough);
-searchPassthrough.wire("*", search);
+searchParamsInput.wire("limit", searchPassthrough);
+
 searchParamsInput.wire("query", board.output({ $id: "searchInProgress" }));
+
+searchPassthrough.wire("query", search);
+searchPassthrough.wire("limit", search);
 
 const queryOutput = board.output({ $id: "algoliaSearchUrl" });
 search.wire("algoliaUrl", queryOutput);
