@@ -1,7 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "~/core/redux/store";
-import { StoryOutput } from "~/hnStory/domain";
-import { WorkerStatus } from "../old/components/worker-component";
+import { StoryOutput } from "./domain";
+
+export const WorkerStatus = {
+	idle: "idle",
+	running: "running",
+	paused: "paused",
+	stopped: "stopped",
+	loading: "loading",
+	finished: "finished",
+} as const;
 
 const initialState = {
 	output: [] as StoryOutput[],
