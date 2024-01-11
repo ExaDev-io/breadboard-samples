@@ -17,6 +17,7 @@ export function InputRequestsRenderer<
 >({
 	matchers = [],
 	defaultMessageComponent = BasicInput,
+	setLoading
 }: {
 	channelId?: string;
 	matchers?: [
@@ -30,7 +31,9 @@ export function InputRequestsRenderer<
 	defaultMessageComponent?: ComponentType<{
 		request: M;
 		onResponseSent: () => void;
+		onSubmit: () => void;
 	}>;
+	setLoading: () => void;
 }): ReactNode {
 	const [requests, setRequests] = useState<P>({} as P);
 
@@ -72,6 +75,7 @@ export function InputRequestsRenderer<
 					key: request.id,
 					request: request,
 					onResponseSent: dismissInputOnSend<M, P>(setRequests, request),
+					onSubmit: setLoading
 				});
 			})}
 		</div>
