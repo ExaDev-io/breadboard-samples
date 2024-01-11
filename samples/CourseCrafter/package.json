@@ -30,7 +30,13 @@
 	"version": "0.0.0",
 	"wireit": {
 		"build": {
-			"command": "bash -c 'set -o pipefail; tsc --noEmit --listFiles | grep -v \"node_modules\"'"
+			"command": "bash -c 'set -o pipefail; tsc --noEmit --listFiles | grep -v \"node_modules\"'",
+			"files": [
+				"src/**/*.ts",
+				"tsconfig.json",
+				"package.json",
+				"../../tsconfig.minimal.json"
+			]
 		},
 		"run-board": {
 			"command": "npx -y tsx src/single/index.ts"
@@ -40,6 +46,7 @@
 		},
 		"test": {
 			"dependencies": [
+				"build",
 				"run-board",
 				"run-board-multiple"
 			]

@@ -49,10 +49,20 @@
 	"version": "1.0.0",
 	"wireit": {
 		"build": {
-			"command": "tsc --noEmit --listFiles | grep -v 'node_modules'"
+			"command": "tsc --incremental --noEmit --listFiles | grep -v 'node_modules'",
+			"files": [
+				"run.ts",
+				"src/**/*.ts",
+				"tsconfig.json",
+				"package.json",
+				"../../tsconfig.minimal.json"
+			]
 		},
 		"run": {
-			"command": "tsx ./run.ts"
+			"command": "tsx ./run.ts",
+			"dependencies": [
+				"build"
+			]
 		},
 		"test": {
 			"dependencies": [

@@ -27,10 +27,19 @@
 	"version": "0.0.0",
 	"wireit": {
 		"build": {
-			"command": "bash -c 'set -o pipefail; tsc --noEmit --listFiles | grep -v \"node_modules\"'"
+			"command": "bash -c 'set -o pipefail; tsc --noEmit --listFiles | grep -v \"node_modules\"'",
+			"files": [
+				"src/**/*.ts",
+				"tsconfig.json",
+				"package.json",
+				"../../tsconfig.minimal.json"
+			]
 		},
 		"test": {
-			"command": "tsx src/breadboard/autobake.ts"
+			"command": "tsx src/breadboard/autobake.ts",
+			"dependencies": [
+				"build"
+			]
 		},
 		"validate": {
 			"dependencies": [
