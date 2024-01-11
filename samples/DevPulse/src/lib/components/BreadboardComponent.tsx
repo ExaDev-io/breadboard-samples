@@ -7,24 +7,35 @@ import BroadcastMessageRenderer from "./BroadcastMessageRenderer";
 import { InputRequestsRenderer } from "./InputRequestsRenderer";
 import { ServiceWorkerControllerComponent } from "./ServiceWorkerControllerComponent";
 
-type StoryMatcher = [((message: BroadcastMessage) => boolean), ((message: BroadcastMessage) => ReactNode)];
+type Messagematcher = ((message: BroadcastMessage) => boolean);
+type MessageRender = ((message: BroadcastMessage) => ReactNode);
 
-const searchInProgressMatcher: StoryMatcher = [
-	(message: BroadcastMessage): boolean => {
-		return message.content != null && ("node" in (message.content as any)) && (message.content as any).node == "searchInProgress"
-	}, () => <div>Search in progress</div>,
+type MessageMatcherAndComponent = [
+	Messagematcher,
+	MessageRender
 ];
 
-const storyMatcher: StoryMatcher = [
-	(message: BroadcastMessage): boolean => {
-		return message.content != null && ("node" in (message.content as any)) && (message.content as any).node == "story"
-	}, (message: BroadcastMessage) => <OutputAccordionItem result={(message.content as any).content}/>,
-]
+const searchInProgressMatcher: MessageMatcherAndComponent = [
+	(message: BroadcastMessage): boolean => message.content != null && ("node" in (message.content as any)) && (message.content as any).node == "searchInProgress",
+	() => <div>Search in progress</div>,
+];
+
+const storyMatcher: MessageMatcherAndComponent = [
+	(message: BroadcastMessage): boolean => message.content != null && ("node" in (message.content as any)) && (message.content as any).node == "story",
+	(message: BroadcastMessage) => <OutputAccordionItem result={(message.content as any).content} />,
+];
 
 const matchers: [((message: BroadcastMessage) => boolean), ((message: any) => ReactNode)][] = [
 	searchInProgressMatcher,
 	storyMatcher,
 ];
+
+// PlaceHolder renders a given elment if all of the children
+// const PlaceHolder = ({ placeholder, children }: { placeholder: ReactNode; children: ReactNode; }): ReactNode => {
+// 	const childrenArray = React.Children.toArray(children);
+// 	const allChildrenAreNull = childrenArray.every((child) => child == null);
+// 	return allChildrenAreNull ? placeholder : children;
+// };
 
 export function BreadboardComponent(): ReactNode {
 	return <>
