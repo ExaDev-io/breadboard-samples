@@ -3,6 +3,17 @@ import { SW_BROADCAST_CHANNEL } from "../constants";
 import { BroadcastMessage } from "../types/BroadcastMessage";
 import BasicMessage from "./BasicMessage";
 
+export type MessageMatcher<T extends BroadcastMessage = BroadcastMessage> = (message: T) => boolean;
+
+export type MessageComponent<T extends BroadcastMessage = BroadcastMessage> = React.ComponentType<{
+	message: T;
+}>;
+
+export type MessageMatcherComponent<T extends BroadcastMessage = BroadcastMessage> = [
+	matcher: MessageMatcher<T>,
+	component: MessageComponent<T>
+];
+
 export function BroadcastMessageRenderer({
 	channelId = SW_BROADCAST_CHANNEL,
 	matchers = [],
@@ -11,10 +22,7 @@ export function BroadcastMessageRenderer({
 	onRenderMessages,
 }: {
 	channelId: string;
-	matchers?: [
-		matcher: (message: BroadcastMessage) => boolean,
-		component: React.ComponentType<{ message: BroadcastMessage }>
-	][]; // Array of tuples of matcher functions and components
+	matchers?: MessageMatcherComponent[]; // Array of tuples of matcher functions and components
 	ignoreMatchers?: ((message: BroadcastMessage) => boolean)[];
 	defaultMessageComponent?: React.ComponentType<{ message: BroadcastMessage }>;
 	onRenderMessages: () => void;
