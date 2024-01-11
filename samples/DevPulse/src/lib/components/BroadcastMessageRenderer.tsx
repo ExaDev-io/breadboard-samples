@@ -1,54 +1,60 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import { SW_BROADCAST_CHANNEL } from "../constants";
-import { StoryOutput } from "~/hnStory/domain";
-import OutputAccordionItem from "~/hnStory/components/output-accordion-item";
-import styles from "../../hnStory/components/output-accordion.module.scss";
+import { BroadcastMessage } from "../types/BroadcastMessage";
+import BasicMessage from "./BasicMessage";
 
 export function BroadcastMessageRenderer({
 	channelId = SW_BROADCAST_CHANNEL,
+	matchers = [],
+	ignoreMatchers = [],
+	defaultMessageComponent = BasicMessage,
 }: {
 	channelId: string;
-	outputComponent?: React.ComponentType<{ output: StoryOutput }>;
+		matchers?: [
+			matcher: (message: BroadcastMessage) => boolean,
+			component: React.ComponentType<{ message: BroadcastMessage; }>
+		][]; // Array of tuples of matcher functions and components
+		ignoreMatchers?: ((message: BroadcastMessage) => boolean)[];
+		defaultMessageComponent?: React.ComponentType<{ message: BroadcastMessage; }>;
 }): ReactNode {
-	const [stories, setStories] = useState<StoryOutput[]>([]);
+	const [messages, setMessages] = useState<BroadcastMessage[]>([]);
 
 	useEffect(() => {
 		const channel = new BroadcastChannel(channelId);
 
 		const handleMessage = (e: MessageEvent) => {
-			//setMessages(e.data as BroadcastMessage[]);
-			setStories(e.data.content.outputs as StoryOutput[]);
+			const newMessage = e.data as BroadcastMessage;
+			if (
+				ignoreMatchers &&
+				!ignoreMatchers.some((matcher: (arg0: BroadcastMessage) => boolean) =>
+					matcher(newMessage)
+				)
+			) {
+				setMessages((prevMessages) => [...prevMessages, newMessage]);
+			}
 		};
 
 		channel.addEventListener("message", handleMessage);
-		//if the message type is output and if the node id is not in the list of ignored ones, then we want to access the outputs and use them as an array of StoryOutput[]
 
 		return () => {
 			channel.removeEventListener("message", handleMessage);
 			channel.close();
 		};
-	}, [channelId]);
+	}, [channelId, ignoreMatchers]);
 
-	/* const renderMessage = (message: BroadcastMessage) => {
-		const outputStories = message.content;
-		setStories(outputStories as StoryOutput[]);
-		return React.createElement(outputComponent, {
+	const renderMessage = (message: BroadcastMessage) => {
+		for (const [matcher, Component] of matchers) {
+			if (matcher(message)) {
+				return <Component key={message.id} message={message} />;
+			}
+		}
+		return React.createElement(defaultMessageComponent, {
 			key: message.id,
-			output: stories,
+			message: message,
 		});
-	}; */
-	console.log(stories);
-	return (
-		<div className={styles.container}>
-			{stories
-				? stories.map((story: StoryOutput) => (
-						<OutputAccordionItem result={story} />
-				  ))
-				: null}
-		</div>
-	);
-}
+	};
 
-// Example component for a fancy message style
+	return <div>{messages.map(renderMessage)}</div>;
+}
 
 export default BroadcastMessageRenderer;
