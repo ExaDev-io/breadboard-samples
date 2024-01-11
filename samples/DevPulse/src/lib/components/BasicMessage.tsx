@@ -1,16 +1,13 @@
 import { ReactNode } from "react";
-import { BroadcastMessage } from "~/lib/types/BroadcastMessage.ts";
+import { StoryOutput } from "~/hnStory/domain";
 
 type BasicMessageProps = {
-	message: BroadcastMessage;
+	output: StoryOutput;
 };
 
-function BasicMessage({ message }: BasicMessageProps): ReactNode {
+function BasicMessage({ output }: BasicMessageProps): ReactNode {
 	const renderContent = () => {
-		if (typeof message === "object" && message !== null) {
-			return <pre>{JSON.stringify(message.content, null, "\t")}</pre>;
-		}
-		return <div>{(message as string).toString()}</div>;
+		return <div>{JSON.stringify(output)}</div>;
 	};
 
 	return (
