@@ -7,7 +7,7 @@ on:
 env:
   WIREIT_FAILURES: "kill"
   WIREIT_LOGGER: "metrics"
-  WIREIT_PARALLEL: 3
+  WIREIT_PARALLEL: 1
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
