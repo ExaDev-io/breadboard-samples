@@ -275,7 +275,7 @@ const claudePostSummarisation = claudeKit.complete({
 	url: `${serverUrl}/anthropic/v1/complete`,
 });
 
-searchParamsInput.wire("apiKey.", claudePostSummarisation);
+searchParamsInput.wire("claudeApiKey->apiKey", claudePostSummarisation);
 instructionTemplate.wire("string->userQuestion", claudePostSummarisation);
 
 const summaryOutput = board.output({
