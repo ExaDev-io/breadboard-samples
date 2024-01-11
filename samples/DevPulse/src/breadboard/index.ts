@@ -66,15 +66,10 @@ const search = algolia.search({
 	tags: ["story"],
 	limit: SEARCH_RESULT_COUNT,
 });
-const searchPassthrough = core.passthrough();
 
-searchParamsInput.wire("query", searchPassthrough);
-searchParamsInput.wire("limit", searchPassthrough);
-
-searchParamsInput.wire("query", board.output({ $id: "searchInProgress" }));
-
-searchPassthrough.wire("query", search);
-searchPassthrough.wire("limit", search);
+searchParamsInput.wire("query", search);
+searchParamsInput.wire("limit", search);
+searchParamsInput.wire("*", board.output({ $id: "searchInProgress" }));
 
 const queryOutput = board.output({ $id: "algoliaSearchUrl" });
 search.wire("algoliaUrl", queryOutput);
