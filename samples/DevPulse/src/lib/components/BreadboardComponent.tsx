@@ -6,28 +6,27 @@ import BroadcastMessageRenderer from "./BroadcastMessageRenderer";
 import { InputRequestsRenderer } from "./InputRequestsRenderer";
 import { ServiceWorkerControllerComponent } from "./ServiceWorkerControllerComponent";
 
-const matchSearchInProgress = (message: BroadcastMessage): boolean => {
-	return message.content != null && ("node" in (message.content as any)) && (message.content as any).node == "searchInProgress"
-}
-export function BreadboardComponent(): ReactNode {
-	let matchers: [((message: BroadcastMessage) => boolean), (() => JSX.Element)][] = [
-		[
-			(message) => matchSearchInProgress(message),
-			() => <div>Search in progress...</div>,
-		]
-	];
+const searchInProgressMatcher: [((message: BroadcastMessage) => boolean), (() => ReactNode)] = [
+	(message: BroadcastMessage): boolean => {
+		return message.content != null && ("node" in (message.content as any)) && (message.content as any).node == "searchInProgress"
+	},
+	() => <div>Search in progress</div>,
+];
 
-	return (
-		<>
-			<ServiceWorkerControllerComponent />
-			<InputRequestsRenderer />
-			<BroadcastMessageRenderer
-				channelId={SW_BROADCAST_CHANNEL}
-				ignoreMatchers={[
-					(message) => message.messageType != BroadcastMessageType.OUTPUT,
-				]}
-				matchers={matchers}
-			/>
-		</>
-	);
+const matchers: [((message: BroadcastMessage) => boolean), (() => ReactNode)][] = [
+	searchInProgressMatcher
+];
+
+export function BreadboardComponent(): ReactNode {
+	return <>
+		<ServiceWorkerControllerComponent />
+		<InputRequestsRenderer />
+		<BroadcastMessageRenderer
+			channelId={SW_BROADCAST_CHANNEL}
+			ignoreMatchers={[
+				(message) => message.messageType != BroadcastMessageType.OUTPUT,
+			]}
+			matchers={matchers}
+		/>
+	</>;
 }
