@@ -145,8 +145,8 @@ async function handler(runResult: RunResult): Promise<void> {
 			Stories.add(id, runResult.outputs);
 			console.log(runResult.outputs);
 		} else if (ignoredOutputNodeIds.includes(runResult.node.id)) {
-			//
-		} else {
+			console.debug(runResult.outputs);
+		} else if (runResult.node.id === "searchResults") {
 			throw new Error(`node: ${runResult.node.id}`);
 		}
 		const output = Stories.getAll() as StoryOutput[];
@@ -156,7 +156,8 @@ async function handler(runResult: RunResult): Promise<void> {
 			messageTarget: BroadcastChannelMember.Client,
 			content: {
 				node: runResult.node.id,
-				outputs: output
+				outputs: output,
+				...runResult.outputs,
 			}
 		};
 		new BroadcastChannel(SW_BROADCAST_CHANNEL).postMessage(message);
