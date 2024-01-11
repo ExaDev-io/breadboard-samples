@@ -8,9 +8,11 @@ import { SW_BROADCAST_CHANNEL } from "../constants";
 export function BasicInput({
 	request,
 	onResponseSent,
+	onSubmit
 }: {
 	request: InputRequest;
-	onResponseSent: () => void;
+		onResponseSent: () => void;
+	onSubmit: ()=>void;
 }): ReactNode {
 	const node = request.content.node;
 	const attribute = request.content.attribute;
@@ -31,8 +33,10 @@ export function BasicInput({
 						value: formData,
 					},
 				};
+				onSubmit();
 				new BroadcastChannel(SW_BROADCAST_CHANNEL).postMessage(message);
 				onResponseSent();
+				
 			}}
 		/>
 	);

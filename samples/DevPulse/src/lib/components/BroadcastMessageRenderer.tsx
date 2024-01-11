@@ -8,14 +8,16 @@ export function BroadcastMessageRenderer({
 	matchers = [],
 	ignoreMatchers = [],
 	defaultMessageComponent = BasicMessage,
+	onRenderMessages,
 }: {
 	channelId: string;
-		matchers?: [
-			matcher: (message: BroadcastMessage) => boolean,
-			component: React.ComponentType<{ message: BroadcastMessage; }>
-		][]; // Array of tuples of matcher functions and components
-		ignoreMatchers?: ((message: BroadcastMessage) => boolean)[];
-		defaultMessageComponent?: React.ComponentType<{ message: BroadcastMessage; }>;
+	matchers?: [
+		matcher: (message: BroadcastMessage) => boolean,
+		component: React.ComponentType<{ message: BroadcastMessage }>
+	][]; // Array of tuples of matcher functions and components
+	ignoreMatchers?: ((message: BroadcastMessage) => boolean)[];
+	defaultMessageComponent?: React.ComponentType<{ message: BroadcastMessage }>;
+	onRenderMessages: () => void;
 }): ReactNode {
 	const [messages, setMessages] = useState<BroadcastMessage[]>([]);
 
@@ -41,6 +43,12 @@ export function BroadcastMessageRenderer({
 			channel.close();
 		};
 	}, [channelId, ignoreMatchers]);
+
+	useEffect(() => {
+		if (messages?.length > 0) {
+			onRenderMessages();
+		}
+	}, [messages]);
 
 	const renderMessage = (message: BroadcastMessage) => {
 		for (const [matcher, Component] of matchers) {
