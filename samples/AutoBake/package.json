@@ -39,6 +39,12 @@
 			"command": "tsx src/breadboard/autobake.ts",
 			"dependencies": [
 				"build"
+			],
+			"files": [
+				"src/**/*.ts",
+				"tsconfig.json",
+				"package.json",
+				"../../tsconfig.minimal.json"
 			]
 		},
 		"validate": {

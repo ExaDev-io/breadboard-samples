@@ -39,10 +39,22 @@
 			]
 		},
 		"run-board": {
-			"command": "npx -y tsx src/single/index.ts"
+			"command": "npx -y tsx src/single/index.ts",
+			"files": [
+				"src/single/index.ts",
+				"tsconfig.json",
+				"package.json",
+				"../../tsconfig.minimal.json"
+			]
 		},
 		"run-board-multiple": {
-			"command": "npx -y tsx src/multiple/index.ts"
+			"command": "npx -y tsx src/multiple/index.ts",
+			"files": [
+				"src/multiple/index.ts",
+				"tsconfig.json",
+				"package.json",
+				"../../tsconfig.minimal.json"
+			]
 		},
 		"test": {
 			"dependencies": [
