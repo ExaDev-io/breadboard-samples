@@ -4,8 +4,8 @@ type ButtonProps = {
 	children: React.ReactNode;
 	type?: "button" | "submit" | "reset";
 	disabled?: boolean;
-	onClick?: () => void;
-	variant?: "primary" | "secondary" | "danger";
+	onClick?: ((e: React.MouseEvent<HTMLButtonElement>) => void) | (() => void);
+	variant?: "primary" | "secondary" | "danger" | "positive";
 	className?: string;
 };
 const Button = ({
