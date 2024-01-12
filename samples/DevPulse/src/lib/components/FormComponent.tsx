@@ -93,6 +93,7 @@ export function FormComponent<T extends InputRequest>({
 							onChange={handleChange}
 							onKeyUp={onKeyUp}
 							className={styles.input}
+							defaultValue={value.default}
 						/>
 						<label htmlFor={`${key}_remember`} className={styles.checkboxLabel}>
 							<input

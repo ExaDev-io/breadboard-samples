@@ -1,7 +1,7 @@
 {
 	"dependencies": {
 		"@anthropic-ai/tokenizer": "^0.0.4",
-		"@exadev/breadboard-kits": "^0.9.1",
+		"@exadev/breadboard-kits": "^0.9.2",
 		"@fontsource/roboto": "^5.0.8",
 		"@google-labs/breadboard": "^0.6.0",
 		"@google-labs/core-kit": "^0.1.0",
