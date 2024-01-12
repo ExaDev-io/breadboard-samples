@@ -39,7 +39,7 @@ const limit: Schema = {
 	type: "number",
 	default: SEARCH_RESULT_COUNT.toString(),
 }
-const claudeApiKey: Schema = {
+const claudeApiKeySchema: Schema = {
 	title: "Please enter your API Key",
 	type: "password",
 }
@@ -49,6 +49,7 @@ const searchParams: Schema = {
 	properties: {
 		query,
 		limit,
+		claudeApiKeySchema
 	},
 };
 //////////////////////////////////////////////
@@ -60,6 +61,8 @@ const search = algolia.search({
 
 const searchParamsInput = board.input({$id: `searchParams`, schema: searchParams});
 const searchInProgress = board.output({$id: "searchInProgress"})
+const claudeApiKeyInput = board.input({$id: `claudeApiKey`, schema: claudeApiKeySchema});
+
 searchParamsInput.wire("query", search)
 searchParamsInput.wire("query", searchInProgress)
 searchParamsInput.wire("limit", search)
@@ -67,7 +70,9 @@ searchParamsInput.wire("query", searchInProgress)
 
 search.wire("algoliaUrl", board.output({$id: "algoliaSearchUrl"}));
 
-const claudeApiKeyInput = board.input({$id: `claudeApiKey`, schema: claudeApiKey});
+// const claudeApiKeyInput = board.input({$id: `claudeApiKey`, schema: claudeApiKey});
+const claudeApiKey = core.passthrough();
+claudeApiKeyInput.wire("claudeApiKey", claudeApiKey);
 
 //////////////////////////////////////////////
 if (DEBUG) {
@@ -257,7 +262,7 @@ const claudePostSummarisation = claudeKit.complete({
 });
 
 // searchParamsInput.wire("claudeApiKey->apiKey", claudePostSummarisation);
-claudeApiKeyInput.wire("claudeApiKey->apiKey", claudePostSummarisation);
+claudeApiKey.wire("claudeApiKey->apiKey", claudePostSummarisation);
 instructionTemplate.wire("string->userQuestion", claudePostSummarisation);
 
 const summaryOutput = board.output({
