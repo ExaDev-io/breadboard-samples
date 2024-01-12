@@ -62,6 +62,7 @@ export function ServiceWorkerControllerComponent(): ReactNode {
 							handleSwCommand(ServiceWorkerControllerCommand.START)
 						}
 						disabled={active}
+						variant="positive"
 					>
 						Start
 					</Button>

@@ -95,7 +95,23 @@ export function FormComponent<T extends InputRequest>({
 				return (
 					<div className={styles.inputLabel}>
 						<label htmlFor={key}>
-							{schema.title || key}
+							<header>
+								<strong>{schema.title || key}</strong>
+								<label
+									htmlFor={`${key}_remember`}
+									className={styles.checkboxLabel}
+								>
+									<input
+										id={`${key}_remember`}
+										type="checkbox"
+										name={key}
+										checked={rememberInput[key] || false}
+										onChange={handleRememberChange}
+										className={styles.checkbox}
+									/>
+									Remember
+								</label>
+							</header>
 							<span>
 								<input
 									type={getInputType(schema.type)}
@@ -122,17 +138,6 @@ export function FormComponent<T extends InputRequest>({
 									</Button>
 								)}
 							</span>
-						</label>
-						<label htmlFor={`${key}_remember`} className={styles.checkboxLabel}>
-							<input
-								id={`${key}_remember`}
-								type="checkbox"
-								name={key}
-								checked={rememberInput[key] || false}
-								onChange={handleRememberChange}
-								className={styles.checkbox}
-							/>
-							Remember
 						</label>
 					</div>
 				);
