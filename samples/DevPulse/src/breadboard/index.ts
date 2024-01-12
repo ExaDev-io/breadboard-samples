@@ -59,20 +59,21 @@ const search = algolia.search({
 	limit: SEARCH_RESULT_COUNT,
 });
 
-const searchParamsInput = board.input({$id: `searchParams`, schema: searchParams});
 const searchInProgress = board.output({$id: "searchInProgress"})
-const claudeApiKeyInput = board.input({$id: `claudeApiKey`, schema: claudeApiKeySchema});
 
-searchParamsInput.wire("query", search)
-searchParamsInput.wire("query", searchInProgress)
-searchParamsInput.wire("limit", search)
-searchParamsInput.wire("query", searchInProgress)
+const searchParamsInput = board.input({$id: "searchParams", schema: searchParams});
+const searchParamPassthrough = core.passthrough();
+
+searchParamsInput.wire("*", searchParamPassthrough);
+searchParamPassthrough.wire("", searchInProgress)
+
+searchParamPassthrough.wire("query", search)
+searchParamPassthrough.wire("limit", search)
 
 search.wire("algoliaUrl", board.output({$id: "algoliaSearchUrl"}));
 
-// const claudeApiKeyInput = board.input({$id: `claudeApiKey`, schema: claudeApiKey});
 const claudeApiKey = core.passthrough();
-claudeApiKeyInput.wire("claudeApiKey", claudeApiKey);
+searchParamPassthrough.wire("claudeApiKey", claudeApiKey);
 
 //////////////////////////////////////////////
 if (DEBUG) {
@@ -261,7 +262,6 @@ const claudePostSummarisation = claudeKit.complete({
 	url: serverUrl,
 });
 
-// searchParamsInput.wire("claudeApiKey->apiKey", claudePostSummarisation);
 claudeApiKey.wire("claudeApiKey->apiKey", claudePostSummarisation);
 instructionTemplate.wire("string->userQuestion", claudePostSummarisation);
 
@@ -271,7 +271,6 @@ const summaryOutput = board.output({
 
 story.wire("story_id", summaryOutput);
 claudePostSummarisation.wire("completion->summary", summaryOutput);
-// claudePostSummarisation.wire("*", summaryOutput);
 
 export { board };
 export { board as default };
