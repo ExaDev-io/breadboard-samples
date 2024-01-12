@@ -1,3 +1,5 @@
+// export { board } from "./board";
+// export { board as default} from "./board";
 import {
 	HackerNewsAlgoliaKit,
 	HackerNewsFirebaseKit,
@@ -28,52 +30,44 @@ const claudeKit = board.addKit(ClaudeKitBuilder);
 const objectKit = board.addKit(ObjectKit);
 const stringKit = board.addKit(StringKit);
 //////////////////////////////////////////////
+const query: Schema = {
+	title: "Please enter a search query",
+	type: "string",
+}
+const limit: Schema = {
+	title: "Please enter the number of results to return",
+	type: "number",
+	default: SEARCH_RESULT_COUNT.toString(),
+}
+const claudeApiKey: Schema = {
+	title: "Please enter your API Key",
+	type: "password",
+}
+//////////////////////////////////////////////
 const searchParams: Schema = {
 	type: "object",
 	properties: {
-		"query": {
-			title: "Please enter a search query",
-			type: "string",
-		},
-		"claudeApiKey": {
-			title: "Please enter your API Key",
-			type: "string",
-		},
-		limit: {
-			title: "Please enter the number of results to return",
-			type: "number",
-			default: SEARCH_RESULT_COUNT.toString(),
-		}
+		query,
+		limit,
 	},
 };
-
-const searchParamsInput = board.input({ $id: `searchParams`, schema: searchParams });
 //////////////////////////////////////////////
-/* const searchQuery = board.input({
-	$id: "query",
-	schema: {
-		type: "object",
-		properties: {
-			query: {
-				type: "string",
-				title: "Search Query",
-			},
-		},
-	},
-}); */
 
 const search = algolia.search({
 	tags: ["story"],
 	limit: SEARCH_RESULT_COUNT,
 });
 
-searchParamsInput.wire("query", search);
-searchParamsInput.wire("limit", search);
-searchParamsInput.wire("*", board.output({ $id: "searchInProgress" }));
+const searchParamsInput = board.input({$id: `searchParams`, schema: searchParams});
+const searchInProgress = board.output({$id: "searchInProgress"})
+searchParamsInput.wire("query", search)
+searchParamsInput.wire("query", searchInProgress)
+searchParamsInput.wire("limit", search)
+searchParamsInput.wire("query", searchInProgress)
 
-const queryOutput = board.output({ $id: "algoliaSearchUrl" });
-search.wire("algoliaUrl", queryOutput);
-searchParamsInput.wire("query", queryOutput);
+search.wire("algoliaUrl", board.output({$id: "algoliaSearchUrl"}));
+
+const claudeApiKeyInput = board.input({$id: `claudeApiKey`, schema: claudeApiKey});
 
 //////////////////////////////////////////////
 if (DEBUG) {
@@ -175,7 +169,7 @@ story.wire("title", storyOutput);
 story.wire("type", storyOutput);
 story.wire("url", storyOutput);
 search.wire("algoliaUrl", storyOutput);
-searchParamsInput.wire("query", storyOutput);
+// searchParamsInput.wire("query", storyOutput);
 
 if (DEBUG) {
 	story.wire("children", storyOutput);
@@ -183,36 +177,17 @@ if (DEBUG) {
 
 //////////////////////////////////////////////
 
-// const countTokens = claudeKit.countTokens({
-// 	$id: "countTokens",
-// 	text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed interdum metus magna, eu efficitur enim maximus vel. Sed sit amet pulvinar neque. Etiam facilisis enim dui, ac aliquet ante pulvinar eget. Maecenas sodales scelerisque porttitor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed commodo placerat blandit. In id massa ut libero molestie laoreet id a enim. Aliquam erat volutpat. Duis efficitur ante eros, non sodales neque faucibus id. Fusce cursus porta sem, ac consectetur felis porttitor non. Proin tincidunt a eros dictum fermentum. Praesent nec faucibus sapien, cursus eleifend lorem.",
-// });
-// countTokens.wire(
-// 	"*",
-// 	board.output({
-// 		$id: "tokenCount",
-// 	})
-// );
-
 //////////////////////////////////////////////
-/* const claudeApiKey = board.input({
-	$id: "claudeApiKey",
-}); */
+
 
 const VITE_SERVER_PORT = 5173;
-const serverUrl = `http://localhost:${VITE_SERVER_PORT}`;
-/* const claudeParams = {
-		model: "claude-2",
-		userQuestion: "Tell me a joke about a software engineer",
-		url: `${serverUrl}/anthropic/v1/complete`,
-	};
-	const claudeCompletion = claudeKit.complete({
-		$id: "claudeCompletion",
-		...claudeParams,
-	});
-	claudeApiKey.wire("apiKey", claudeCompletion);
+const fallback = `http://localhost:${VITE_SERVER_PORT}`;
+let serverUrl = `${fallback}/anthropic/v1/complete`;
 
-	claudeCompletion.wire("*", board.output({ $id: "testCompletion" })); */
+if (typeof process !== "undefined" && process.release.name === "node") {
+	console.log("Running in node");
+	serverUrl = `${fallback}/anthropic/v1/complete`;
+}
 
 //////////////////////////////////////////////
 
@@ -235,7 +210,7 @@ if (LIMIT_DEPTH) {
 	story.wire("story->object", stringifiedPost);
 }
 if (DEBUG) {
-	stringifiedPost.wire("string", board.output({ $id: "json" }));
+	stringifiedPost.wire("string", board.output({$id: "json"}));
 }
 
 //////////////////////////////////////////////
@@ -278,10 +253,11 @@ story.wire(
 const claudePostSummarisation = claudeKit.complete({
 	$id: "claudePostSummarisation",
 	model: "claude-2",
-	url: `${serverUrl}/anthropic/v1/complete`,
+	url: serverUrl,
 });
 
-searchParamsInput.wire("claudeApiKey->apiKey", claudePostSummarisation);
+// searchParamsInput.wire("claudeApiKey->apiKey", claudePostSummarisation);
+claudeApiKeyInput.wire("claudeApiKey->apiKey", claudePostSummarisation);
 instructionTemplate.wire("string->userQuestion", claudePostSummarisation);
 
 const summaryOutput = board.output({
@@ -290,7 +266,7 @@ const summaryOutput = board.output({
 
 story.wire("story_id", summaryOutput);
 claudePostSummarisation.wire("completion->summary", summaryOutput);
-claudePostSummarisation.wire("*", summaryOutput);
+// claudePostSummarisation.wire("*", summaryOutput);
 
-export default board;
 export { board };
+export { board as default };
