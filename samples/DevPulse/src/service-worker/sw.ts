@@ -99,9 +99,9 @@ function handleCommand<M extends BroadcastMessage = BroadcastMessage>(
 	}
 }
 
-export function waitForInput(node: string, attrib: string): Promise<string> {
-	return new Promise<string>((resolve) => {
-		boardRunner.state.pendingInputs.resolvers[`${node}-${attrib}`] = resolve;
+export function waitForInput(request: InputRequest): Promise<any> {
+	return new Promise<any>((resolve) => {
+		boardRunner.state.pendingInputs.resolvers[request.id] = resolve;
 	});
 }
 
