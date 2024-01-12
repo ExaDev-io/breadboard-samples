@@ -11,6 +11,7 @@ import BroadcastMessageRenderer, {
 } from "./BroadcastMessageRenderer";
 import { InputRequestsRenderer } from "./InputRequestsRenderer";
 import { ServiceWorkerControllerComponent } from "./ServiceWorkerControllerComponent";
+import Centered from "~/layouts/centered";
 
 const searchInProgressMatcher: MessageMatcherComponent = [
 	(message: BroadcastMessage): boolean =>
@@ -79,7 +80,11 @@ export function BreadboardComponent(): ReactNode {
 			<ServiceWorkerControllerComponent />
 
 			<InputRequestsRenderer setLoading={showLoading} />
-			{loading && <Spin />}
+			{loading && (
+				<Centered>
+					<Spin />
+				</Centered>
+			)}
 			<BroadcastMessageRenderer
 				channelId={SW_BROADCAST_CHANNEL}
 				ignoreMatchers={[
