@@ -6,7 +6,7 @@ const Sidebar = (): React.JSX.Element => {
 	const navigate = useNavigate();
 
 	const navigateToSearch = () => {
-		navigate("/search");
+		navigate("/");
 	};
 
 	const navigateToResults = () => {
@@ -19,20 +19,18 @@ const Sidebar = (): React.JSX.Element => {
 
 	return (
 		<div className={[styles.sidebar].join(" ")} data-cy="Sidebar">
-			<SidebarButton
-				icon="noteAdd"
-				label="Search"
-				onClick={navigateToSearch}
-			/>
+			<SidebarButton icon="noteAdd" label="Search" onClick={navigateToSearch} />
 			<SidebarButton
 				icon="history"
 				label="Query History"
 				onClick={navigateToHistory}
+				disabled
 			/>
 			<SidebarButton
 				icon="bookmark"
 				label="Saved Results"
 				onClick={navigateToResults}
+				disabled
 			/>
 		</div>
 	);

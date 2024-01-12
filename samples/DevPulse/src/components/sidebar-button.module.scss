@@ -24,4 +24,13 @@
 		background-color: var(--theme-icon-hover-color);
 		color: var(--theme-tertiary-color);
 	}
+	&:disabled{
+		cursor: not-allowed;
+	}
+	&:disabled .icon{
+		opacity: 0.4;
+	}
+	&:disabled:hover .icon{
+		background-color: inherit;
+	}
 }

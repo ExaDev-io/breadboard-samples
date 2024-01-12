@@ -7,12 +7,14 @@ type SidebarButtonProps = {
 	icon: IconName;
 	label: string;
 	onClick?: () => void;
+	disabled?: boolean;
 };
 
 const SidebarButton = ({
 	icon,
 	label,
 	onClick,
+	disabled = false,
 }: SidebarButtonProps): React.JSX.Element => {
 	const [hovered, setHovered] = React.useState(false);
 	const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -38,6 +40,7 @@ const SidebarButton = ({
 			onClick={handleClick}
 			onMouseEnter={handleMouseEnter}
 			onMouseLeave={handleMouseLeave}
+			disabled={disabled}
 		>
 			<span className={styles.icon}>
 				<Icon name={icon} fill={iconColor} />
