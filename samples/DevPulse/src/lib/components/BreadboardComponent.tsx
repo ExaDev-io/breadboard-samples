@@ -1,16 +1,16 @@
 import { Spin } from "antd";
 import { ReactNode, useEffect, useState } from "react";
 // import OutputAccordion from "~/hnStory/components/output-accordion-item.tsx";
+import OutputAccordion from "~/hnStory/components/output-accordion";
 import { StoryOutput } from "~/hnStory/domain";
-import { BroadcastMessage } from "~/lib/types/BroadcastMessage.ts";
-import { BroadcastMessageType } from "~/lib/types/BroadcastMessageType.ts";
+import { BroadcastMessage } from "~/lib/types/BroadcastMessage";
+import { BroadcastMessageType } from "~/lib/types/BroadcastMessageType";
 import { SW_BROADCAST_CHANNEL } from "../constants";
 import BroadcastMessageRenderer, {
 	MessageMatcherComponent,
 } from "./BroadcastMessageRenderer";
 import { InputRequestsRenderer } from "./InputRequestsRenderer";
 import { ServiceWorkerControllerComponent } from "./ServiceWorkerControllerComponent";
-import OutputAccordion from "~/hnStory/components/output-accordion";
 
 const searchInProgressMatcher: MessageMatcherComponent = [
 	(message: BroadcastMessage): boolean =>

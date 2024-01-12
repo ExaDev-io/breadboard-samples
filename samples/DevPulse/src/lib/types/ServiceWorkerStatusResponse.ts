@@ -1,7 +1,7 @@
-import { BroadcastChannelMember } from "~/lib/types/BroadcastChannelMember.ts";
-import { BroadcastMessage } from "~/lib/types/BroadcastMessage.ts";
-import { BroadcastMessageType } from "~/lib/types/BroadcastMessageType.ts";
-import { ServiceWorkerStatus } from "~/lib/types/ServiceWorkerStatus.ts";
+import { BroadcastChannelMember } from "~/lib/types/BroadcastChannelMember";
+import { BroadcastMessage } from "~/lib/types/BroadcastMessage";
+import { BroadcastMessageType } from "~/lib/types/BroadcastMessageType";
+import { ServiceWorkerStatus } from "~/lib/types/ServiceWorkerStatus";
 
 
 export type ServiceWorkerStatusResponse = BroadcastMessage & {

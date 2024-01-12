@@ -1,6 +1,6 @@
 import { StoryOutput } from "~/hnStory/domain";
-import { BroadcastChannelMember } from "~/lib/types/BroadcastChannelMember.ts";
-import { BroadcastMessageType } from "~/lib/types/BroadcastMessageType.ts";
+import { BroadcastChannelMember } from "~/lib/types/BroadcastChannelMember";
+import { BroadcastMessageType } from "~/lib/types/BroadcastMessageType";
 
 export type BroadcastMessage = {
 	id?: string;

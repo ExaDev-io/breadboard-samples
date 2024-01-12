@@ -1,7 +1,7 @@
 import { Schema } from "@google-labs/breadboard";
-import { BroadcastChannelMember } from "~/lib/types/BroadcastChannelMember.ts";
-import { BroadcastMessage } from "~/lib/types/BroadcastMessage.ts";
-import { BroadcastMessageType } from "~/lib/types/BroadcastMessageType.ts";
+import { BroadcastChannelMember } from "~/lib/types/BroadcastChannelMember";
+import { BroadcastMessage } from "~/lib/types/BroadcastMessage";
+import { BroadcastMessageType } from "~/lib/types/BroadcastMessageType";
 
 export interface InputRequest extends BroadcastMessage {
 	id: string;

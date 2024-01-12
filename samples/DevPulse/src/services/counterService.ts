@@ -1,5 +1,5 @@
 // Update counter in IndexedDB
-import { loadData, storeData } from "~/services/databaseService.ts";
+import { loadData, storeData } from "~/services/databaseService";
 
 const COUNTER_KEY = "currentCounter";
 

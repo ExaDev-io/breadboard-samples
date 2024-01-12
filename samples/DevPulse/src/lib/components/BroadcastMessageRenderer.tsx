@@ -1,9 +1,9 @@
 import React, { ReactNode, useEffect, useState } from "react";
+import OutputAccordion from "~/hnStory/components/output-accordion";
+import { StoryOutput } from "~/hnStory/domain";
 import { SW_BROADCAST_CHANNEL } from "../constants";
 import { BroadcastMessage } from "../types/BroadcastMessage";
 import BasicMessage from "./BasicMessage";
-import OutputAccordion from "~/hnStory/components/output-accordion";
-import { StoryOutput } from "~/hnStory/domain";
 
 export type MessageMatcher<T extends BroadcastMessage = BroadcastMessage> = (
 	message: T

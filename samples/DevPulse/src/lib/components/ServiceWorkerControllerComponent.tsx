@@ -1,15 +1,15 @@
 import { ReactNode, useEffect, useState } from "react";
-import { addBroadcastListener } from "~/lib/functions/AddBroadcastListener.ts";
-import { sendControlCommandToServiceWorker } from "~/lib/functions/SendControlCommandToServiceWorker.ts";
-import { BroadcastChannelMember } from "~/lib/types/BroadcastChannelMember.ts";
-import { BroadcastMessageType } from "~/lib/types/BroadcastMessageType.ts";
-import { ServiceWorkerControllerCommand } from "~/lib/types/ServiceWorkerControllerCommand.ts";
-import { ServiceWorkerStatus } from "~/lib/types/ServiceWorkerStatus.ts";
-import { SW_BROADCAST_CHANNEL } from "../constants";
-import styles from "./ServiceWorkerControllerComponent.module.scss";
 import Button from "~/components/button";
-import { ServiceWorkerStatusResponse } from "../types/ServiceWorkerStatusResponse";
+import { addBroadcastListener } from "~/lib/functions/AddBroadcastListener";
+import { sendControlCommandToServiceWorker } from "~/lib/functions/SendControlCommandToServiceWorker";
+import { BroadcastChannelMember } from "~/lib/types/BroadcastChannelMember";
+import { BroadcastMessageType } from "~/lib/types/BroadcastMessageType";
+import { ServiceWorkerControllerCommand } from "~/lib/types/ServiceWorkerControllerCommand";
+import { ServiceWorkerStatus } from "~/lib/types/ServiceWorkerStatus";
+import { SW_BROADCAST_CHANNEL } from "../constants";
 import { sendStatusRequestToServiceWorker } from "../functions/SendStatusRequestToServiceWorker";
+import { ServiceWorkerStatusResponse } from "../types/ServiceWorkerStatusResponse";
+import styles from "./ServiceWorkerControllerComponent.module.scss";
 
 export function ServiceWorkerControllerComponent(): ReactNode {
 	const [currentState, setCurrentState] = useState<ServiceWorkerStatus>();

@@ -1,4 +1,4 @@
-import { BroadcastMessage } from "~/lib/types/BroadcastMessage.ts";
+import { BroadcastMessage } from "~/lib/types/BroadcastMessage";
 
 export interface BroadcastChannelEventHandler<
 	M extends BroadcastMessage,

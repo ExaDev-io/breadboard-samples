@@ -1,9 +1,9 @@
 #!/usr/bin/env tsx
 import { generateAndWriteCombinedMarkdown } from "@exadev/breadboard-kits/util/files/generateAndWriteCombinedMarkdown";
 import { RunResult } from "@google-labs/breadboard";
-import { CliAsyncGeneratorRunner } from "./cliAsyncGeneratorRunner";
-import { cliRunResultHandler } from "./cliRunResultHandler.ts";
 import board from "../../breadboard/index";
+import { CliAsyncGeneratorRunner } from "./cliAsyncGeneratorRunner";
+import { cliRunResultHandler } from "./cliRunResultHandler";
 
 // for await (const runResult of board.run()) {}
 

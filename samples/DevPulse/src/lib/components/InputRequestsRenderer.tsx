@@ -1,12 +1,12 @@
 import React, { ComponentType, ReactNode, useEffect, useState } from "react";
-import { BroadcastMessageType } from "~/lib/types/BroadcastMessageType.ts";
-import { InputRequest } from "~/lib/types/InputRequest.ts";
-import { BasicInput } from "./BasicInput";
+import { BroadcastMessageType } from "~/lib/types/BroadcastMessageType";
+import { InputRequest } from "~/lib/types/InputRequest";
+import { addBroadcastListener } from "../functions/AddBroadcastListener";
 import { sendStatusRequestToServiceWorker } from "../functions/SendStatusRequestToServiceWorker";
 import { BroadcastChannelMember } from "../types/BroadcastChannelMember";
-import { addBroadcastListener } from "../functions/AddBroadcastListener";
-import { ServiceWorkerStatusResponse } from "../types/ServiceWorkerStatusResponse";
 import { RunnerState } from "../types/RunnerState";
+import { ServiceWorkerStatusResponse } from "../types/ServiceWorkerStatusResponse";
+import { BasicInput } from "./BasicInput";
 import styles from "./InputRequestRenderer.module.scss";
 
 export function InputRequestsRenderer<

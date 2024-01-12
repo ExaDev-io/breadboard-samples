@@ -1,9 +1,9 @@
 import { ReactNode } from "react";
-import { BroadcastMessageType } from "~/lib/types/BroadcastMessageType.ts";
-import { InputRequest } from "~/lib/types/InputRequest.ts";
-import { InputResponse } from "~/lib/types/InputResponse.ts";
-import { FormComponent } from "./FormComponent";
+import { BroadcastMessageType } from "~/lib/types/BroadcastMessageType";
+import { InputRequest } from "~/lib/types/InputRequest";
+import { InputResponse } from "~/lib/types/InputResponse";
 import { SW_BROADCAST_CHANNEL } from "../constants";
+import { FormComponent } from "./FormComponent";
 
 export function BasicInput({
 	request,
@@ -36,7 +36,7 @@ export function BasicInput({
 				onSubmit();
 				new BroadcastChannel(SW_BROADCAST_CHANNEL).postMessage(message);
 				onResponseSent();
-				
+
 			}}
 		/>
 	);
