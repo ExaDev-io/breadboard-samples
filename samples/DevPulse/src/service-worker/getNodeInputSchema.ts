@@ -21,7 +21,10 @@ export function getInputSchemaFromNode(runResult: RunResult): Schema {
 		if (inputAttribute == "*") {
 			return schema;
 		}
-		if (!Object.keys(schema.properties!).includes(inputAttribute)) {
+		if (
+			schema.properties &&
+			!Object.keys(schema.properties).includes(inputAttribute)
+		) {
 			throw new Error(
 				`Input attribute "${inputAttribute}" not found in schema:\n${JSON.stringify(
 					schema,
@@ -36,13 +39,16 @@ export function getInputSchemaFromNode(runResult: RunResult): Schema {
 	return schema;
 }
 
-export function getInputAttributeSchemaFromNodeSchema(schema: Schema): {
+export type KeyedInputSchema = {
 	key: string;
 	schema: Schema;
-} {
-	const key = Object.keys(schema.properties!)[0];
-	return {
+};
+
+export function getInputAttributeSchemaFromNodeSchema(
+	schema: Schema
+): KeyedInputSchema[] {
+	return Object.keys(schema.properties ?? []).map((key) => ({
 		key,
-		schema
-	};
+		schema: schema.properties![key],
+	}));
 }
