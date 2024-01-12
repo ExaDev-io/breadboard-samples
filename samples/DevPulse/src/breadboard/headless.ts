@@ -12,7 +12,8 @@ import board from "~/breadboard/index.ts";
 
 		if (runResult.type === "input") {
 			runResult.inputs = {
-				"query": "Post Office",
+				"query": "Post Office Horizon",
+				"limit": 2,
 				"claudeApiKey": process.env.CLAUDE_API_KEY
 			};
 		} else if (runResult.type === "output") {
