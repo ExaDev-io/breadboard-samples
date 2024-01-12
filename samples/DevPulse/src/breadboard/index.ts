@@ -49,7 +49,7 @@ const searchParams: Schema = {
 	properties: {
 		query,
 		limit,
-		claudeApiKeySchema
+		claudeApiKey: claudeApiKeySchema
 	},
 };
 //////////////////////////////////////////////
