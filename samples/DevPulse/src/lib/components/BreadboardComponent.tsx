@@ -12,6 +12,8 @@ import BroadcastMessageRenderer, {
 import { InputRequestsRenderer } from "./InputRequestsRenderer";
 import { ServiceWorkerControllerComponent } from "./ServiceWorkerControllerComponent";
 import Centered from "~/layouts/centered";
+import layoutStyles from "~/layouts/layouts.module.scss";
+import styles from "./BreadboardComponent.module.scss";
 
 const searchInProgressMatcher: MessageMatcherComponent = [
 	(message: BroadcastMessage): boolean =>
@@ -81,8 +83,8 @@ export function BreadboardComponent(): ReactNode {
 
 			<InputRequestsRenderer setLoading={showLoading} />
 			{loading && (
-				<Centered>
-					<Spin />
+				<Centered className={layoutStyles.paddingLarge}>
+					<Spin size="large" className={styles.spinnerGrey} />
 				</Centered>
 			)}
 			<BroadcastMessageRenderer
