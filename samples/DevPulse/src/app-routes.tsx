@@ -5,7 +5,7 @@ import { BreadboardComponent } from "./lib/components/BreadboardComponent";
 
 const routeItems: { path: string; element: React.ReactNode }[] = [
 	{
-		path: "/search",
+		path: "/",
 		element: <BreadboardComponent />,
 	},
 	{
