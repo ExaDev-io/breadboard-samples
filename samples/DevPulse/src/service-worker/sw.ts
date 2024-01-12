@@ -1,9 +1,9 @@
 /// <reference lib="webworker" />
 declare const self: ServiceWorkerGlobalScope;
-
-import { RunResult } from "@google-labs/breadboard";
+import { RunResult, Schema } from "@google-labs/breadboard";
 import { precacheAndRoute } from "workbox-precaching";
 import { StoryOutput } from "~/hnStory/domain";
+import { InputRequest } from "~/lib/types/InputRequest.ts";
 import { RunnerState } from "~/lib/types/RunnerState";
 import board from "../breadboard/index";
 import { Stories } from "../core/Stories";
@@ -13,8 +13,7 @@ import SendStatus from "../lib/functions/SendStatus";
 import { BroadcastChannelMember } from "../lib/types/BroadcastChannelMember";
 import { BroadcastMessage } from "../lib/types/BroadcastMessage";
 import { BroadcastMessageType } from "../lib/types/BroadcastMessageType";
-import { InputRequest } from "../lib/types/InputRequest";
-import { getInputAttributeSchemaFromNodeSchema, getInputSchemaFromNode } from "./getNodeInputSchema";
+import { getInputSchemaFromNode } from "./getNodeInputSchema";
 
 precacheAndRoute(self.__WB_MANIFEST || []);
 
@@ -44,11 +43,11 @@ self.addEventListener("install", () => {
 		() => ({
 			pendingInputs: {
 				resolvers: {},
-				requests: {}
+				requests: {},
 			},
 			active: false,
 			paused: false,
-			finished: false
+			finished: false,
 		})
 	);
 	return self.skipWaiting();
@@ -171,4 +170,3 @@ async function handler(runResult: RunResult): Promise<void> {
 	}
 	// await new Promise((resolve): NodeJS.Timeout => setTimeout(resolve, 1000));
 }
-
