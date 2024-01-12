@@ -15,7 +15,6 @@ export function BasicInput({
 	onSubmit: ()=>void;
 }): ReactNode {
 	const node = request.content.node;
-	const attribute = request.content.attribute;
 
 	return (
 		<FormComponent
@@ -29,14 +28,12 @@ export function BasicInput({
 					messageTarget: request.messageSource,
 					content: {
 						node: node,
-						attribute: attribute,
 						value: formData,
 					},
 				};
 				onSubmit();
 				new BroadcastChannel(SW_BROADCAST_CHANNEL).postMessage(message);
 				onResponseSent();
-
 			}}
 		/>
 	);

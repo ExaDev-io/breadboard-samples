@@ -9,7 +9,6 @@ export interface InputResponse extends BroadcastMessage {
 	messageTarget: BroadcastChannelMember;
 	content: {
 		node: string;
-		attribute: string;
-		value: unknown;
+		value: any;
 	};
 }

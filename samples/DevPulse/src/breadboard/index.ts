@@ -13,7 +13,7 @@ import Core from "@google-labs/core-kit";
 import { ClaudeKitBuilder } from "./ClaudeKitBuilder";
 
 const LIMIT_DEPTH = 3;
-const SEARCH_RESULT_COUNT = 2;
+const SEARCH_RESULT_COUNT = 10;
 
 const DEBUG = false;
 const TOP_STORIES = false;

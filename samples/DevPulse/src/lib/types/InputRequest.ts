@@ -10,7 +10,6 @@ export interface InputRequest extends BroadcastMessage {
 	messageTarget: BroadcastChannelMember;
 	content: {
 		node: string;
-		attribute: string;
 		schema: Schema;
 	};
 	[key: string]: unknown;
