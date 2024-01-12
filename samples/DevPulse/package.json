@@ -49,7 +49,7 @@
 		"cli": "npx -y tsx src/lib/cli/runBoard.ts",
 		"headless": "wireit",
 		"build": "tsc && vite build",
-		"dev": "vite --open",
+		"dev": "tsc --noEmit && vite --open",
 		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
 		"preview": "vite preview --open"
 	},
