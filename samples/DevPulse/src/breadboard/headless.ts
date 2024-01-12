@@ -1,5 +1,6 @@
 #!/usr/bin/env npx -y tsx
 import { generateAndWriteCombinedMarkdown } from "@exadev/breadboard-kits/util/files/generateAndWriteCombinedMarkdown";
+import { LogProbe } from "@google-labs/breadboard";
 import board from "~/breadboard/index";
 
 generateAndWriteCombinedMarkdown({
