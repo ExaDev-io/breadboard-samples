@@ -105,42 +105,47 @@ export function waitForInput(request: InputRequest): Promise<any> {
 	});
 }
 
-
 async function handler(runResult: RunResult): Promise<void> {
 	console.log("=".repeat(80));
+	const requestId: string = `${runResult.node.id}_${new Date().getTime()}`;
 	if (runResult.type === "input") {
-		const inputSchema = getInputSchemaFromNode(runResult);
-		const { key, schema } = getInputAttributeSchemaFromNodeSchema(inputSchema);
+		const inputSchema: Schema = getInputSchemaFromNode(runResult);
 
 		const message: InputRequest = {
-			id: `${runResult.node.id}-${key}`,
+			id: requestId,
 			messageType: BroadcastMessageType.INPUT_REQUEST,
 			messageSource: BroadcastChannelMember.ServiceWorker,
 			messageTarget: BroadcastChannelMember.Client,
 			content: {
 				node: runResult.node.id,
-				attribute: key,
-				schema,
+				schema: inputSchema,
 			},
 		};
-		boardRunner.state.pendingInputs.requests[message.id] = message;
-		SendStatus();
 
-		new BroadcastChannel(SW_BROADCAST_CHANNEL).addEventListener("message", (event): void => {
-			if (event.data.messageType === BroadcastMessageType.INPUT_RESPONSE) {
-				if (event.data.content?.attribute == key && event.data.content?.node == runResult.node.id) {
-					const { node, attribute, value } = event.data.content;
-					const key: `${any}-${any}` = `${node}-${attribute}`;
-					boardRunner.state.pendingInputs.resolvers[key](value);
-					delete boardRunner.state.pendingInputs.requests[message.id];
-					SendStatus(message.id);
+		boardRunner.state.pendingInputs.requests[requestId] = message;
+		SendStatus();
+		new BroadcastChannel(SW_BROADCAST_CHANNEL).addEventListener(
+			"message",
+			(event): void => {
+				if (event.data.messageType === BroadcastMessageType.INPUT_RESPONSE) {
+					if (event.data.content?.node == runResult.node.id) {
+						const response = event.data.content;
+						const resolver =
+							boardRunner.state.pendingInputs.resolvers[requestId];
+						if (!resolver) {
+							throw new Error(`No resolver for request ${requestId}`);
+						}
+						resolver(response.value);
+						delete boardRunner.state.pendingInputs.requests[requestId];
+						SendStatus(requestId);
+					}
 				}
 			}
-		})
+		);
 
-		const userInput = await waitForInput(runResult.node.id, key);
+		const input = await waitForInput(message);
 
-		runResult.inputs = { [key]: userInput };
+		runResult.inputs = input;
 	} else if (runResult.type === "output") {
 		if (runResult.outputs?.story_id) {
 			const id = runResult.outputs.story_id as number;
@@ -160,7 +165,7 @@ async function handler(runResult: RunResult): Promise<void> {
 				node: runResult.node.id,
 				stories: stories,
 				outputs: runResult.outputs,
-			}
+			},
 		};
 		new BroadcastChannel(SW_BROADCAST_CHANNEL).postMessage(message);
 	}
