@@ -130,7 +130,8 @@ async function handler(runResult: RunResult): Promise<void> {
 			if (event.data.messageType === BroadcastMessageType.INPUT_RESPONSE) {
 				if (event.data.content?.attribute == key && event.data.content?.node == runResult.node.id) {
 					const { node, attribute, value } = event.data.content;
-					boardRunner.state.pendingInputs.resolvers[`${node}-${attribute}`](value);
+					const key: `${any}-${any}` = `${node}-${attribute}`;
+					boardRunner.state.pendingInputs.resolvers[key](value);
 					delete boardRunner.state.pendingInputs.requests[message.id];
 					SendStatus(message.id);
 				}
