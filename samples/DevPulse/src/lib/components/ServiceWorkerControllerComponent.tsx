@@ -56,11 +56,12 @@ export function ServiceWorkerControllerComponent(): ReactNode {
 				)}
 			</h6>
 			<div>
-				<div className={styles.ccontrols}>
+				<div className={styles.controls}>
 					<Button
 						onClick={() =>
 							handleSwCommand(ServiceWorkerControllerCommand.START)
 						}
+						disabled={active}
 					>
 						Start
 					</Button>
@@ -68,11 +69,13 @@ export function ServiceWorkerControllerComponent(): ReactNode {
 						onClick={() =>
 							handleSwCommand(ServiceWorkerControllerCommand.PAUSE)
 						}
+						disabled={!active}
 					>
 						Pause
 					</Button>
 					<Button
 						onClick={() => handleSwCommand(ServiceWorkerControllerCommand.STOP)}
+						disabled={!active}
 					>
 						Stop
 					</Button>
