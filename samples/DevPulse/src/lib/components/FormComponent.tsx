@@ -77,12 +77,12 @@ export function FormComponent<T extends InputRequest>({
 
 	return (
 		<form className={styles.form} onSubmit={handleFormSubmit}>
-			{Object.entries(properties).map(([key, value]) => {
+			{Object.entries(properties).map(([key, schema]) => {
 				return (
 					<div className={styles.inputLabel}>
-						<label htmlFor={key}>{value.title || key}</label>
+						<label htmlFor={key}>{schema.title || key}</label>
 						<input
-							type={getInputType(value.type)}
+							type={getInputType(schema.type)}
 							name={key}
 							id={key}
 							placeholder={key}
@@ -93,7 +93,7 @@ export function FormComponent<T extends InputRequest>({
 							onChange={handleChange}
 							onKeyUp={onKeyUp}
 							className={styles.input}
-							defaultValue={value.default}
+							defaultValue={schema.default}
 						/>
 						<label htmlFor={`${key}_remember`} className={styles.checkboxLabel}>
 							<input
