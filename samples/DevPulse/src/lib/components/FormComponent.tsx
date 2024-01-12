@@ -4,14 +4,14 @@ import { InputRequest } from "~/lib/types/InputRequest";
 import { ValidHTMLInputTypeAttributes } from "~/lib/types/ValidHTMLInputTypeAttributes";
 import styles from "./FormComponent.module.scss";
 
-function togglePasswordVisibility(event: React.MouseEvent<HTMLButtonElement>): any {
+function togglePasswordVisibility(event: React.MouseEvent<HTMLButtonElement>): void {
 	const input = event.currentTarget.previousSibling as HTMLInputElement;
 	if (input.type === "password") {
 		input.type = "text";
-		event.currentTarget.textContent = "Hide";
+		event.currentTarget.textContent = "Hide Characters";
 	} else {
 		input.type = "password";
-		event.currentTarget.textContent = "Show";
+		event.currentTarget.textContent = "Show Characters";
 	}
 }
 
@@ -94,31 +94,35 @@ export function FormComponent<T extends InputRequest>({
 			{Object.entries(properties).map(([key, schema]) => {
 				return (
 					<div className={styles.inputLabel}>
-						<label htmlFor={key}>{schema.title || key}</label>
-						<input
-							type={getInputType(schema.type)}
-							name={key}
-							id={key}
-							placeholder={key}
-							value={
-								(formData[key] as string | number | readonly string[]) ||
-								undefined
-							}
-							onChange={handleChange}
-							onKeyUp={onKeyUp}
-							className={styles.input}
-							defaultValue={schema.default}
-						/>
-						{/* if getInputType(schema.type) is password then show button to toggle password visibility */}
-						{/*{getInputType(schema.type) === "password" && (*/}
-						{/*	<button*/}
-						{/*		type="button"*/}
-						{/*		className={styles.togglePassword}*/}
-						{/*		onClick={(event) => togglePasswordVisibility(event)}*/}
-						{/*	>*/}
-						{/*		Show*/}
-						{/*	</button>*/}
-						{/*)}*/}
+						<label htmlFor={key}>
+							{schema.title || key}
+							<span>
+								<input
+									type={getInputType(schema.type)}
+									name={key}
+									id={key}
+									placeholder={key}
+									value={
+										(formData[key] as string | number | readonly string[]) ||
+										undefined
+									}
+									onChange={handleChange}
+									onKeyUp={onKeyUp}
+									className={styles.input}
+									defaultValue={schema.default}
+								/>
+								{/* if getInputType(schema.type) is password then show button to toggle password visibility */}
+								{getInputType(schema.type) === "password" && (
+									<Button
+										type="button"
+										className={styles.togglePassword}
+										onClick={togglePasswordVisibility}
+									>
+										Show Character
+									</Button>
+								)}
+							</span>
+						</label>
 						<label htmlFor={`${key}_remember`} className={styles.checkboxLabel}>
 							<input
 								id={`${key}_remember`}
@@ -133,7 +137,7 @@ export function FormComponent<T extends InputRequest>({
 					</div>
 				);
 			})}
-			<Button type="submit">Submit</Button>
+			<Button type="submit" variant="positive">Submit</Button>
 		</form>
 	);
 }
