@@ -45,7 +45,7 @@ const OutputAccordionItem = ({
 			<h3 onClick={handleClick}>
 				<span>
 					<a href={result.url} target="_blank">
-						{result.title}
+						{result.title} 
 					</a>
 				</span>
 				{renderStatus(true)}
