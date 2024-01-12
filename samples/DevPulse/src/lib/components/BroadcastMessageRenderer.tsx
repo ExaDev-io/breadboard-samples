@@ -2,17 +2,21 @@ import React, { ReactNode, useEffect, useState } from "react";
 import { SW_BROADCAST_CHANNEL } from "../constants";
 import { BroadcastMessage } from "../types/BroadcastMessage";
 import BasicMessage from "./BasicMessage";
+import OutputAccordion from "~/hnStory/components/output-accordion";
+import { StoryOutput } from "~/hnStory/domain";
 
-export type MessageMatcher<T extends BroadcastMessage = BroadcastMessage> = (message: T) => boolean;
+export type MessageMatcher<T extends BroadcastMessage = BroadcastMessage> = (
+	message: T
+) => boolean;
 
-export type MessageComponent<T extends BroadcastMessage = BroadcastMessage> = React.ComponentType<{
-	message: T;
-}>;
+export type MessageComponent<T extends BroadcastMessage = BroadcastMessage> =
+	React.ComponentType<{
+		message: T;
+	}>;
 
-export type MessageMatcherComponent<T extends BroadcastMessage = BroadcastMessage> = [
-	matcher: MessageMatcher<T>,
-	component: MessageComponent<T>
-];
+export type MessageMatcherComponent<
+	T extends BroadcastMessage = BroadcastMessage
+> = [matcher: MessageMatcher<T>, component: MessageComponent<T>];
 
 export function BroadcastMessageRenderer({
 	channelId = SW_BROADCAST_CHANNEL,
@@ -28,6 +32,7 @@ export function BroadcastMessageRenderer({
 	onRenderMessages: () => void;
 }): ReactNode {
 	const [messages, setMessages] = useState<BroadcastMessage[]>([]);
+	const [stories, setStories] = useState<StoryOutput[]>([]);
 
 	useEffect(() => {
 		const channel = new BroadcastChannel(channelId);
@@ -41,6 +46,10 @@ export function BroadcastMessageRenderer({
 				)
 			) {
 				setMessages((prevMessages) => [...prevMessages, newMessage]);
+				setStories(
+					(newMessage.content as { stories: StoryOutput[] })
+						.stories as StoryOutput[]
+				);
 			}
 		};
 
@@ -70,7 +79,11 @@ export function BroadcastMessageRenderer({
 		});
 	};
 
-	return <div>{messages.map(renderMessage)}</div>;
+	return (
+		<OutputAccordion
+			data={stories}
+		/>
+	);
 }
 
 export default BroadcastMessageRenderer;

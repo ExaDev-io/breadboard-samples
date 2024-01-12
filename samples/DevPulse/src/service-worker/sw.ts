@@ -150,19 +150,19 @@ async function handler(runResult: RunResult): Promise<void> {
 		} else if (runResult.node.id === "searchResults") {
 			throw new Error(`node: ${runResult.node.id}`);
 		}
-		const output = Stories.getAll() as StoryOutput[];
+		const stories = Stories.getAll() as StoryOutput[];
 		const message: BroadcastMessage = {
 			messageType: BroadcastMessageType.OUTPUT,
 			messageSource: BroadcastChannelMember.ServiceWorker,
 			messageTarget: BroadcastChannelMember.Client,
 			content: {
 				node: runResult.node.id,
-				outputs: output,
-				...runResult.outputs,
+				stories: stories,
+				outputs: runResult.outputs,
 			}
 		};
 		new BroadcastChannel(SW_BROADCAST_CHANNEL).postMessage(message);
 	}
-	await new Promise((resolve): NodeJS.Timeout => setTimeout(resolve, 1000));
+	// await new Promise((resolve): NodeJS.Timeout => setTimeout(resolve, 1000));
 }
 
