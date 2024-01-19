@@ -1705,6 +1705,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@exadev/breadboard-kits@npm:^0.9.2":
+  version: 0.9.2
+  resolution: "@exadev/breadboard-kits@npm:0.9.2"
+  dependencies:
+    "@anthropic-ai/sdk": "npm:^0.10.2"
+    "@anthropic-ai/tokenizer": "npm:^0.0.4"
+    "@google-labs/breadboard": "npm:^0.6.0"
+    "@google-labs/core-kit": "npm:^0.1.0"
+    "@google-labs/llm-starter": "npm:^0.3.0"
+    "@xenova/transformers": "npm:^2.10.1"
+    axios: "npm:^1.6.2"
+    cheerio: "npm:^1.0.0-rc.12"
+    dotenv: "npm:^16.3.1"
+    js-tiktoken: "npm:^1.0.8"
+    jsonschema: "npm:^1.4.1"
+  checksum: 03ff6af28d30bab7ae7a2961ac2f9f5ec4510a7d821690bc472397e4da5dc55f0ecb4f97249b98c0a3af3744f9a9c5b1745a6556daa5558e5c65562a441c7b16
+  languageName: node
+  linkType: hard
+
 "@fontsource/roboto@npm:^5.0.8":
   version: 5.0.8
   resolution: "@fontsource/roboto@npm:5.0.8"
@@ -3870,7 +3889,7 @@ __metadata:
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     typescript: "npm:^5.3.3"
-    vite: "npm:^5.0.7"
+    vite: "npm:^5.0.12"
     vite-plugin-pwa: "npm:^0.17.4"
     vite-tsconfig-paths: "npm:^4.2.2"
   languageName: unknown
@@ -4993,7 +5012,7 @@ __metadata:
     react-dom: "npm:^18.2.0"
     sass: "npm:^1.69.5"
     typescript: "npm:^4.9.5"
-    vite: "npm:^5.0.6"
+    vite: "npm:^5.0.12"
   languageName: unknown
   linkType: soft
 
@@ -8342,7 +8361,7 @@ __metadata:
     marked: "npm:^11.0.0"
     tsx: "npm:^4.7.0"
     typescript: "npm:^5.3.2"
-    vite: "npm:^5.0.2"
+    vite: "npm:^5.0.12"
     vite-plugin-full-reload: "npm:^1.1.0"
     vite-plugin-top-level-await: "npm:^1.3.1"
     vite-plugin-watch-and-run: "npm:^1.4.4"
@@ -8819,9 +8838,10 @@ __metadata:
   resolution: "vite-react-worker@workspace:samples/DevPulse"
   dependencies:
     "@anthropic-ai/tokenizer": "npm:^0.0.4"
-    "@exadev/breadboard-kits": "npm:^0.9.1"
+    "@exadev/breadboard-kits": "npm:^0.9.2"
     "@fontsource/roboto": "npm:^5.0.8"
     "@google-labs/breadboard": "npm:^0.6.0"
+    "@google-labs/core-kit": "npm:^0.1.0"
     "@paulkinlan/claude-breadboard-kit": "npm:^2.2.5"
     "@reduxjs/toolkit": "npm:^2.0.1"
     "@types/node": "npm:^20.10.7"
@@ -8848,9 +8868,10 @@ __metadata:
     tsx: "npm:^4.7.0"
     typescript: "npm:^5.3.3"
     uuid: "npm:^9.0.1"
-    vite: "npm:^5.0.7"
+    vite: "npm:^5.0.12"
     vite-plugin-pwa: "npm:^0.17.4"
     vite-tsconfig-paths: "npm:^4.2.2"
+    wireit: "npm:^0.14.3"
     workbox-core: "npm:^7.0.0"
   languageName: unknown
   linkType: soft
@@ -8871,7 +8892,7 @@ __metadata:
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     typescript: "npm:^5.3.3"
-    vite: "npm:^5.0.7"
+    vite: "npm:^5.0.12"
     vite-plugin-pwa: "npm:^0.17.4"
   languageName: unknown
   linkType: soft
@@ -8892,9 +8913,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^5.0.2, vite@npm:^5.0.6, vite@npm:^5.0.7":
-  version: 5.0.11
-  resolution: "vite@npm:5.0.11"
+"vite@npm:^5.0.12":
+  version: 5.0.12
+  resolution: "vite@npm:5.0.12"
   dependencies:
     esbuild: "npm:^0.19.3"
     fsevents: "npm:~2.3.3"
@@ -8928,7 +8949,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: f1a8fea35ed9f162d7a10fd13efb2c96637028b0a319d726aeec8b31e20e4d047272bda5df82167618e7774a520236c66f3093ed172802660aec5227814072f4
+  checksum: ed0bb26a0d0c8e1dae0b70af9e36adffd7e15d80297443fe4da762596dc81570bad7f0291f590a57c1553f5e435338d8c7ffc483bd9431a95c09d9ac90665fad
   languageName: node
   linkType: hard
 
@@ -9052,6 +9073,21 @@ __metadata:
   bin:
     wireit: bin/wireit.js
   checksum: d38a1aa26189d096cbf7ce08a630e5c7609860c678db809533af5847a9f0c0d0722dbd070b1d6635724993fd7c89fc9b618aa5815e9c93efa028c3c5d9ce22f9
+  languageName: node
+  linkType: hard
+
+"wireit@npm:^0.14.3":
+  version: 0.14.3
+  resolution: "wireit@npm:0.14.3"
+  dependencies:
+    braces: "npm:^3.0.2"
+    chokidar: "npm:^3.5.3"
+    fast-glob: "npm:^3.2.11"
+    jsonc-parser: "npm:^3.0.0"
+    proper-lockfile: "npm:^4.1.2"
+  bin:
+    wireit: bin/wireit.js
+  checksum: 0548a87b61a9585c72a2aedc466aacbd76b5fba117921b145485a5fb80d582056f572789e098a7c3962112e688ee9eb8994fa3e4dd4dfd9903e64c4a814439f2
   languageName: node
   linkType: hard
 
