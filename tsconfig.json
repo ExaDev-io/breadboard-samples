@@ -1,0 +1,12 @@
+{
+	"extends": "./tsconfig.minimal.json",
+	"compilerOptions": {
+		"composite": true,
+		"baseUrl": ".",
+		"paths": {
+			"@root/*": [
+				"./*"
+			]
+		}
+	}
+}
