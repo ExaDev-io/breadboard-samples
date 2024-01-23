@@ -1,7 +1,7 @@
 #!/usr/bin/env npx -y tsx
 import { ConfigKit, CourseCrafterKit, StringKit, XenovaKit } from "@exadev/breadboard-kits";
 import generateAndWriteCombinedMarkdown from "@exadev/breadboard-kits/util/files/generateAndWriteCombinedMarkdown";
-import { Board, BreadboardNode, InputValues, OutputValues } from "@google-labs/breadboard";
+import { Board, BreadboardNode, InputValues, OutputValues, Schema } from "@google-labs/breadboard";
 import { ClaudeKit } from "@paulkinlan/claude-breadboard-kit";
 import fs from "fs";
 import path from "path";
@@ -28,7 +28,7 @@ const blogDetails = board.input({
 				description: "urls",
 			},
 		},
-	},
+	} satisfies Schema,
 });
 
 const templateInput = board.input({
@@ -42,7 +42,7 @@ const templateInput = board.input({
 				description: "urls",
 			},
 		},
-	},
+	} satisfies Schema,
 });
 
 const taskDetails = board.input({

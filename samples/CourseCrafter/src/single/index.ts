@@ -2,7 +2,7 @@
 import { ConfigKit, CourseCrafterKit, StringKit, XenovaKit } from "@exadev/breadboard-kits";
 
 import generateAndWriteCombinedMarkdown from "@exadev/breadboard-kits/util/files/generateAndWriteCombinedMarkdown";
-import { Board } from "@google-labs/breadboard";
+import { Board, Schema } from "@google-labs/breadboard";
 import { ClaudeKit } from "@paulkinlan/claude-breadboard-kit";
 import fs from "fs";
 import path from "path";
@@ -29,7 +29,7 @@ const input = board.input({
 				description: "urls",
 			},
 		},
-	},
+	} satisfies Schema,
 });
 
 const templateInput = board.input({
@@ -43,7 +43,7 @@ const templateInput = board.input({
 				description: "urls",
 			},
 		},
-	},
+	} satisfies Schema,
 });
 
 const taskDetails = board.input({
@@ -57,7 +57,7 @@ const taskDetails = board.input({
 				description: "model and task",
 			},
 		},
-	},
+	} satisfies Schema,
 });
 
 const getBlogContentForTask = courseCraftKit.getBlogContentForTask({

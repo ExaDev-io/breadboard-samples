@@ -51,7 +51,7 @@ const searchParams: Schema = {
 		limit,
 		claudeApiKey: claudeApiKeySchema
 	},
-};
+} satisfies Schema;
 //////////////////////////////////////////////
 
 const search = algolia.search({

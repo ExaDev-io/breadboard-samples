@@ -1,5 +1,5 @@
 import { Button, Card, Form, Input } from "antd";
-import { Board } from "@google-labs/breadboard";
+import { Board, Schema } from "@google-labs/breadboard";
 import { useState } from "react";
 import OutputCard, { OutputCardProps } from "./output-card";
 import mainStyles from "../styles/main.module.scss";
@@ -21,7 +21,19 @@ const BasicForm = (): React.JSX.Element => {
 
 	const onSubmit = async (values: FieldType) => {
 		//#region Board Wiring
-		const input = board.input();
+		const input = board.input({
+			$id: "input-message",
+			schema: {
+				type: "object",
+				properties: {
+					message: {
+					type: "string",
+					title: "Input Message",
+					description: "The input message"
+				  }
+				}
+			  } satisfies Schema
+		});
 		const output = board.output();
 		input.wire(inputAttribute, output);
 		//#endregion

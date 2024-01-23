@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { Board, LogProbe, asRuntimeKit } from "@google-labs/breadboard";
+import { Board, LogProbe, Schema, asRuntimeKit } from "@google-labs/breadboard";
 import { Core } from "@google-labs/core-kit";
 import Critic from "./critic.ts";
 import Starter from "@google-labs/llm-starter";
@@ -34,7 +34,19 @@ export class Panel {
     });
 
     this.#coreKit = this.#board.addKit(Core);
-    this.#inputText = this.#board.input({ $id: "input-text" });
+    this.#inputText = this.#board.input({
+      $id: "input-text", 
+      schema: {
+        type: "object",
+        properties: {
+          article: {
+            type: "string",
+            title: "articleToCritique",
+            description: "The article that is being critiqued",
+          }
+        }
+      } satisfies Schema
+    });
   }
 
   addCritic(name: string, persona: string) {
@@ -43,7 +55,29 @@ export class Panel {
 	const idStr = `critic${id}`;
     const panelOutput = this.#board.output();
 
-    const input = this.#board.input({ $id: `${idStr}-input`})
+    const input = this.#board.input({
+      $id: `${idStr}-input`, 
+      schema: {
+        type: "object",
+        properties: {
+          name: {
+            type: "string",
+            title: "Critic Name",
+            description: "The name of the Critic"
+          },
+          id: {
+            type: "string",
+            title: "id",
+            description: "The id of the critique being created",
+          },
+          persona: {
+            type: "string",
+            title: "Critic Persona",
+            description: "The Persona of the Critic",
+          }
+        }
+      } satisfies Schema
+    });
     const lambda = this.#board.lambda(Critic, { $id: `${idStr}-lambda`, name, persona}).wire("article<-article", this.#inputText);
     const invoke = this.#coreKit.invoke({ board: lambda });
 	invoke.wire("id<-id", input);
