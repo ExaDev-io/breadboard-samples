@@ -28,7 +28,17 @@ classDef slotted stroke:#a64d79
 	"nodes": [
 		{
 			"id": "inputOne",
-			"type": "input"
+			"type": "input",
+			"configuration": {
+				"schema": {
+					"type": "object",
+					"properties": {
+						"message": {
+							"type": "string"
+						}
+					}
+				}
+			}
 		},
 		{
 			"id": "output-1",

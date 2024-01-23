@@ -2,13 +2,13 @@
 	"title": "Multiple Inputs",
 	"edges": [
 		{
-			"from": "input-2",
+			"from": "inputOne",
 			"to": "output-1",
 			"out": "message",
 			"in": "message"
 		},
 		{
-			"from": "input-3",
+			"from": "inputTwo",
 			"to": "output-1",
 			"out": "message",
 			"in": "message"
@@ -20,12 +20,32 @@
 			"type": "output"
 		},
 		{
-			"id": "input-2",
-			"type": "input"
+			"id": "inputOne",
+			"type": "input",
+			"configuration": {
+				"schema": {
+					"type": "object",
+					"properties": {
+						"message": {
+							"type": "string"
+						}
+					}
+				}
+			}
 		},
 		{
-			"id": "input-3",
-			"type": "input"
+			"id": "inputTwo",
+			"type": "input",
+			"configuration": {
+				"schema": {
+					"type": "object",
+					"properties": {
+						"message": {
+							"type": "string"
+						}
+					}
+				}
+			}
 		}
 	],
 	"kits": []

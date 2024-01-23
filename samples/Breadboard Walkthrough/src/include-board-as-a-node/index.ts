@@ -1,7 +1,7 @@
 #!/usr/bin/env npx -y tsx
 
 import generateAndWriteCombinedMarkdown from "@exadev/breadboard-kits/util/files/generateAndWriteCombinedMarkdown";
-import { Board, GraphDescriptor } from "@google-labs/breadboard";
+import { Board, GraphDescriptor, Schema } from "@google-labs/breadboard";
 import { Core } from "@google-labs/core-kit";
 import fs from "fs";
 import * as url from "url";
@@ -10,10 +10,18 @@ const nestedBoard = new Board({
 	title: "Nested Board",
 });
 
-nestedBoard
-	.input({
-		$id: "nestedInputNode",
-	})
+const inputSchema = {
+	type: "object",
+	properties: {
+		mainInput: {
+			type: "string"
+		}
+	},
+  } satisfies Schema;
+
+const input = nestedBoard.input({ $id: "nestedInputNode", schema: inputSchema })
+
+input
 	.wire(
 		"nestedInput->nestedOutput",
 		nestedBoard.output({ $id: "nestedOutputNode" })

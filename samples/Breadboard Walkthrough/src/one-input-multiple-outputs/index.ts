@@ -1,11 +1,24 @@
 import generateAndWriteCombinedMarkdown from "@exadev/breadboard-kits/util/files/generateAndWriteCombinedMarkdown";
-import { Board } from "@google-labs/breadboard";
+import { Board, Schema } from "@google-labs/breadboard";
 import fs from "fs";
 import * as url from "url";
 
 const board = new Board({
 	title: "One Input Multiple Outputs",
 });
+
+const inputSchema = {
+	type: "object",
+	properties: {
+		partOne: {
+			type: "string"
+		},
+		partTwo: {
+			type: "string"
+		}
+	},
+  } satisfies Schema;
+
 const outputOne = board.output({
 	$id: "outputOne",
 });
@@ -13,7 +26,7 @@ const outputTwo = board.output({
 	$id: "outputTwo",
 });
 
-const input = board.input();
+const input = board.input({ schema: inputSchema });
 
 input.wire("partOne", outputOne);
 input.wire("partTwo", outputTwo);

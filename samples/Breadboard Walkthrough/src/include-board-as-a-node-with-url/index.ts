@@ -1,7 +1,7 @@
 #!/usr/bin/env npx -y tsx
 
 import generateAndWriteCombinedMarkdown from "@exadev/breadboard-kits/util/files/generateAndWriteCombinedMarkdown";
-import { Board } from "@google-labs/breadboard";
+import { Board, Schema } from "@google-labs/breadboard";
 import { Core } from "@google-labs/core-kit";
 import fs from "fs";
 import * as url from "url";
@@ -11,6 +11,15 @@ const board = new Board({
 });
 
 const core = board.addKit(Core);
+
+const inputSchema = {
+	type: "object",
+	properties: {
+		mainInput: {
+			type: "string"
+		}
+	},
+  } satisfies Schema;
 
 const NESTED_BOARD_URL =
 	"https://raw.githubusercontent.com/ExaDev-io/breadboard-samples/develop/samples/Breadboard%20Walkthrough/src/include-board-as-a-node-with-url/nestedboard.json";
@@ -26,7 +35,7 @@ await fetch(NESTED_BOARD_URL).then((response) => {
 });
 
 const input = board.input({
-	$id: "mainInputNode",
+	$id: "mainInputNode", schema: inputSchema
 });
 
 const nestedBoard = core.invoke({ path: NESTED_BOARD_URL });

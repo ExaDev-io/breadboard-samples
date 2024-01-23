@@ -1,7 +1,7 @@
 #!/usr/bin/env npx -y tsx
 
 import generateAndWriteCombinedMarkdown from "@exadev/breadboard-kits/util/files/generateAndWriteCombinedMarkdown";
-import { Board } from "@google-labs/breadboard";
+import { Board, Schema } from "@google-labs/breadboard";
 import fs from "fs";
 import * as url from "url";
 
@@ -9,8 +9,32 @@ const board = new Board({
 	title: "Naming Wiring Parameters",
 });
 
+const inputSchema = {
+	type: "object",
+	properties: {
+		inputPartOne: {
+			type: "string"
+		},
+		inputPartTwo: {
+			type: "string"
+		},
+		inputPartThree: {
+			type: "string"
+		},
+		inputPartFour: {
+			type: "string"
+		},
+		inputPartFive: {
+			type: "string"
+		},
+		inputPartSix: {
+			type: "string"
+		}
+	},
+  } satisfies Schema;
+
 const input = board.input({
-	$id: "inputNode",
+	$id: "inputNode", schema: inputSchema
 });
 
 /**

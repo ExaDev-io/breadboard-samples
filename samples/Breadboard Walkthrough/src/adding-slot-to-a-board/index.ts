@@ -1,7 +1,7 @@
 #!/usr/bin/env npx -y tsx
 
 import generateAndWriteCombinedMarkdown from "@exadev/breadboard-kits/util/files/generateAndWriteCombinedMarkdown";
-import { Board } from "@google-labs/breadboard";
+import { Board, Schema } from "@google-labs/breadboard";
 import { Core } from "@google-labs/core-kit";
 import fs from "fs";
 import * as url from "url";
@@ -15,15 +15,24 @@ const board: Board = new Board({
 
 const core = board.addKit(Core);
 
-board
-	.input({
-		$id: "mainInputNode",
-	})
+const inputSchema = {
+	type: "object",
+	properties: {
+		mainInput: {
+			type: "string"
+		}
+	},
+  } satisfies Schema;
+
+const input = board.input({ $id: "mainInputNode", schema: inputSchema });
+const output = board.output({ $id: "mainOutputNode" });
+
+input
 	.wire(
 		"mainInput->nestedInput",
 		core
 			.slot({ slot: "nested" })
-			.wire("nestedOutput", board.output({ $id: "mainOutputNode" }))
+			.wire("nestedOutput", output)
 	);
 
 const nested = new Board({
