@@ -9,43 +9,43 @@ import { Starter } from "@google-labs/llm-starter";
 import { ClaudeKit } from "@paulkinlan/claude-breadboard-kit";
 
 const board = new Board({
-  title: "The Critic",
-  description: "Test Breadboard Kit",
-  version: "0.0.1",
+	title: "The Critic",
+	description: "Test Breadboard Kit",
+	version: "0.0.1",
 });
 
-const starterKit = board.addKit(Starter);
-const claudeKit = board.addKit(ClaudeKit);
+const starterKit: Starter = board.addKit(Starter as any) as Starter;
+const claudeKit: ClaudeKit = board.addKit(ClaudeKit as any) as ClaudeKit;
 
 const criticOutput = board.output();
 
 const inputCritic = board.input({
-  $id: "critic-name",
-  schema: {
-    type: "object",
-    properties: {
-      name: {
-        type: "string",
-        title: "Critic Name",
-        description: "The name of the Critic"
-      },
-	  id: {
-        type: "string",
-        title: "id",
-        description: "The id of the critique being created",
-      },
-      article: {
-        type: "string",
-        title: "articleToCritique",
-        description: "The article that is being critiqued",
-      },
-      persona: {
-        type: "string",
-        title: "Critic Persona",
-        description: "The Persona of the Critic",
-      }
-    }
-  }
+	$id: "critic-name",
+	schema: {
+		type: "object",
+		properties: {
+			name: {
+				type: "string",
+				title: "Critic Name",
+				description: "The name of the Critic"
+			},
+			id: {
+				type: "string",
+				title: "id",
+				description: "The id of the critique being created",
+			},
+			article: {
+				type: "string",
+				title: "articleToCritique",
+				description: "The article that is being critiqued",
+			},
+			persona: {
+				type: "string",
+				title: "Critic Persona",
+				description: "The Persona of the Critic",
+			}
+		}
+	}
 });
 
 // const secret = starterKit.secrets({keys: ["CLAUDE_API_KEY"]});
