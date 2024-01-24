@@ -1,9 +1,9 @@
 {
 	"author": "",
 	"dependencies": {
-		"@google-labs/breadboard": "^0.6.0",
-		"@google-labs/core-kit": "^0.1.0",
-		"@google-labs/llm-starter": "^0.3.0",
+		"@google-labs/breadboard": "^0.7.1",
+		"@google-labs/core-kit": "^0.1.2",
+		"@google-labs/llm-starter": "^0.3.1",
 		"@paulkinlan/claude-breadboard-kit": "^2.2.5",
 		"comlink": "^4.4.1",
 		"dompurify": "^3.0.6",

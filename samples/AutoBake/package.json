@@ -1,9 +1,9 @@
 {
 	"dependencies": {
-		"@exadev/breadboard-kits": "^0.9.2",
-		"@google-labs/breadboard": "^0.6.0",
-		"@google-labs/core-kit": "^0.1.0",
-		"@google-labs/llm-starter": "^0.3.0",
+		"@exadev/breadboard-kits": "^0.10.1",
+		"@google-labs/breadboard": "^0.7.1",
+		"@google-labs/core-kit": "^0.1.2",
+		"@google-labs/llm-starter": "^0.3.1",
 		"@paulkinlan/claude-breadboard-kit": "^2.2.5",
 		"@types/puppeteer": "^7.0.4",
 		"puppeteer": "^21.6.1",
