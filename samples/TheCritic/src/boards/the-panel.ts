@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { Board, LogProbe, Schema, asRuntimeKit } from "@google-labs/breadboard";
+import { Board, Schema, asRuntimeKit } from "@google-labs/breadboard";
 import { Core } from "@google-labs/core-kit";
 import Critic from "./critic.ts";
 import Starter from "@google-labs/llm-starter";
@@ -93,7 +93,10 @@ export class Panel {
 
   async *critique(text: string): AsyncGenerator<CriticResponse> {
     const kits = [asRuntimeKit(Core), asRuntimeKit(Starter), asRuntimeKit(ClaudeKit)]
-    for await (const stop of this.#board.run({ kits, probe: new LogProbe() })) {
+    for await (const stop of this.#board.run({ 
+      kits, 
+      // probe: new LogProbe() 
+    })) {
       if (stop.type === "input") {
         stop.inputs = { article: text, ...this.#critics[stop.node.id] };
       } else if (stop.type === "output") {
