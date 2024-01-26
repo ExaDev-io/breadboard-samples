@@ -35,13 +35,23 @@ classDef slotted stroke:#a64d79
 	"nodes": [
 		{
 			"id": "mainInputNode",
-			"type": "input"
+			"type": "input",
+			"configuration": {
+				"schema": {
+					"type": "object",
+					"properties": {
+						"mainInput": {
+							"type": "string"
+						}
+					}
+				}
+			}
 		},
 		{
 			"id": "invoke-1",
 			"type": "invoke",
 			"configuration": {
-				"path": "https://raw.githubusercontent.com/ExaDev-io/breadboard-samples/more-demos/samples/Breadboard%20Walkthrough/src/include-board-as-a-node-with-url/nestedboard.json"
+				"path": "https://raw.githubusercontent.com/ExaDev-io/breadboard-samples/develop/samples/Breadboard%20Walkthrough/src/include-board-as-a-node-with-url/nestedboard.json"
 			}
 		},
 		{

@@ -17,7 +17,21 @@
 	"nodes": [
 		{
 			"id": "mainInputNode",
-			"type": "input"
+			"type": "input",
+			"configuration": {
+				"schema": {
+					"type": "object",
+					"properties": {
+						"mainInput": {
+							"type": "string"
+						}
+					}
+				}
+			}
+		},
+		{
+			"id": "mainOutputNode",
+			"type": "output"
 		},
 		{
 			"id": "slot-1",
@@ -25,10 +39,6 @@
 			"configuration": {
 				"slot": "nested"
 			}
-		},
-		{
-			"id": "mainOutputNode",
-			"type": "output"
 		}
 	],
 	"kits": [

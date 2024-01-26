@@ -59,7 +59,23 @@
 		},
 		{
 			"id": "inputNode",
-			"type": "input"
+			"type": "input",
+			"configuration": {
+				"schema": {
+					"type": "object",
+					"properties": {
+						"inputPartOne": {
+							"type": "string"
+						},
+						"inputPartTwo": {
+							"type": "string"
+						},
+						"inputPartThree": {
+							"type": "string"
+						}
+					}
+				}
+			}
 		},
 		{
 			"id": "echoOutput",
