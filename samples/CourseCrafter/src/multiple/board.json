@@ -46,8 +46,8 @@
 		{
 			"from": "readEnvVar-1",
 			"to": "claudeAPI",
-			"out": "CLAUDE_API_KEY",
-			"in": "CLAUDE_API_KEY"
+			"out": "apiKey",
+			"in": "apiKey"
 		},
 		{
 			"from": "claudePromptConstructor",
