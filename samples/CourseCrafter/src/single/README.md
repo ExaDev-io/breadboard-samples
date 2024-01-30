@@ -12,7 +12,7 @@ getBlogContents["getBlogContentForTask <br> id='getBlogContents'"] -- "model->mo
 getBlogContents["getBlogContentForTask <br> id='getBlogContents'"] -- "task->task" --> summaryLanguageModel["pipeline <br> id='summaryLanguageModel'"]
 getBlogContents["getBlogContentForTask <br> id='getBlogContents'"] -- "blogContent->blogContent" --> claudePromptConstructor["template <br> id='claudePromptConstructor'"]
 summaryLanguageModel["pipeline <br> id='summaryLanguageModel'"] -- "output->summary" --> claudePromptConstructor["template <br> id='claudePromptConstructor'"]
-readEnvVar1["readEnvVar <br> id='readEnvVar-1'"] -- "apiKey->apiKey" --> claudeAPI["generateCompletion <br> id='claudeAPI'"]
+secrets1("secrets <br> id='secrets-1'"):::secrets -- "apiKey->apiKey" --> claudeAPI["generateCompletion <br> id='claudeAPI'"]
 claudePromptConstructor["template <br> id='claudePromptConstructor'"] -- "string->text" --> claudeAPI["generateCompletion <br> id='claudeAPI'"]
 claudeAPI["generateCompletion <br> id='claudeAPI'"] -- "completion->completion" --> output2{{"output <br> id='output-2'"}}:::output
 classDef default stroke:#ffab40,fill:#fff2ccff,color:#000
@@ -84,7 +84,7 @@ classDef slotted stroke:#a64d79
 			"in": "summary"
 		},
 		{
-			"from": "readEnvVar-1",
+			"from": "secrets-1",
 			"to": "claudeAPI",
 			"out": "apiKey",
 			"in": "apiKey"
@@ -172,10 +172,10 @@ classDef slotted stroke:#a64d79
 			}
 		},
 		{
-			"id": "readEnvVar-1",
-			"type": "readEnvVar",
+			"id": "secrets-1",
+			"type": "secrets",
 			"configuration": {
-				"key": "CLAUDE_API_KEY"
+				"CLAUDE_API_KEY": "CLAUDE_API_KEY"
 			}
 		},
 		{
@@ -198,6 +198,9 @@ classDef slotted stroke:#a64d79
 		},
 		{
 			"url": "npm:@exadev/breadboard-kits/kits/ConfigKit"
+		},
+		{
+			"url": "npm:@google-labs/core-kit"
 		}
 	]
 }

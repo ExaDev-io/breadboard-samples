@@ -2,6 +2,7 @@
 import { ClaudeKit, ConfigKit, CourseCrafterKit, StringKit, XenovaKit } from "@exadev/breadboard-kits/src/index.js";
 import { generateAndWriteCombinedMarkdown } from "@exadev/breadboard-kits/src/util/files/generateAndWriteCombinedMarkdown.js";
 import { Board, BreadboardNode, InputValues, OutputValues, Schema } from "@google-labs/breadboard";
+import Core from "@google-labs/core-kit";
 import fs from "fs";
 import path from "path";
 import * as url from 'url';
@@ -15,6 +16,7 @@ const xenovaKit = board.addKit(XenovaKit);
 const claudeKit: ClaudeKit = board.addKit(ClaudeKit);
 const stringKit: StringKit = board.addKit(StringKit);
 const config: ConfigKit = board.addKit(ConfigKit);
+const coreKit = board.addKit(Core);
 
 const blogDetails = board.input({
 	$id: "blogDetails",
@@ -24,7 +26,7 @@ const blogDetails = board.input({
 			text: {
 				type: "list",
 				title: "Text",
-				description: "urls",
+				description: "urls"
 			},
 		},
 	} satisfies Schema,
@@ -38,7 +40,7 @@ const templateInput = board.input({
 			text: {
 				type: "string",
 				title: "Text",
-				description: "urls",
+				description: "urls"
 			},
 		},
 	} satisfies Schema,
@@ -85,8 +87,8 @@ const claudeCompletion = claudeKit.generateCompletion({
 	...claudeParams,
 });
 
-const claudeApiKey = config.readEnvVar({
-	key: "CLAUDE_API_KEY",
+const claudeApiKey = coreKit.secrets({
+	CLAUDE_API_KEY: "CLAUDE_API_KEY"
 });
 
 claudeApiKey.wire("apiKey", claudeCompletion);
