@@ -1,4 +1,4 @@
-import { BroadcastChannelMember } from 'src/lib/BroadcastChannelMember.tsx';
+import { BroadcastChannelMember } from 'lib/BroadcastChannelMember.tsx';
 
 // Define a type for individual messages
 
