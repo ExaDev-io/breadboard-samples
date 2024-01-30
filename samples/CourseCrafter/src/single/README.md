@@ -191,7 +191,7 @@ classDef slotted stroke:#a64d79
 			"url": "npm:@xenova/transformers"
 		},
 		{
-			"url": "npm:@paulkinlan/claude-breadboard-kit"
+			"url": "npm:@exadev/breadboard-kits/Claude"
 		},
 		{
 			"url": "npm:@exadev/breadboard-kits/kits/StringKit"

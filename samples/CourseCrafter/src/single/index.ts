@@ -1,14 +1,13 @@
 #!/usr/bin/env npx -y tsx
-import { ConfigKit, CourseCrafterKit, StringKit, XenovaKit } from "@exadev/breadboard-kits";
 
-import generateAndWriteCombinedMarkdown from "@exadev/breadboard-kits/util/files/generateAndWriteCombinedMarkdown";
+import { ClaudeKit, ConfigKit, CourseCrafterKit, StringKit, XenovaKit } from "@exadev/breadboard-kits/src/index.js";
+import generateAndWriteCombinedMarkdown from "@exadev/breadboard-kits/src/util/files/generateAndWriteCombinedMarkdown.js";
 import { Board, Schema } from "@google-labs/breadboard";
-import { ClaudeKit } from "@paulkinlan/claude-breadboard-kit";
 import fs from "fs";
 import path from "path";
 import * as url from "url";
 
-const board = new Board({
+const board: Board = new Board({
 	title: "CourseCrafter Single",
 });
 
