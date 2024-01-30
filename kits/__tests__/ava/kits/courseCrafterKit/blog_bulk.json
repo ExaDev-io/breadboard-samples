@@ -1,0 +1,10 @@
+[
+  {
+    "urls": [
+      "https://developer.chrome.com/blog/introducing-scheduler-yield-origin-trial/",
+      "https://developer.chrome.com/blog/automatic-picture-in-picture/",
+      "https://developer.chrome.com/blog/third-party-cookie-deprecation-trial/"
+    ],
+    "prompt": "Based these summaries of blog posts:/n{{summaries}}/nand the original text: /n{{blogContents}}/ncan you outline topics discussed in each blog? For each blog give me code sample on how to achieve the discussed topic. Output result in markdown format, do not include the summary text in the output. Separate discussed topics in bullet points."
+  }
+]

@@ -1,0 +1,121 @@
+{
+	"$schema": "https://json.schemastore.org/package",
+	"bugs": {
+		"url": "https://github.com/ExaDev-io/breadboard-kits/issues/new"
+	},
+	"contributors": [
+		{
+			"email": "contact@exadev.io",
+			"name": "Sourcepulp Ltd dba ExaDev",
+			"url": "https://exadev.io"
+		}
+	],
+	"dependencies": {
+		"@anthropic-ai/sdk": "^0.10.2",
+		"@anthropic-ai/tokenizer": "^0.0.4",
+		"@google-labs/breadboard": "^0.7.1",
+		"@google-labs/core-kit": "^0.1.2",
+		"@google-labs/llm-starter": "^0.3.1",
+		"@xenova/transformers": "^2.10.1",
+		"axios": "^1.6.2",
+		"cheerio": "^1.0.0-rc.12",
+		"dotenv": "^16.3.1",
+		"js-tiktoken": "^1.0.8",
+		"jsonschema": "^1.4.1"
+	},
+	"description": "Breadboard Kits to be used with the Google Labs [Breadboard](https://github.com/breadboard-ai/breadboard/) project. Initially for use with [GoogleChromeLabs/breadboard-samples](https://github.com/GoogleChromeLabs/breadboard-samples/)",
+	"devDependencies": {
+		"@ava/typescript": "^4.1.0",
+		"@types/jest": "^29.5.11",
+		"@types/node": "^20.10.4",
+		"@typescript-eslint/eslint-plugin": "^6.14.0",
+		"@typescript-eslint/parser": "^6.14.0",
+		"ava": "^6.0.1",
+		"eslint": "^8.55.0",
+		"eslint-plugin-editorconfig": "^4.0.3",
+		"eslint-plugin-promise": "^6.1.1",
+		"jest": "^29.7.0",
+		"rimraf": "^5.0.5",
+		"ts-jest": "^29.1.1",
+		"ts-node": "^10.9.2",
+		"tslib": "^2.6.2",
+		"tsup": "^8.0.1",
+		"tsx": "^4.6.2",
+		"typescript": "^5.3.3"
+	},
+	"engines": {
+		"node": ">=20"
+	},
+	"engineStrict": true,
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"node": "./dist/index.cjs",
+			"require": "./dist/index.cjs",
+			"types": "./dist/index.d.ts"
+		},
+		"./global": {
+			"default": "./dist/index.global.js",
+			"types": "./dist/index.d.ts"
+		},
+		"./kits": {
+			"import": "./dist/kits/index.js",
+			"node": "./dist/kits/index.cjs",
+			"require": "./dist/kits/index.cjs",
+			"types": "./dist/kits/index.d.ts"
+		},
+		"./kits/*": {
+			"import": "./dist/kits/*.js",
+			"node": "./dist/kits/*.cjs",
+			"require": "./dist/kits/*.cjs",
+			"types": "./dist/kits/*.d.ts"
+		},
+		"./types": {
+			"import": "./dist/types/index.js",
+			"node": "./dist/types/index.cjs",
+			"require": "./dist/types/index.cjs",
+			"types": "./dist/types/index.d.ts"
+		},
+		"./util": {
+			"import": "./dist/util/index.js",
+			"node": "./dist/util/index.cjs",
+			"require": "./dist/util/index.cjs",
+			"types": "./dist/util/index.d.ts"
+		},
+		"./util/*": {
+			"import": "./dist/util/*.js",
+			"node": "./dist/util/*.cjs",
+			"require": "./dist/util/*.cjs",
+			"types": "./dist/util/*.d.ts"
+		}
+	},
+	"files": [
+		"dist"
+	],
+	"homepage": "https://github.com/ExaDev-io/breadboard-kits#readme",
+	"license": "Apache-2.0",
+	"name": "@exadev/breadboard-kits",
+	"publishConfig": {
+		"access": "public"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ExaDev-io/breadboard-kits.git"
+	},
+	"scripts": {
+		"build": "tsc --pretty",
+		"build:publish": "rimraf dist ; rimraf --glob './{src,tests}/**/*.{js,d.ts,d.ts.map}' ; tsup --config ./tsup.config.ts",
+		"clean": "rimraf dist ; rimraf --glob './{src,tests}/**/*.{js,d.ts,d.ts.map}'",
+		"deploy": "npm version patch && npm publish",
+		"lint": "eslint ./src",
+		"lint:fix": "npm run lint -- --fix",
+		"node-version": "node_version=$(asdf nodejs resolve 20 --latest-available) && echo $node_version && asdf install nodejs $node_version && asdf local nodejs $node_version",
+		"postpublish": "git push",
+		"prepack": "npm run build:publish",
+		"pretest": "npm run clean",
+		"start": "chmod +x ./src/index.ts && ./src/index.ts",
+		"test": "npx -y madge --circular --warning src/ --extensions ts && jest && ava --serial"
+	},
+	"type": "module",
+	"version": "0.10.1"
+}

@@ -1,0 +1,23 @@
+[
+  {
+    "url": "https://developer.chrome.com/blog/introducing-scheduler-yield-origin-trial/",
+    "$error": {
+      "kind": "error",
+      "error": {},
+      "inputs": {
+        "keys": [
+          "CLAUDE_KEY"
+        ]
+      },
+      "descriptor": {
+        "id": "secrets-1",
+        "type": "secrets",
+        "configuration": {
+          "keys": [
+            "CLAUDE_KEY"
+          ]
+        }
+      }
+    }
+  }
+]

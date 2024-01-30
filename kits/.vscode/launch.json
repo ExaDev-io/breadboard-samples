@@ -1,0 +1,37 @@
+{
+	"configurations": [
+		{
+			"command": "npm start",
+			"name": "start",
+			"request": "launch",
+			"type": "node-terminal"
+		},
+		{
+			"command": "npm run test",
+			"name": "test",
+			"request": "launch",
+			"type": "node-terminal"
+		},
+		{
+			"command": "npm run build",
+			"name": "build",
+			"request": "launch",
+			"type": "node-terminal"
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Debug AVA test file",
+			"program": "${workspaceFolder}/node_modules/ava/entrypoints/cli.mjs",
+			"args": [
+				"${file}"
+			],
+			"outputCapture": "std",
+			"console": "integratedTerminal", // optional
+			"skipFiles": [
+				"<node_internals>/**/*.js"
+			]
+		}
+	],
+	"version": "0.2.0"
+}

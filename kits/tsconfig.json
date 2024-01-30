@@ -1,0 +1,28 @@
+{
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"compilerOptions": {
+		"declaration": true,
+		"declarationMap": true,
+		"esModuleInterop": true,
+		"isolatedModules": true,
+		"skipLibCheck": true,
+		"resolveJsonModule": true,
+		"baseUrl": "./src",
+		"rootDir": ".",
+		"lib": [
+			"ES2022",
+			"DOM"
+		],
+		"module": "NodeNext",
+		"outDir": "dist",
+		"target": "ES2022"
+	},
+	"exclude": [
+		"dist",
+		"node_modules"
+	],
+	"include": [
+		"src/**/*",
+		"tests/**/*"
+	]
+}
