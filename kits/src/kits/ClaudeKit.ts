@@ -24,14 +24,15 @@ export function getTokenizer(): Tiktoken {
 	return new Tiktoken(tiktokenBPE);
 }
 
+const complete = (input: InputValues): Promise<OutputValues> => {
+	return postClaudeCompletion(input as ClaudeParams);
+}
 
 export const ClaudeKit = new KitBuilder({
 	url: "npm:@exadev/breadboard-kits/Claude",
 }).build({
-	async complete(input: InputValues): Promise<OutputValues> {
-		return postClaudeCompletion(input as ClaudeParams);
-	},
-
+	complete,
+	generateCompletion: complete,
 	async countTokens(input: InputValues): Promise<OutputValues> {
 		return Object.fromEntries(
 			Object.entries(input)
