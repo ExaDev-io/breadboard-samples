@@ -1,8 +1,7 @@
-import { ConfigKit, ObjectKit, StringKit } from "@exadev/breadboard-kits";
-import { generateAndWriteCombinedMarkdown } from "@exadev/breadboard-kits/util/files/generateAndWriteCombinedMarkdown";
+import { ClaudeKit, ConfigKit, ObjectKit, StringKit } from "@exadev/breadboard-kits/src";
+import { generateAndWriteCombinedMarkdown } from "@exadev/breadboard-kits/src/util/files/generateAndWriteCombinedMarkdown.js";
 import { Board } from "@google-labs/breadboard";
-import starter from "@google-labs/llm-starter"
-import { ClaudeKit } from "@paulkinlan/claude-breadboard-kit";
+import Core from "@google-labs/core-kit"
 import fs from "fs"
 import path from "path";
 import { FeatureKit } from "~/breadboard/featurekit.js";
@@ -52,7 +51,7 @@ const claudeApiKey = config.readEnvVar({
 	$id: "getClaudeAPIKey",
 	key: "CLAUDE_API_KEY"
 });
-const llm = board.addKit(starter)
+const llm = board.addKit(Core)
 //TODO refactor to take feature ID as a board input
 
 type identifiable = { id: number }

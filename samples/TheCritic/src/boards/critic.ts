@@ -5,7 +5,8 @@
  */
 
 import { Board, Schema } from "@google-labs/breadboard";
-import { Starter } from "@google-labs/llm-starter";
+import { Core } from "@google-labs/core-kit";
+import { TemplateKit } from "@google-labs/template-kit"
 import { ClaudeKit } from "@paulkinlan/claude-breadboard-kit";
 
 const board = new Board({
@@ -14,7 +15,7 @@ const board = new Board({
   version: "0.0.1",
 });
 
-const starterKit = board.addKit(Starter);
+const coreKit = board.addKit(Core);
 const claudeKit = board.addKit(ClaudeKit);
 
 const criticOutput = board.output();
@@ -49,11 +50,13 @@ const inputCritic = board.input({
 });
 
 // const secret = starterKit.secrets({keys: ["CLAUDE_API_KEY"]});
-const secret = starterKit.secrets({
+const secret = coreKit.secrets({
 	CLAUDE_API_KEY: "CLAUDE_API_KEY"
 });
 
-const criticPrompt = starterKit.promptTemplate({
+const templateKit = board.addKit(TemplateKit);
+
+const criticPrompt = templateKit.promptTemplate({
 	template: `
 Your name is {{name}} and you are a {{persona}}.
 

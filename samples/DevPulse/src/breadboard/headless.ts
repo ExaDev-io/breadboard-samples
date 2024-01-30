@@ -1,5 +1,5 @@
 #!/usr/bin/env npx -y tsx
-import { generateAndWriteCombinedMarkdown } from "@exadev/breadboard-kits/util/files/generateAndWriteCombinedMarkdown";
+import { generateAndWriteCombinedMarkdown } from "@exadev/breadboard-kits/src/util/files/generateAndWriteCombinedMarkdown.js";
 import board from "~/breadboard/index";
 
 generateAndWriteCombinedMarkdown({

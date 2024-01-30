@@ -1,5 +1,5 @@
 #!/usr/bin/env tsx
-import { generateAndWriteCombinedMarkdown } from "@exadev/breadboard-kits/util/files/generateAndWriteCombinedMarkdown";
+import { generateAndWriteCombinedMarkdown } from "@exadev/breadboard-kits/src/util/files/generateAndWriteCombinedMarkdown.js";
 import { RunResult } from "@google-labs/breadboard";
 import board from "../../breadboard/index";
 import { CliAsyncGeneratorRunner } from "./cliAsyncGeneratorRunner";

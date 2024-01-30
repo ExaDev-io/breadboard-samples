@@ -5,10 +5,10 @@
  */
 
 import { Board, Schema, asRuntimeKit } from "@google-labs/breadboard";
-import { Core } from "@google-labs/core-kit";
+import Core from "@google-labs/core-kit";
 import Critic from "./critic.ts";
-import Starter from "@google-labs/llm-starter";
 import ClaudeKit from "@paulkinlan/claude-breadboard-kit";
+import TemplateKit from "@google-labs/template-kit";
 
 export type CriticResponse = {
   id: string,
@@ -92,7 +92,7 @@ export class Panel {
   }
 
   async *critique(text: string): AsyncGenerator<CriticResponse> {
-    const kits = [asRuntimeKit(Core), asRuntimeKit(Starter), asRuntimeKit(ClaudeKit)]
+    const kits = [asRuntimeKit(Core), asRuntimeKit(TemplateKit), asRuntimeKit(ClaudeKit)]
     for await (const stop of this.#board.run({ 
       kits, 
       // probe: new LogProbe() 

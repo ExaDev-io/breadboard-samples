@@ -1,6 +1,6 @@
 #!/usr/bin/env npx -y tsx
 import { ClaudeKit, ConfigKit, CourseCrafterKit, StringKit, XenovaKit } from "@exadev/breadboard-kits/src/index.js";
-import generateAndWriteCombinedMarkdown from "@exadev/breadboard-kits/src/util/files/generateAndWriteCombinedMarkdown.js";
+import { generateAndWriteCombinedMarkdown } from "@exadev/breadboard-kits/src/util/files/generateAndWriteCombinedMarkdown.js";
 import { Board, BreadboardNode, InputValues, OutputValues, Schema } from "@google-labs/breadboard";
 import fs from "fs";
 import path from "path";
