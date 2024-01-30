@@ -11,7 +11,6 @@ import * as readline from 'readline/promises';
 import chromeStatusApiFeatures, { ChromeStatusV1ApiFeature } from "~/breadboard/chromeStatusApiFeatures.js";
 import chromeStatusFeaturesV2 from "~/breadboard/chromeStatusFeaturesV2.js";
 import chromeVersions from "~/breadboard/chromeVersions.js";
-import { Core } from "@google-labs/core-kit";
 
 type pageContents = {
 	contents: NodeValue
