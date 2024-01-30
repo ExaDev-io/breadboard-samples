@@ -87,7 +87,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@anthropic-ai/sdk@npm:^0.10.1, @anthropic-ai/sdk@npm:^0.10.2":
+"@anthropic-ai/sdk@npm:^0.10.1":
   version: 0.10.2
   resolution: "@anthropic-ai/sdk@npm:0.10.2"
   dependencies:
@@ -1762,26 +1762,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@exadev/breadboard-kits@npm:^0.10.1":
-  version: 0.10.1
-  resolution: "@exadev/breadboard-kits@npm:0.10.1"
-  dependencies:
-    "@anthropic-ai/sdk": "npm:^0.10.2"
-    "@anthropic-ai/tokenizer": "npm:^0.0.4"
-    "@google-labs/breadboard": "npm:^0.7.1"
-    "@google-labs/core-kit": "npm:^0.1.2"
-    "@google-labs/llm-starter": "npm:^0.3.1"
-    "@xenova/transformers": "npm:^2.10.1"
-    axios: "npm:^1.6.2"
-    cheerio: "npm:^1.0.0-rc.12"
-    dotenv: "npm:^16.3.1"
-    js-tiktoken: "npm:^1.0.8"
-    jsonschema: "npm:^1.4.1"
-  checksum: 754e732a8c427c16af966c10ca7a0b7a4051964a6e99d68c2245d9575f62f091f2d4802464e3d5f369a6e28b870b9f8254f445f842949a0cb004bd3e4763fbcd
-  languageName: node
-  linkType: hard
-
-"@exadev/breadboard-kits@workspace:kits":
+"@exadev/breadboard-kits@npm:^0.10.1, @exadev/breadboard-kits@workspace:kits":
   version: 0.0.0-use.local
   resolution: "@exadev/breadboard-kits@workspace:kits"
   dependencies:
@@ -1831,16 +1812,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@google-labs/breadboard@npm:^0.7.1":
-  version: 0.7.1
-  resolution: "@google-labs/breadboard@npm:0.7.1"
-  dependencies:
-    zod: "npm:^3.22.4"
-    zod-to-json-schema: "npm:^3.22.1"
-  checksum: 5a228d1b62ebfe553e9b097a93d15a50ab9f14a5d91702b19af7b92af2159aa9cd547f83363faae13eb8e56fd969febcfdfacb2aa4ee18556e9eb6f65eb61860
-  languageName: node
-  linkType: hard
-
 "@google-labs/breadboard@npm:^0.8.0":
   version: 0.8.0
   resolution: "@google-labs/breadboard@npm:0.8.0"
@@ -1851,7 +1822,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@google-labs/core-kit@npm:0.1.3, @google-labs/core-kit@npm:^0.1.2, @google-labs/core-kit@npm:^0.1.3":
+"@google-labs/core-kit@npm:0.1.3, @google-labs/core-kit@npm:^0.1.3":
   version: 0.1.3
   resolution: "@google-labs/core-kit@npm:0.1.3"
   dependencies:
@@ -1860,7 +1831,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@google-labs/llm-starter@npm:0.3.3, @google-labs/llm-starter@npm:^0.3.1, @google-labs/llm-starter@npm:^0.3.3":
+"@google-labs/llm-starter@npm:0.3.3, @google-labs/llm-starter@npm:^0.3.3":
   version: 0.3.3
   resolution: "@google-labs/llm-starter@npm:0.3.3"
   dependencies:
@@ -3392,7 +3363,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@xenova/transformers@npm:^2.10.1, @xenova/transformers@npm:^2.14.2":
+"@xenova/transformers@npm:^2.14.2":
   version: 2.14.2
   resolution: "@xenova/transformers@npm:2.14.2"
   dependencies:
@@ -3880,7 +3851,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.6.2, axios@npm:^1.6.7":
+"axios@npm:^1.6.7":
   version: 1.6.7
   resolution: "axios@npm:1.6.7"
   dependencies:

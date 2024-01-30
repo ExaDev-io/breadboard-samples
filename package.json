@@ -19,6 +19,7 @@
 	"repository": "https://github.com/GoogleChromeLabs/breadboard-samples",
 	"scripts": {
 		"build": "wireit",
+		"relink": "wireit",
 		"test": "wireit",
 		"validate": "wireit",
 		"watch": "wireit"
@@ -33,6 +34,9 @@
 				"./samples/Hello World:build",
 				"./samples/TheCritic:build"
 			]
+		},
+		"relink": {
+			"command": "yarn install ; yarn workspaces foreach -A run unlink ; yarn workspaces foreach -A run link ; yarn workspaces foreach -A install"
 		},
 		"test": {
 			"command": "yarn workspaces foreach -A run test",
