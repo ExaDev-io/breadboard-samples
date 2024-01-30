@@ -194,7 +194,7 @@ classDef slotted stroke:#a64d79
 			"url": "npm@exadev/breadboard-kits/featureKit"
 		},
 		{
-			"url": "npm:@paulkinlan/claude-breadboard-kit"
+			"url": "npm:@exadev/breadboard-kits/Claude"
 		},
 		{
 			"url": "npm:@exadev/breadboard-kits/kits/StringKit"
@@ -203,7 +203,7 @@ classDef slotted stroke:#a64d79
 			"url": "npm:@exadev/breadboard-kits/kits/ConfigKit"
 		},
 		{
-			"url": "npm:@google-labs/llm-starter"
+			"url": "npm:@google-labs/core-kit"
 		},
 		{
 			"url": "npm:@exadev/breadboard-kits/kits/ObjectKit"
