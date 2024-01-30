@@ -1,5 +1,5 @@
-import { ConfigKit, ObjectKit, StringKit } from "@exadev/breadboard-kits";
-import { generateAndWriteCombinedMarkdown } from "@exadev/breadboard-kits/util/files/generateAndWriteCombinedMarkdown";
+import { ConfigKit, ObjectKit, StringKit } from "@exadev/breadboard-kits/src";
+import { generateAndWriteCombinedMarkdown } from "@exadev/breadboard-kits/src/util/files/generateAndWriteCombinedMarkdown.js";
 import { Board } from "@google-labs/breadboard";
 import starter from "@google-labs/llm-starter"
 import { ClaudeKit } from "@paulkinlan/claude-breadboard-kit";

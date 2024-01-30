@@ -1,6 +1,6 @@
 /* eslint-disable no-constant-condition */
 import claude from "@anthropic-ai/tokenizer/claude.json" assert { type: "json" };
-import { list } from "@exadev/breadboard-kits/types";
+import { list } from "@exadev/breadboard-kits/src/types";
 import { InputValues, NodeValue, OutputValues } from "@google-labs/breadboard";
 import { KitBuilder } from "@google-labs/breadboard/kits";
 import fs from "fs";
