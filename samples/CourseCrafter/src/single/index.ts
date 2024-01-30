@@ -96,7 +96,7 @@ const claudeApiKey = config.readEnvVar({
 	key: "CLAUDE_API_KEY",
 });
 
-claudeApiKey.wire("CLAUDE_API_KEY", claudeCompletion);
+claudeApiKey.wire("apiKey", claudeCompletion);
 instructionTemplate.wire("string->text", claudeCompletion);
 
 claudeCompletion.wire("completion->", board.output());
