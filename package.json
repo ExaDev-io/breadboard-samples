@@ -61,7 +61,7 @@
 		}
 	},
 	"workspaces": [
-		"./kits/**/*",
+		"./kits",
 		"./samples/**/*"
 	]
 }
