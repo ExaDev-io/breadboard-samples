@@ -19,11 +19,13 @@
 	"repository": "https://github.com/GoogleChromeLabs/breadboard-samples",
 	"scripts": {
 		"build": "wireit",
+		"build:sequential": "yarn workspaces foreach -A run build",
+		"postinstall": "yarn relink",
 		"relink": "wireit",
 		"test": "wireit",
 		"validate": "wireit",
-		"watch": "wireit",
-		"postinstall": "yarn relink"
+		"validate:sequential": "yarn workspaces foreach -A run validate",
+		"watch": "wireit"
 	},
 	"wireit": {
 		"build": {
