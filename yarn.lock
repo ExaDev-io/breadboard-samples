@@ -4113,10 +4113,10 @@ __metadata:
   dependencies:
     "@exadev/breadboard-kits": "npm:^0.10.1"
     "@google-labs/breadboard": "npm:^0.8.0"
-    "@types/node": "npm:^20.10.7"
+    "@types/node": "npm:^20.11.10"
     tsx: "npm:^4.7.0"
     typescript: "npm:^5.3.3"
-    wireit: "npm:^0.14.1"
+    wireit: "npm:^0.14.4"
   languageName: unknown
   linkType: soft
 
