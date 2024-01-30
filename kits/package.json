@@ -48,51 +48,6 @@
 		"node": ">=20"
 	},
 	"engineStrict": true,
-	"exports": {
-		".": {
-			"import": "./dist/index.js",
-			"node": "./dist/index.cjs",
-			"require": "./dist/index.cjs",
-			"types": "./dist/index.d.ts"
-		},
-		"./global": {
-			"default": "./dist/index.global.js",
-			"types": "./dist/index.d.ts"
-		},
-		"./kits": {
-			"import": "./dist/kits/index.js",
-			"node": "./dist/kits/index.cjs",
-			"require": "./dist/kits/index.cjs",
-			"types": "./dist/kits/index.d.ts"
-		},
-		"./kits/*": {
-			"import": "./dist/kits/*.js",
-			"node": "./dist/kits/*.cjs",
-			"require": "./dist/kits/*.cjs",
-			"types": "./dist/kits/*.d.ts"
-		},
-		"./types": {
-			"import": "./dist/types/index.js",
-			"node": "./dist/types/index.cjs",
-			"require": "./dist/types/index.cjs",
-			"types": "./dist/types/index.d.ts"
-		},
-		"./util": {
-			"import": "./dist/util/index.js",
-			"node": "./dist/util/index.cjs",
-			"require": "./dist/util/index.cjs",
-			"types": "./dist/util/index.d.ts"
-		},
-		"./util/*": {
-			"import": "./dist/util/*.js",
-			"node": "./dist/util/*.cjs",
-			"require": "./dist/util/*.cjs",
-			"types": "./dist/util/*.d.ts"
-		}
-	},
-	"files": [
-		"dist"
-	],
 	"homepage": "https://github.com/ExaDev-io/breadboard-kits#readme",
 	"license": "Apache-2.0",
 	"name": "@exadev/breadboard-kits",
