@@ -29,7 +29,6 @@ const mainInputSchema = {
   } satisfies Schema;
 
 const nestedInput = nestedBoard.input({ $id: "nestedInputNode", schema: nestedInputSchema })
-const mainInput = nestedBoard.input({ $id: "mainInputNode", schema: mainInputSchema })
 
 
 nestedInput
@@ -43,6 +42,8 @@ const board = new Board({
 });
 
 const core = board.addKit(Core);
+
+const mainInput = board.input({ $id: "mainInputNode", schema: mainInputSchema })
 
 mainInput
 	.wire(
