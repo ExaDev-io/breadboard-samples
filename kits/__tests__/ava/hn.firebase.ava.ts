@@ -1,4 +1,4 @@
-import { Board, LogProbe } from "@google-labs/breadboard";
+import { Board } from "@google-labs/breadboard";
 import test, { ExecutionContext } from "ava";
 import ListKit from "../../src/kits/ListKit.js";
 import HackerNewsFirebaseKit, {
@@ -12,7 +12,7 @@ test("hnFirebaseKit.topStoryIds", async (t: ExecutionContext) => {
 	const output = board.output();
 	kit.topStoryIds().wire("storyIds->", output);
 	for await (const result of board.run({
-		probe: new LogProbe(),
+		// probe: new LogProbe(),
 	})) {
 		if (result.outputs && result.outputs.storyIds) {
 			const storyIds = result.outputs.storyIds as number[];
@@ -30,7 +30,7 @@ test("hnFirebaseKit.topStoryIds limited", async (t) => {
 	const output = board.output();
 	kit.topStoryIds({ limit: 10 }).wire("storyIds->", output);
 	for await (const result of board.run({
-		probe: new LogProbe(),
+		// probe: new LogProbe(),
 	})) {
 		if (result.outputs && result.outputs.storyIds) {
 			const stories = result.outputs.storyIds as number[];
@@ -60,7 +60,7 @@ test("hnFirebaseKit.getStoryFromId", async (t) => {
 	const accumulatedResult = [];
 
 	for await (const result of board.run({
-		probe: new LogProbe(),
+		// probe: new LogProbe(),
 	})) {
 		if (result.type === "input") {
 			result.inputs = {
