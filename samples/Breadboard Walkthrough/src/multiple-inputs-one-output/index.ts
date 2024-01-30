@@ -1,4 +1,4 @@
-import generateAndWriteCombinedMarkdown from "@exadev/breadboard-kits/util/files/generateAndWriteCombinedMarkdown";
+import generateAndWriteCombinedMarkdown from "@exadev/breadboard-kits/src/util/files/generateAndWriteCombinedMarkdown.js";
 import { Board, Schema } from "@google-labs/breadboard";
 import fs from "fs";
 import * as url from "url";
