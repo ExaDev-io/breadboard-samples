@@ -1,5 +1,5 @@
 import { Board } from "@google-labs/breadboard";
-import { Starter } from "@google-labs/llm-starter";
+import { Core } from "@google-labs/core-kit";
 import test from "ava";
 import { config } from "dotenv";
 import fs from "fs";
@@ -25,7 +25,7 @@ test("courseCrafterKit.getContent.Bulk", async (t) => {
 	const xenovaKit = board.addKit(XenovaKit);
 	const claudeKit = board.addKit(ClaudeKit);
 	const stringKit = board.addKit(StringKit);
-	const starter = board.addKit(Starter);
+	const core = board.addKit(Core);
 	config();
 
 	const input = board.input({
@@ -106,7 +106,7 @@ test("courseCrafterKit.getContent.Bulk", async (t) => {
 	getContent.wire("blogOutput->blogContents", instructionTemplate);
 	pipeline.wire("summaries->summaries", instructionTemplate);
 
-	const secrets = starter.secrets({ keys: ["CLAUDE_KEY"] });
+	const secrets = core.secrets({ keys: ["CLAUDE_KEY"] });
 	const serverUrl = "https://api.anthropic.com/v1/complete";
 	const claudeParams = {
 		model: "claude-2",
