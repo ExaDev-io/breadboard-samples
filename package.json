@@ -13,7 +13,7 @@
 		"node": ">=19"
 	},
 	"engineStrict": true,
-	"name": "breadboard-samples",
+	"name": "@google-chrome-labs/breadboard-samples",
 	"packageManager": "yarn@4.0.2",
 	"private": true,
 	"repository": "https://github.com/GoogleChromeLabs/breadboard-samples",

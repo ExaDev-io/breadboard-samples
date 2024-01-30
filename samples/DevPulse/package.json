@@ -43,7 +43,7 @@
 		"node": ">=19.0.0"
 	},
 	"engineStrict": true,
-	"name": "vite-react-worker",
+	"name": "@exadev/breadboard-devpulse",
 	"private": true,
 	"scripts": {
 		"cli": "npx -y tsx src/lib/cli/runBoard.ts",

@@ -34,7 +34,7 @@
 	"keywords": [],
 	"license": "ISC",
 	"main": "./dist/src/index.js",
-	"name": "the-critic",
+	"name": "@google-chrome-labs/breadboard-the-critic",
 	"scripts": {
 		"build": "wireit",
 		"build:vite": "FORCE_COLOR=1 vite build",

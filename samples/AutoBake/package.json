@@ -15,7 +15,7 @@
 		"typescript": "^5.3.3",
 		"wireit": "^0.14.1"
 	},
-	"name": "autobake",
+	"name": "@exadev/breadboard-autobake",
 	"private": true,
 	"scripts": {
 		"build": "wireit",
