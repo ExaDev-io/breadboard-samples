@@ -69,7 +69,32 @@ classDef slotted stroke:#a64d79
 	"nodes": [
 		{
 			"id": "inputNode",
-			"type": "input"
+			"type": "input",
+			"configuration": {
+				"schema": {
+					"type": "object",
+					"properties": {
+						"inputPartOne": {
+							"type": "string"
+						},
+						"inputPartTwo": {
+							"type": "string"
+						},
+						"inputPartThree": {
+							"type": "string"
+						},
+						"inputPartFour": {
+							"type": "string"
+						},
+						"inputPartFive": {
+							"type": "string"
+						},
+						"inputPartSix": {
+							"type": "string"
+						}
+					}
+				}
+			}
 		},
 		{
 			"id": "outputNode",

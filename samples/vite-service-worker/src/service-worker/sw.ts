@@ -1,7 +1,7 @@
 /// <reference lib="webworker" />
 declare const self: ServiceWorkerGlobalScope;
 
-import { Board, RunResult } from "@google-labs/breadboard";
+import { Board, RunResult, Schema } from "@google-labs/breadboard";
 import { ControllableAsyncGeneratorRunner } from "../ControllableAsyncGeneratorRunner";
 import { BroadcastChannelMember } from "../lib/BroadcastChannelMember";
 import { BroadcastMessage } from "../lib/BroadcastMessage";
@@ -34,10 +34,15 @@ self.addEventListener("activate", () => {
 	return self.clients.claim();
 });
 
+const schema = {
+	type: "object",
+	additionalProperties: true
+} satisfies Schema;
+
 const board = new Board();
 for (let i = 0; i < 3; i++) {
 	board
-		.input({ $id: `input_${i}` })
+		.input({ $id: `input_${i}`, schema: schema })
 		.wire("*", board.output({ $id: `output_${i}` }));
 }
 
@@ -65,7 +70,6 @@ async function handler(runResult: RunResult): Promise<void> {
 	if (runResult.type === "input") {
 		const input = {
 			node: runResult.node.id
-			
 		};
 		console.log(runResult.node.id, "input", input);
 		runResult.inputs = input;

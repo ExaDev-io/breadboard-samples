@@ -14,6 +14,15 @@ const board = new Board();
 // 		.wire(`message_${i}`, board.output({ $id: `output_${i}` }));
 // }
 
+const schema1: Schema = {
+	type: "object",
+	properties: {
+		"message_1": {
+			type: "number",
+		},
+	},
+} satisfies Schema;
+
 const schema2: EnhancedSchema = {
 	type: "object",
 	properties: {
@@ -22,7 +31,7 @@ const schema2: EnhancedSchema = {
 			type: "string",
 		},
 	},
-};
+} satisfies Schema;
 
 /* const multi_input: EnhancedSchema = {
 	type: "object",
@@ -39,17 +48,10 @@ const schema2: EnhancedSchema = {
 };
  */
 board.input({
-	schema: {
-		type: "object",
-		properties: {
-			"message_1": {
-				type: "number",
-			},
-		},
-	}
+	schema: schema1
 }).wire(`*`, board.output());
 
-board.input({ $id: `input_1`, }).wire(`message_1`, board.output({ $id: `output_1` }));
+board.input({ $id: `input_1`, schema: schema1 }).wire(`message_1`, board.output({ $id: `output_1` }));
 board.input({ $id: `input_2`, schema: schema2 }).wire(`message_2`, board.output({ $id: `output_2` }));
 
 /* board.input({ $id: `input_3` }).wire(`message_3`, board.output({ $id: `output_3` }));
@@ -75,7 +77,7 @@ board.input({
 			};
 			return acc;
 		}, {})
-	}
+	} satisfies Schema
 }).wire(`*`, board.output({ $id: `output_all_types` }));
 
 export default board;

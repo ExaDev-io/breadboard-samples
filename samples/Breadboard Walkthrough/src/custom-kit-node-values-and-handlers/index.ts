@@ -1,7 +1,7 @@
 #!/usr/bin/env npx -y tsx
 
 import generateAndWriteCombinedMarkdown from "@exadev/breadboard-kits/util/files/generateAndWriteCombinedMarkdown";
-import { Board } from "@google-labs/breadboard";
+import { Board, Schema } from "@google-labs/breadboard";
 import fs from "fs";
 import * as url from "url";
 import MyCustomKit from "./custom-kit-node-values-and-handlers.js";
@@ -16,8 +16,23 @@ const echo = myCustomKit.echo();
 const concat = myCustomKit.concat();
 const split = myCustomKit.split();
 
+const inputSchema = {
+	type: "object",
+	properties: {
+		inputPartOne: {
+			type: "string"
+		},
+		inputPartTwo: {
+			type: "string"
+		},
+		inputPartThree: {
+			type: "string"
+		},
+	},
+  } satisfies Schema;
+
 const input = board.input({
-	$id: "inputNode",
+	$id: "inputNode", schema: inputSchema
 });
 
 input.wire("inputPartOne", echo);

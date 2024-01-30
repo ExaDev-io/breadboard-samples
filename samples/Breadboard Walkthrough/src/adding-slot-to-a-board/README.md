@@ -35,7 +35,21 @@ classDef slotted stroke:#a64d79
 	"nodes": [
 		{
 			"id": "mainInputNode",
-			"type": "input"
+			"type": "input",
+			"configuration": {
+				"schema": {
+					"type": "object",
+					"properties": {
+						"mainInput": {
+							"type": "string"
+						}
+					}
+				}
+			}
+		},
+		{
+			"id": "mainOutputNode",
+			"type": "output"
 		},
 		{
 			"id": "slot-1",
@@ -43,10 +57,6 @@ classDef slotted stroke:#a64d79
 			"configuration": {
 				"slot": "nested"
 			}
-		},
-		{
-			"id": "mainOutputNode",
-			"type": "output"
 		}
 	],
 	"kits": [

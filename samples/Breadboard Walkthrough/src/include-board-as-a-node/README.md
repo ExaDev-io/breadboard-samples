@@ -54,7 +54,17 @@ classDef slotted stroke:#a64d79
 					"nodes": [
 						{
 							"id": "nestedInputNode",
-							"type": "input"
+							"type": "input",
+							"configuration": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"mainInput": {
+											"type": "string"
+										}
+									}
+								}
+							}
 						},
 						{
 							"id": "nestedOutputNode",

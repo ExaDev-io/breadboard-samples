@@ -1,5 +1,5 @@
 import generateAndWriteCombinedMarkdown from "@exadev/breadboard-kits/util/files/generateAndWriteCombinedMarkdown";
-import { Board } from "@google-labs/breadboard";
+import { Board, Schema } from "@google-labs/breadboard";
 import fs from "fs";
 import * as url from "url";
 
@@ -9,13 +9,31 @@ const board = new Board({
 
 const output = board.output();
 
+const inputOneSchema = {
+	type: "object",
+	properties: {
+		partOne: {
+			type: "string"
+		}
+	},
+  } satisfies Schema;
+
+const inputTwoSchema = {
+	type: "object",
+	properties: {
+		partTwo: {
+			type: "string"
+		}
+	},
+  } satisfies Schema;
+
 const inputOne = board.input({
-	$id: "inputOne",
+	$id: "inputOne", schema: inputOneSchema
 });
 inputOne.wire("partOne", output);
 
 const inputTwo = board.input({
-	$id: "inputTwo",
+	$id: "inputTwo", schema: inputTwoSchema
 });
 inputTwo.wire("partTwo", output);
 

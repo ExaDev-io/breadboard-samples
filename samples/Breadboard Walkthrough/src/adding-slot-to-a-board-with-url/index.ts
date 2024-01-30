@@ -17,27 +17,18 @@ import fs from "fs";
 	const PATH =
 		"samples/Breadboard%20Walkthrough/src/adding-slot-to-a-board-with-url";
 
-	const MAIN_BOARD_URL = [
-		BASE,
-		OWNER,
-		REPO,
-		BRANCH,
-		PATH,
-		"mainboard.json",
-	].join("/");
+	const MAIN_BOARD_URL = new URL(
+		[BASE, OWNER, REPO, BRANCH, PATH, "mainboard.json"].join("/")
+	);
 
-	const NESTED_BOARD_URL = [
-		BASE,
-		OWNER,
-		REPO,
-		BRANCH,
-		PATH,
-		"nestedboard.json",
-	].join("/");
+	const NESTED_BOARD_URL = new URL(
+		[BASE, OWNER, REPO, BRANCH, PATH, "nestedboard.json"].join("/")
+	);
 
-	const nested = await Board.load(NESTED_BOARD_URL);
+	const nested = await Board.load(NESTED_BOARD_URL.href, { base: NESTED_BOARD_URL });
 
-	const board = await Board.load(MAIN_BOARD_URL, {
+	const board = await Board.load(MAIN_BOARD_URL.href, {
+		base: MAIN_BOARD_URL,
 		slotted: { nested },
 	});
 

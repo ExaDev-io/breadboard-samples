@@ -1,6 +1,5 @@
 #!/usr/bin/env npx -y tsx
 import { generateAndWriteCombinedMarkdown } from "@exadev/breadboard-kits/util/files/generateAndWriteCombinedMarkdown";
-import { LogProbe } from "@google-labs/breadboard";
 import board from "~/breadboard/index";
 
 generateAndWriteCombinedMarkdown({
@@ -10,7 +9,7 @@ generateAndWriteCombinedMarkdown({
 
 (async () => {
 	for await (const runResult of board.run({
-		probe: new LogProbe()
+		// probe: new LogProbe()
 	})) {
 		if (!process.env.CLAUDE_API_KEY) {
 			throw new Error("Missing CLAUDE_API_KEY");

@@ -1,7 +1,7 @@
 #!/usr/bin/env npx -y tsx
 
 import generateAndWriteCombinedMarkdown from "@exadev/breadboard-kits/util/files/generateAndWriteCombinedMarkdown";
-import { Board } from "@google-labs/breadboard";
+import { Board, Schema } from "@google-labs/breadboard";
 import fs from "fs";
 import * as url from "url";
 
@@ -9,9 +9,26 @@ const board = new Board({
 	title: "Arrow Directions",
 });
 
+const inputSchema = {
+	type: "object",
+	properties: {
+		inputPartOne: {
+			type: "string"
+		},
+		inputPartTwo: {
+			type: "string"
+		},
+		inputPartThree: {
+			type: "string"
+		},
+	},
+  } satisfies Schema;
+
+  
+
 const output = board.output();
 
-const input = board.input();
+const input = board.input({ schema: inputSchema });
 
 input.wire("inputPartOne", output); // Left-to-right direction is assumed by default
 
@@ -32,6 +49,7 @@ output.wire("<-inputPartThree", input);
 		}
 	}
 })();
+
 
 generateAndWriteCombinedMarkdown({
 	board,

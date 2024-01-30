@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { Board } from "@google-labs/breadboard";
+import { Board, Schema } from "@google-labs/breadboard";
 import { Starter } from "@google-labs/llm-starter";
 import { ClaudeKit } from "@paulkinlan/claude-breadboard-kit";
 
@@ -45,7 +45,7 @@ const inputCritic = board.input({
         description: "The Persona of the Critic",
       }
     }
-  }
+  } satisfies Schema
 });
 
 // const secret = starterKit.secrets({keys: ["CLAUDE_API_KEY"]});

@@ -1,12 +1,22 @@
 import generateAndWriteCombinedMarkdown from "@exadev/breadboard-kits/util/files/generateAndWriteCombinedMarkdown";
-import { Board } from "@google-labs/breadboard";
+import { Board, Schema } from "@google-labs/breadboard";
 import fs from "fs";
 import * as url from "url";
 
 const board = new Board({
 	title: "Specific Outputs",
 });
-const input = board.input();
+
+const inputSchema = {
+	type: "object",
+	properties: {
+		message: {
+			type: "string"
+		}
+	},
+  } satisfies Schema;
+
+const input = board.input({ schema: inputSchema });
 
 const outputOne = board.output({
 	$id: "output1",

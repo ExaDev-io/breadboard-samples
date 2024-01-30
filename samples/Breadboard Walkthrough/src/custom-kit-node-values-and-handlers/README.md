@@ -82,7 +82,23 @@ classDef slotted stroke:#a64d79
 		},
 		{
 			"id": "inputNode",
-			"type": "input"
+			"type": "input",
+			"configuration": {
+				"schema": {
+					"type": "object",
+					"properties": {
+						"inputPartOne": {
+							"type": "string"
+						},
+						"inputPartTwo": {
+							"type": "string"
+						},
+						"inputPartThree": {
+							"type": "string"
+						}
+					}
+				}
+			}
 		},
 		{
 			"id": "echoOutput",
