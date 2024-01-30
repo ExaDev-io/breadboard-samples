@@ -10,7 +10,16 @@ const nestedBoard = new Board({
 	title: "Nested Board",
 });
 
-const inputSchema = {
+const nestedInputSchema = {
+	type: "object",
+	properties: {
+		nestedInput: {
+			type: "string"
+		}
+	},
+  } satisfies Schema;
+
+const mainInputSchema = {
 	type: "object",
 	properties: {
 		mainInput: {
@@ -19,9 +28,11 @@ const inputSchema = {
 	},
   } satisfies Schema;
 
-const input = nestedBoard.input({ $id: "nestedInputNode", schema: inputSchema })
+const nestedInput = nestedBoard.input({ $id: "nestedInputNode", schema: nestedInputSchema })
+const mainInput = nestedBoard.input({ $id: "mainInputNode", schema: mainInputSchema })
 
-input
+
+nestedInput
 	.wire(
 		"nestedInput->nestedOutput",
 		nestedBoard.output({ $id: "nestedOutputNode" })
@@ -33,10 +44,7 @@ const board = new Board({
 
 const core = board.addKit(Core);
 
-board
-	.input({
-		$id: "mainInputNode",
-	})
+mainInput
 	.wire(
 		"mainInput->nestedInput",
 		core

@@ -17,7 +17,17 @@
     "nodes":[
        {
           "id":"mainInputNode",
-          "type":"input"
+          "type":"input",
+		  "configuration": {
+			"schema": {
+				"type": "object",
+				"properties": {
+					"mainInput": {
+						"type": "string"
+					}
+				}
+			}
+		}
        },
        {
           "id":"slot-1",
