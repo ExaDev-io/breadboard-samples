@@ -142,7 +142,9 @@ test("courseCrafterKit.getContent.Bulk", async (t) => {
 	);
 	fs.writeFileSync(
 		"./tests/kits/courseCrafterKit/bulk_code.md",
-		result.completion.toString()
+		// Attempt to call toString() on result.claudeResponse if it exists; if it's nullish, return undefined.
+		// Then, if the result of that is nullish, default to an empty string.
+		result.completion?.toString() ?? ""
 	);
 
 	makeMarkdown({
