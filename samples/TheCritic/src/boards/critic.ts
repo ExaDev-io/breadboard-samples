@@ -7,7 +7,7 @@
 import { Board, Schema } from "@google-labs/breadboard";
 import { Core } from "@google-labs/core-kit";
 import { TemplateKit } from "@google-labs/template-kit"
-import { ClaudeKit } from "@paulkinlan/claude-breadboard-kit";
+import { ClaudeKit } from "@exadev/breadboard-kits/src";
 
 const board = new Board({
   title: "The Critic",
