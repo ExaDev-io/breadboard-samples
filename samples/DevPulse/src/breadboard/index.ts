@@ -7,7 +7,7 @@ import {
 	ListKit,
 	ObjectKit,
 	StringKit,
-} from "@exadev/breadboard-kits";
+} from "@exadev/breadboard-kits/src";
 import { Board, Schema } from "@google-labs/breadboard";
 import Core from "@google-labs/core-kit";
 import { ClaudeKitBuilder } from "./ClaudeKitBuilder";

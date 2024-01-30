@@ -1,6 +1,6 @@
 /* eslint-disable no-constant-condition */
 import claude from "@anthropic-ai/tokenizer/claude.json" assert { type: "json" };
-import { list } from "@exadev/breadboard-kits/types";
+import { list } from "@exadev/breadboard-kits/src/types";
 import { InputValues, NodeValue, OutputValues } from "@google-labs/breadboard";
 import { KitBuilder } from "@google-labs/breadboard/kits";
 import fs from "fs";
@@ -11,7 +11,6 @@ import * as readline from 'readline/promises';
 import chromeStatusApiFeatures, { ChromeStatusV1ApiFeature } from "~/breadboard/chromeStatusApiFeatures.js";
 import chromeStatusFeaturesV2 from "~/breadboard/chromeStatusFeaturesV2.js";
 import chromeVersions from "~/breadboard/chromeVersions.js";
-import { Core } from "@google-labs/core-kit";
 
 type pageContents = {
 	contents: NodeValue

@@ -1,13 +1,12 @@
 #!/usr/bin/env npx -y tsx
-import { ConfigKit, CourseCrafterKit, StringKit, XenovaKit } from "@exadev/breadboard-kits";
-import generateAndWriteCombinedMarkdown from "@exadev/breadboard-kits/util/files/generateAndWriteCombinedMarkdown";
+import { ClaudeKit, ConfigKit, CourseCrafterKit, StringKit, XenovaKit } from "@exadev/breadboard-kits/src/index.js";
+import { generateAndWriteCombinedMarkdown } from "@exadev/breadboard-kits/src/util/files/generateAndWriteCombinedMarkdown.js";
 import { Board, BreadboardNode, InputValues, OutputValues, Schema } from "@google-labs/breadboard";
-import { ClaudeKit } from "@paulkinlan/claude-breadboard-kit";
 import fs from "fs";
 import path from "path";
 import * as url from 'url';
 
-const board = new Board({
+const board: Board = new Board({
 	title: "CourseCrafter Multiple",
 });
 
@@ -59,9 +58,9 @@ const taskDetails = board.input({
 	},
 });
 
-const getContent = courseCraftKit.getBlogsContent({$id: "getBlogsContent"});
-const pipeline = xenovaKit.pipelineBulk({$id: "summaryLanguageModel"});
-const instructionTemplate = stringKit.template({$id: "claudePromptConstructor"});
+const getContent = courseCraftKit.getBlogsContent({ $id: "getBlogsContent" });
+const pipeline = xenovaKit.pipelineBulk({ $id: "summaryLanguageModel" });
+const instructionTemplate = stringKit.template({ $id: "claudePromptConstructor" });
 
 templateInput.wire("->template", instructionTemplate);
 blogDetails.wire("->list", getContent);
@@ -90,7 +89,7 @@ const claudeApiKey = config.readEnvVar({
 	key: "CLAUDE_API_KEY",
 });
 
-claudeApiKey.wire("CLAUDE_API_KEY", claudeCompletion);
+claudeApiKey.wire("apiKey", claudeCompletion);
 instructionTemplate.wire("string->text", claudeCompletion);
 
 const output: BreadboardNode<InputValues, OutputValues> = board.output();
@@ -110,7 +109,7 @@ const urls = [
 	"https://developer.chrome.com/blog/new-in-webgpu-120/"
 ];
 
-fs.writeFileSync(path.join(workingDir,"board.json"),JSON.stringify(board, null, "\t"));
+fs.writeFileSync(path.join(workingDir, "board.json"), JSON.stringify(board, null, "\t"));
 
 
 for await (const runResult of board.run()) {
@@ -118,21 +117,21 @@ for await (const runResult of board.run()) {
 		if (runResult.node.id == "blogDetails") {
 			runResult.inputs = {
 				list: urls
-			}
+			};
 		} else if (runResult.node.id == "taskDetails") {
 			runResult.inputs = {
 				model: "Xenova/distilbart-cnn-6-6",
 				task: "summarization"
-			}
+			};
 		} else if (runResult.node.id == "promptDetails") {
-			const prompt = ["Based these summaries of blog posts:", "{{summaries}}", "and the original text: ", "{{blogContents}}", "can you outline topics discussed in each blog? For each blog give me code sample on how to achieve the discussed topic. Output result in markdown format, do not include the summary text in the output. Separate discussed topics in bullet points."].join("/n")
+			const prompt = ["Based these summaries of blog posts:", "{{summaries}}", "and the original text: ", "{{blogContents}}", "can you outline topics discussed in each blog? For each blog give me code sample on how to achieve the discussed topic. Output result in markdown format, do not include the summary text in the output. Separate discussed topics in bullet points."].join("/n");
 
 			runResult.inputs = {
 				template: prompt,
-			}
+			};
 		}
 	} else if (runResult.type === "output") {
-		const outputs = runResult.outputs
+		const outputs = runResult.outputs;
 		fs.writeFileSync(
 			path.join(
 				workingDir,

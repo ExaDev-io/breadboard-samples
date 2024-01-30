@@ -10,7 +10,7 @@ taskDetails[/"input <br> id='taskDetails'"/]:::input -- "task->task" --> summary
 getBlogsContent["getBlogsContent <br> id='getBlogsContent'"] -- "blogOutput->inputs" --> summaryLanguageModel["pipelineBulk <br> id='summaryLanguageModel'"]
 getBlogsContent["getBlogsContent <br> id='getBlogsContent'"] -- "blogOutput->blogContents" --> claudePromptConstructor["template <br> id='claudePromptConstructor'"]
 summaryLanguageModel["pipelineBulk <br> id='summaryLanguageModel'"] -- "summaries->summaries" --> claudePromptConstructor["template <br> id='claudePromptConstructor'"]
-readEnvVar1["readEnvVar <br> id='readEnvVar-1'"] -- "CLAUDE_API_KEY->CLAUDE_API_KEY" --> claudeAPI["generateCompletion <br> id='claudeAPI'"]
+readEnvVar1["readEnvVar <br> id='readEnvVar-1'"] -- "apiKey->apiKey" --> claudeAPI["generateCompletion <br> id='claudeAPI'"]
 claudePromptConstructor["template <br> id='claudePromptConstructor'"] -- "string->text" --> claudeAPI["generateCompletion <br> id='claudeAPI'"]
 claudeAPI["generateCompletion <br> id='claudeAPI'"] -- "completion->completion" --> output2{{"output <br> id='output-2'"}}:::output
 classDef default stroke:#ffab40,fill:#fff2ccff,color:#000
@@ -72,8 +72,8 @@ classDef slotted stroke:#a64d79
 		{
 			"from": "readEnvVar-1",
 			"to": "claudeAPI",
-			"out": "CLAUDE_API_KEY",
-			"in": "CLAUDE_API_KEY"
+			"out": "apiKey",
+			"in": "apiKey"
 		},
 		{
 			"from": "claudePromptConstructor",
@@ -177,7 +177,7 @@ classDef slotted stroke:#a64d79
 			"url": "npm:@xenova/transformers"
 		},
 		{
-			"url": "npm:@paulkinlan/claude-breadboard-kit"
+			"url": "npm:@exadev/breadboard-kits/Claude"
 		},
 		{
 			"url": "npm:@exadev/breadboard-kits/kits/StringKit"

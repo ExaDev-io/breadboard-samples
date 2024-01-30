@@ -1,6 +1,6 @@
 #!/usr/bin/env npx -y tsx
 
-import writeMarkdown from "@exadev/breadboard-kits/util/files/writeMarkdown";
+import writeMarkdown from "@exadev/breadboard-kits/src/util/files/writeMarkdown.js";
 import { asRuntimeKit, Board } from "@google-labs/breadboard";
 import { Core } from "@google-labs/core-kit";
 import * as url from "url";

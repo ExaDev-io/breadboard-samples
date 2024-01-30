@@ -2,7 +2,7 @@
 import { KitBuilder } from "@google-labs/breadboard/kits";
 import { InputValues, NodeValue, OutputValues } from "@google-labs/breadboard";
 import { getBlogsContentForTaskOutput, getBlogsHTMLContentInput, blogOutput, blog } from "../../types/courseCrafter.js"
-import { List } from "types/list.js";
+import { List } from "../../types/list.js";
 import { TransformerTask } from "../../types/xenova.js"
 import axios from "axios";
 import * as cheerio from "cheerio";

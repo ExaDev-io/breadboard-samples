@@ -11,7 +11,7 @@
 		"node": ">=19"
 	},
 	"engineStrict": true,
-	"name": "hello-breadboard",
+	"name": "@exadev/breadboard-hello-breadboard",
 	"scripts": {
 		"build": "wireit",
 		"start": "wireit",

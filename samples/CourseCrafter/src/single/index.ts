@@ -1,14 +1,13 @@
 #!/usr/bin/env npx -y tsx
-import { ConfigKit, CourseCrafterKit, StringKit, XenovaKit } from "@exadev/breadboard-kits";
 
-import generateAndWriteCombinedMarkdown from "@exadev/breadboard-kits/util/files/generateAndWriteCombinedMarkdown";
+import { ClaudeKit, ConfigKit, CourseCrafterKit, StringKit, XenovaKit } from "@exadev/breadboard-kits/src/index.js";
+import generateAndWriteCombinedMarkdown from "@exadev/breadboard-kits/src/util/files/generateAndWriteCombinedMarkdown.js";
 import { Board, Schema } from "@google-labs/breadboard";
-import { ClaudeKit } from "@paulkinlan/claude-breadboard-kit";
 import fs from "fs";
 import path from "path";
 import * as url from "url";
 
-const board = new Board({
+const board: Board = new Board({
 	title: "CourseCrafter Single",
 });
 
@@ -97,7 +96,7 @@ const claudeApiKey = config.readEnvVar({
 	key: "CLAUDE_API_KEY",
 });
 
-claudeApiKey.wire("CLAUDE_API_KEY", claudeCompletion);
+claudeApiKey.wire("apiKey", claudeCompletion);
 instructionTemplate.wire("string->text", claudeCompletion);
 
 claudeCompletion.wire("completion->", board.output());

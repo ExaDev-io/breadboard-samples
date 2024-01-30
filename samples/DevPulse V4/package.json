@@ -1,5 +1,5 @@
 {
-	"name": "devpulse-v4",
+	"name": "@exadev/breadboard-devpulse-v4",
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
