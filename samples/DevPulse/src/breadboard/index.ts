@@ -1,16 +1,7 @@
-// export { board } from "./board";
-// export { board as default} from "./board";
-import {
-	HackerNewsAlgoliaKit,
-	HackerNewsFirebaseKit,
-	JsonKit,
-	ListKit,
-	ObjectKit,
-	StringKit,
-} from "@exadev/breadboard-kits/src";
-import { Board, Schema } from "@google-labs/breadboard";
+import { board, Schema, base, addKit } from "@google-labs/breadboard";
 import Core from "@google-labs/core-kit";
 import { ClaudeKitBuilder } from "./ClaudeKitBuilder";
+import { HackerNewsFirebaseKit, HackerNewsAlgoliaKit, ListKit, ObjectKit, StringKit, JsonKit } from "@exadev/breadboard-kits/src";
 
 const LIMIT_DEPTH = 3;
 const SEARCH_RESULT_COUNT = 10;
@@ -18,17 +9,15 @@ const SEARCH_RESULT_COUNT = 10;
 const DEBUG = false;
 const TOP_STORIES = false;
 
-const board = new Board({
-	title: "DevPulse",
-});
 //////////////////////////////////////////////
-const hnFirebaseKit = board.addKit(HackerNewsFirebaseKit);
-const algolia = board.addKit(HackerNewsAlgoliaKit);
-const core = board.addKit(Core);
-const listKit = board.addKit(ListKit);
-const claudeKit = board.addKit(ClaudeKitBuilder);
-const objectKit = board.addKit(ObjectKit);
-const stringKit = board.addKit(StringKit);
+const hnFirebaseKit = addKit(HackerNewsFirebaseKit)
+const algolia = addKit(HackerNewsAlgoliaKit)
+const core = addKit(Core);
+const listKit = addKit(ListKit)
+const claudeKit = addKit(ClaudeKitBuilder);
+const objectKit = addKit(ObjectKit);
+const stringKit = addKit(StringKit)
+const jsonKit = addKit(JsonKit);
 //////////////////////////////////////////////
 const query: Schema = {
 	title: "Please enter a search query",
@@ -54,223 +43,207 @@ const searchParams: Schema = {
 } satisfies Schema;
 //////////////////////////////////////////////
 
-const search = algolia.search({
-	tags: ["story"],
-	limit: SEARCH_RESULT_COUNT,
-});
-
-const searchInProgress = board.output({$id: "searchInProgress"})
-
-const searchParamsInput = board.input({$id: "searchParams", schema: searchParams});
-const searchParamPassthrough = core.passthrough();
-
-searchParamsInput.wire("*", searchParamPassthrough);
-searchParamPassthrough.wire("", searchInProgress)
-
-searchParamPassthrough.wire("query", search)
-searchParamPassthrough.wire("limit", search)
-
-search.wire("algoliaUrl", board.output({$id: "algoliaSearchUrl"}));
-
-const claudeApiKey = core.passthrough();
-searchParamPassthrough.wire("claudeApiKey", claudeApiKey);
-
-//////////////////////////////////////////////
-if (DEBUG) {
-	search.wire(
-		"hits",
-		board.output({
-			$id: "searchResults",
-		})
-	);
-}
-const popSearchResult = listKit.pop({
-	$id: "popSearchResult",
-});
-
-search.wire("hits->list", popSearchResult);
-popSearchResult.wire("list", popSearchResult);
-const searchResult = objectKit.spread({
-	$id: "searchResult",
-});
-popSearchResult.wire("item->object", searchResult);
-const searchResultOutput = board.output({
-	$id: "searchResultData",
-});
-searchResult.wire("story_id", searchResultOutput);
-searchResult.wire("title", searchResultOutput);
-searchResult.wire("url", searchResultOutput);
-searchResult.wire("author", searchResultOutput);
-searchResult.wire("created_at", searchResultOutput);
-searchResult.wire("created_at_i", searchResultOutput);
-searchResult.wire("points", searchResultOutput);
-searchResult.wire(
-	"story_id",
-	stringKit
-		.template({
-			template: "https://news.ycombinator.com/item?id={{story_id}}",
-		})
-		.wire("string->hnURL", searchResultOutput)
-);
-
-//////////////////////////////////////////////
-const popStory = listKit.pop({
-	$id: "popStoryId",
-});
-if (TOP_STORIES) {
-	const hackerNewsTopStoryIdList = core.passthrough();
-	hnFirebaseKit
-		.topStoryIds({
-			limit: 1,
-		})
-		.wire("storyIds", hackerNewsTopStoryIdList);
-
-	hackerNewsTopStoryIdList.wire("storyIds->list", popStory);
-}
-popStory.wire("list", popStory);
-const storyId = core.passthrough();
-popStory.wire("item->id", storyId);
-
-if (DEBUG) {
-	storyId.wire(
-		"id",
-		board.output({
-			$id: "storyId",
-		})
-	);
-}
-
-//////////////////////////////////////////////
-searchResult.wire("story_id->id", storyId);
-//////////////////////////////////////////////
-
-const hnAlgoliaKit = board.addKit(HackerNewsAlgoliaKit);
-
-const getStoryFromId = hnAlgoliaKit.getStory();
-storyId.wire("id", getStoryFromId);
-const story = core.passthrough();
-
-getStoryFromId.wire("*", story);
-if (DEBUG) {
-	story.wire(
-		"*",
-		board.output({
-			$id: "fullStory",
-		})
-	);
-}
-
-const storyOutput = board.output({
-	$id: "story",
-});
-
-story.wire("algoliaUrl", storyOutput);
-story.wire("author", storyOutput);
-story.wire("created_at", storyOutput);
-story.wire("created_at_i", storyOutput);
-// story.wire("id", storyOutput);
-story.wire("points", storyOutput);
-story.wire("story_id", storyOutput);
-story.wire("title", storyOutput);
-story.wire("type", storyOutput);
-story.wire("url", storyOutput);
-search.wire("algoliaUrl", storyOutput);
-// searchParamsInput.wire("query", storyOutput);
-
-if (DEBUG) {
-	story.wire("children", storyOutput);
-}
-
-//////////////////////////////////////////////
-
-//////////////////////////////////////////////
-
-
-const VITE_SERVER_PORT = 5173;
-const fallback = `http://localhost:${VITE_SERVER_PORT}`;
-let serverUrl = `${fallback}/anthropic/v1/complete`;
-
-if (typeof process !== "undefined" && process.release.name === "node") {
-	console.log("Running in node");
-	serverUrl = `${fallback}/anthropic/v1/complete`;
-}
-
-//////////////////////////////////////////////
-
-const jsonKit = board.addKit(JsonKit);
-const stringifiedPost = jsonKit.stringify();
-
-const nest = objectKit.nest({
-	key: "story",
-});
-story.wire("*", nest);
-
-if (LIMIT_DEPTH) {
-	const objectKit = board.addKit(ObjectKit);
-	const limit = objectKit.limitDepth({
-		depth: LIMIT_DEPTH,
+const devPulseBoard = board(() => {
+	const search = algolia.search({
+		tags: ["story"],
+		limit: SEARCH_RESULT_COUNT,
 	});
-	nest.wire("story->object", limit);
-	limit.wire("object", stringifiedPost);
-} else {
-	story.wire("story->object", stringifiedPost);
-}
-if (DEBUG) {
-	stringifiedPost.wire("string", board.output({$id: "json"}));
-}
 
-//////////////////////////////////////////////
+	const searchInProgress = base.output({ $id: "searchInProgress" });
 
-const instruction = "Summarise the discussion regarding this post";
-const templateText = [instruction, "```json", "{{story}}", "```"].join("\n");
+	const searchParamsInput = base.input({ $id: "searchParams", schema: searchParams });
+	const searchParamPassthrough = core.passthrough();
+	
+	searchParamsInput.to(searchParamPassthrough);
+	searchParamPassthrough.to(searchInProgress);
 
-story.wire(
-	"story_id",
-	board.output({
-		$id: "templateText",
-		instruction,
-		templateText,
+	searchParamPassthrough.query.to(search);
+	searchParamPassthrough.limit.to(search);
+
+	search.algoliaUrl.to(base.output({$id: "algoliaSearchUrl"}))
+
+	const claudeApiKey = core.passthrough();
+	searchParamPassthrough.claudeApiKey.to(claudeApiKey) // passing directly instead of via searchParamPassthrough as it's not working otherwise
+
+    //////////////////////////////////////////////
+	if (DEBUG) {
+		search.hits.to(base.output({$id: "searchResults"}))
+	}
+
+	const popSearchResult = listKit.pop({
+		$id: "popSearchResult",
+	});
+
+	search.hits.as("list").to(popSearchResult);
+	popSearchResult.list.to(popSearchResult);
+	const searchResult = objectKit.spread({
+		$id: "searchResult",
+	});
+	popSearchResult.item.as("object").to(searchResult)
+	const searchResultOutput = base.output({
+		$id: "searchResultData",
+	});
+	searchResult.story_id.to(searchResultOutput);
+	searchResult.title.to(searchResultOutput);
+	searchResult.url.to(searchResultOutput);
+	searchResult.author.to(searchResultOutput);
+	searchResult.created_at.to(searchResultOutput);
+	searchResult.created_at_i.to(searchResultOutput);
+	searchResult.points.to(searchResultOutput);
+	stringKit.template({ 
+		template: "https://news.ycombinator.com/item?id={{story_id}}",
+		story_id: searchResult.story_id // <-- Passing the story id attribute like this avoids the "'story_id' undefined" error
+	}).string.as("hnURL").to(searchResultOutput)
+
+    //////////////////////////////////////////////
+
+	const popStory = listKit.pop({
+		$id: "popStoryId",
+	});
+	if (TOP_STORIES) {
+		const hackerNewsTopStoryIdList = core.passthrough();
+		hnFirebaseKit.topStoryIds({
+				limit: 1,
+			}).storyIds.to(hackerNewsTopStoryIdList);
+		hackerNewsTopStoryIdList.storyIds.as("list").to(popStory)
+	}
+	popStory.list.to(popStory);
+	const storyId = core.passthrough();
+	popStory.item.as("id").to(storyId);
+
+	if (DEBUG) {
+		popStory.item.as("id").to(base.output({
+			$id: "storyId",
+		}))
+	}
+
+	//////////////////////////////////////////////
+	searchResult.story_id.as("id").to(storyId);
+	//////////////////////////////////////////////
+
+	const getStoryFromId = algolia.getStory();
+    storyId.id.to(getStoryFromId);
+	const story = core.passthrough();
+
+	getStoryFromId.to(story);
+	if (DEBUG) {
+		getStoryFromId.to(
+			base.output({
+				$id: "fullStory",
+			})
+		)
+	}
+
+	const storyOutput = base.output({
+		$id: "story",
+	});
+
+	getStoryFromId.algoliaUrl.to(storyOutput)
+	getStoryFromId.author.to(storyOutput)
+	getStoryFromId.created_at.to(storyOutput)
+	getStoryFromId.created_at_i.to(storyOutput)
+	getStoryFromId.points.to(storyOutput)
+	getStoryFromId.story_id.to(storyOutput)
+	getStoryFromId.title.to(storyOutput)
+	getStoryFromId.type.to(storyOutput)
+	getStoryFromId.url.to(storyOutput)
+	search.algoliaUrl.to(storyOutput)
+
+	if (DEBUG) {
+		getStoryFromId.children.to(storyOutput);
+	}
+    
+    //////////////////////////////////////////////
+
+    //////////////////////////////////////////////
+
+    const VITE_SERVER_PORT = 5173;
+    const fallback = `http://localhost:${VITE_SERVER_PORT}`;
+    let serverUrl = `${fallback}/anthropic/v1/complete`;
+
+	if (typeof process !== "undefined" && process.release.name === "node") {
+		console.log("Running in node");
+		serverUrl = `${fallback}/anthropic/v1/complete`;
+	}
+
+    //////////////////////////////////////////////
+
+	const stringifiedPost = jsonKit.stringify();
+
+	const nest = objectKit.nest({
+		key: "story",
+	});
+
+	story.to(nest)
+
+	if (LIMIT_DEPTH) {
+		const limit = objectKit.limitDepth({
+			depth: LIMIT_DEPTH,
+		});
+		nest.story.as("object").to(limit);
+		limit.object.to(stringifiedPost)
+	} else {
+		getStoryFromId.story.as("object").to(stringifiedPost)
+	}
+	if (DEBUG) {
+		stringifiedPost.string.to(base.output({$id: "json"}))
+	}
+
+    //////////////////////////////////////////////
+
+    const instruction = "Summarise the discussion regarding this post";
+    const templateText = [instruction, "```json", "{{story}}", "```"].join("\n");
+
+	story.story_id.to(
+		base.output({
+			$id: "templateText",
+			instruction,
+			templateText,
+	}))
+
+	const instructionTemplate = stringKit.template({
+		$id: "instructionTemplate",
+		template: templateText,
+		story: stringifiedPost.string
 	})
-);
 
-const instructionTemplate = stringKit.template({
-	$id: "instructionTemplate",
-	template: templateText,
-});
-stringifiedPost.wire("string->story", instructionTemplate);
+	if (DEBUG) {
+		instructionTemplate.string.to(
+			base.output({
+				$id: "populatedTemplate",
+		}))
+	}
 
-if (DEBUG) {
-	instructionTemplate.wire(
-		"string",
-		board.output({
-			$id: "populatedTemplate",
-		})
-	);
-}
+	story.story_id.to(
+		base.output({
+			$id: "pendingOutput",
+			summary: "pending",
+	}))
 
-story.wire(
-	"story_id",
-	board.output({
-		$id: "pendingOutput",
-		summary: "pending",
-	})
-);
 
-const claudePostSummarisation = claudeKit.complete({
-	$id: "claudePostSummarisation",
-	model: "claude-2",
-	url: serverUrl,
-});
+	const claudePostSummarisation = claudeKit.complete({
+		$id: "claudePostSummarisation",
+		model: "claude-2",
+		url: serverUrl,
+	});
 
-claudeApiKey.wire("claudeApiKey->apiKey", claudePostSummarisation);
-instructionTemplate.wire("string->userQuestion", claudePostSummarisation);
+	claudeApiKey.claudeApiKey.as("apiKey").to(claudePostSummarisation)
+	instructionTemplate.string.as("userQuestion").to(claudePostSummarisation)
+	
+	const summaryOutput = base.output({
+		$id: "summary",
+	});
 
-const summaryOutput = board.output({
-	$id: "summary",
+	story.story_id.to(summaryOutput)
+	claudePostSummarisation.completion.as("summary").to(summaryOutput);
+
+    return summaryOutput;
 });
 
-story.wire("story_id", summaryOutput);
-claudePostSummarisation.wire("completion->summary", summaryOutput);
+const serializedDevPulseBoard = devPulseBoard.serialize({
+	title: "DevPulse",
+	description: "The description of DevPulse.",
+});
 
-export { board };
-export { board as default };
+export { serializedDevPulseBoard as board };
+export { serializedDevPulseBoard as default };
