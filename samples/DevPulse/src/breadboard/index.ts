@@ -63,7 +63,7 @@ const devPulseBoard = board(() => {
 	search.algoliaUrl.to(base.output({$id: "algoliaSearchUrl"}))
 
 	const claudeApiKey = core.passthrough();
-	searchParamPassthrough.claudeApiKey.to(claudeApiKey) // passing directly instead of via searchParamPassthrough as it's not working otherwise
+	searchParamPassthrough.claudeApiKey.to(claudeApiKey)
 
     //////////////////////////////////////////////
 	if (DEBUG) {
@@ -92,7 +92,7 @@ const devPulseBoard = board(() => {
 	searchResult.points.to(searchResultOutput);
 	stringKit.template({ 
 		template: "https://news.ycombinator.com/item?id={{story_id}}",
-		story_id: searchResult.story_id // <-- Passing the story id attribute like this avoids the "'story_id' undefined" error
+		story_id: searchResult.story_id
 	}).string.as("hnURL").to(searchResultOutput)
 
     //////////////////////////////////////////////
