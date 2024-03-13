@@ -39,6 +39,9 @@ export const ClaudeKitBuilder = new KitBuilder({
 	},
 });
 
+export type ClaudeKitBuilder = InstanceType<typeof ClaudeKitBuilder>;
+export default ClaudeKitBuilder;
+
 export async function postClaudeCompletion({
 	apiKey,
 	model,
