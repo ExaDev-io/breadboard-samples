@@ -26,6 +26,7 @@ classDef slotted stroke:#a64d79
 ```json
 {
 	"title": "CourseCrafter Multiple",
+	"$schema": "https://raw.githubusercontent.com/breadboard-ai/breadboard/@google-labs/breadboard-schema@1.3.0/packages/schema/breadboard.schema.json",
 	"edges": [
 		{
 			"from": "promptDetails",

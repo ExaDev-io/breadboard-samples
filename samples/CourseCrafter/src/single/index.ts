@@ -1,150 +1,114 @@
 #!/usr/bin/env npx -y tsx
 
-import { ClaudeKit, ConfigKit, CourseCrafterKit, StringKit, XenovaKit } from "@exadev/breadboard-kits/src/index.js";
-import generateAndWriteCombinedMarkdown from "@exadev/breadboard-kits/src/util/files/generateAndWriteCombinedMarkdown.js";
-import { Board, Schema } from "@google-labs/breadboard";
-import fs from "fs";
-import path from "path";
-import * as url from "url";
+import {
+	ClaudeKit,
+	ConfigKit,
+	CourseCrafterKit,
+	StringKit,
+	XenovaKit,
+} from "@exadev/breadboard-kits/src";
+import { addKit, Schema, board, base } from "@google-labs/breadboard";
 
-const board: Board = new Board({
-	title: "CourseCrafter Single",
-});
-
-const courseCraftKit: CourseCrafterKit = board.addKit(CourseCrafterKit);
-const xenovaKit: XenovaKit = board.addKit(XenovaKit);
-const claudeKit: ClaudeKit = board.addKit(ClaudeKit);
-const stringKit: StringKit = board.addKit(StringKit);
-const config: ConfigKit = board.addKit(ConfigKit);
-
-const input = board.input({
-	$id: "blogDetails",
-	schema: {
-		type: "object",
-		properties: {
-			text: {
-				type: "string",
-				title: "Text",
-				description: "urls",
-			},
+//////////////////////////////////////////////
+const courseCraftKit = addKit(CourseCrafterKit);
+const xenovaKit = addKit(XenovaKit);
+const claudeKit = addKit(ClaudeKit);
+const stringKit = addKit(StringKit);
+const config = addKit(ConfigKit);
+//////////////////////////////////////////////
+const url: Schema = {
+	type: "object",
+	properties: {
+		url: {
+			type: "string",
+			title: "Text",
+			description: "urls",
 		},
-	} satisfies Schema,
-});
-
-const templateInput = board.input({
-	$id: "promptDetails",
-	schema: {
-		type: "object",
-		properties: {
-			text: {
-				type: "string",
-				title: "Text",
-				description: "urls",
-			},
-		},
-	} satisfies Schema,
-});
-
-const taskDetails = board.input({
-	$id: "taskDetails",
-	schema: {
-		type: "object",
-		properties: {
-			text: {
-				type: "string",
-				title: "Text",
-				description: "model and task",
-			},
-		},
-	} satisfies Schema,
-});
-
-const getBlogContentForTask = courseCraftKit.getBlogContentForTask({
-	$id: "getBlogContents",
-});
-const pipeline = xenovaKit.pipeline({$id: "summaryLanguageModel"});
-const instructionTemplate = stringKit.template({
-	$id: "claudePromptConstructor",
-});
-
-templateInput.wire("->template", instructionTemplate);
-input.wire("->url", getBlogContentForTask);
-taskDetails.wire("->model", getBlogContentForTask);
-taskDetails.wire("->task", getBlogContentForTask);
-
-// wire blog content into xenova pipeline
-getBlogContentForTask.wire("blogContent->input", pipeline);
-getBlogContentForTask.wire("model->model", pipeline);
-getBlogContentForTask.wire("task->task", pipeline);
-
-getBlogContentForTask.wire("blogContent->blogContent", instructionTemplate);
-pipeline.wire("output->summary", instructionTemplate);
-
-const serverUrl = "https://api.anthropic.com/v1/complete";
-
-const claudeParams = {
-	model: "claude-2",
-	url: `${serverUrl}`,
+	},
 };
+const template: Schema = {
+	type: "object",
+	properties: {
+		template: {
+			type: "string",
+			title: "Text",
+			description: "urls",
+		},
+	},
+};
+const taskDetails: Schema = {
+	type: "string",
+	properties: {
+		model: {
+			type: "string",
+			title: "Text",
+			description: "model",
+		},
+		task: {
+			type: "string",
+			title: "Text",
+			description: "task",
+		},
+	},
+};
+//////////////////////////////////////////////
+const courseCrafterBoard = board(() => {
+	const getBlogContentForTask = courseCraftKit.getBlogContentForTask({
+		$id: "getBlogContents",
+	});
+	const pipeline = xenovaKit.pipeline({ $id: "summaryLanguageModel" });
+	const instructionTemplate = stringKit.template({
+		$id: "claudePromptConstructor",
+	});
 
-const claudeCompletion = claudeKit.generateCompletion({
-	$id: "claudeAPI",
-	...claudeParams,
+	const urlInput = base.input({ $id: "blogDetails", schema: url });
+	const taskDetailsInput = base.input({
+		$id: "taskDetails",
+		schema: taskDetails,
+	});
+	const templateInput = base.input({ $id: "promptDetails", schema: template });
+
+	urlInput.url.to(getBlogContentForTask);
+	templateInput.template.to(instructionTemplate);
+	taskDetailsInput.model.to(getBlogContentForTask);
+	taskDetailsInput.task.to(getBlogContentForTask);
+
+	// wire blog content into xenova pipeline
+	getBlogContentForTask.blogContent.to(pipeline);
+	getBlogContentForTask.model.to(pipeline);
+	getBlogContentForTask.task.to(pipeline);
+
+	getBlogContentForTask.blogContent.to(instructionTemplate);
+	pipeline.output.as("summary").to(instructionTemplate);
+
+	const serverUrl = "https://api.anthropic.com/v1/complete";
+
+	const claudeParams = {
+		model: "claude-2",
+		url: `${serverUrl}`,
+	};
+
+	const claudeCompletion = claudeKit.generateCompletion({
+		$id: "claudeAPI",
+		...claudeParams,
+	});
+
+	const claudeApiKey = config.readEnvVar({
+		key: "CLAUDE_API_KEY",
+	});
+
+	claudeApiKey.apiKey.to(claudeCompletion);
+	instructionTemplate.string.as("text").to(claudeCompletion);
+
+	claudeCompletion.completion
+		.as("completion")
+		.to(base.output({ $id: "output-2" }));
 });
 
-const claudeApiKey = config.readEnvVar({
-	key: "CLAUDE_API_KEY",
+const serializedCourseCrafterBoard = courseCrafterBoard.serialize({
+	title: "CourseCrafter Single",
+	description: "CourseCrafter for a single URL.",
 });
 
-claudeApiKey.wire("apiKey", claudeCompletion);
-instructionTemplate.wire("string->text", claudeCompletion);
-
-claudeCompletion.wire("completion->", board.output());
-
-const workingDir: string = url.fileURLToPath(new URL(".", import.meta.url));
-generateAndWriteCombinedMarkdown({
-	board,
-	filename: "README",
-	dir: workingDir,
-});
-
-const blogUrl =
-	"https://developer.chrome.com/blog/introducing-scheduler-yield-origin-trial/";
-
-fs.writeFileSync(path.join(workingDir, "board.json"), JSON.stringify(board, null, "\t"));
-
-for await (const runResult of board.run({})) {
-	if (runResult.type === "input") {
-		if (runResult.node.id == "blogDetails") {
-			runResult.inputs = {
-				url: blogUrl,
-			};
-		} else if (runResult.node.id == "taskDetails") {
-			runResult.inputs = {
-				model: "Xenova/distilbart-cnn-6-6",
-				task: "summarization",
-			};
-		} else if (runResult.node.id == "promptDetails") {
-			const instruction =
-				"Based on this summary and original text, give me code sample on how to achieve the discussed topic. Output result in markdown format, do not include the summary text in the output: ";
-
-			runResult.inputs = {
-				template: [
-					instruction,
-					"{{summary}}",
-					"the original text is the following: ",
-					"{{blogContent}}",
-				].join("/n"),
-			};
-		}
-	} else if (runResult.type === "output") {
-		const outputs = runResult.outputs;
-		fs.writeFileSync(
-			path.join(
-				workingDir,
-				"summary.md"
-			),
-			outputs["completion"] as string
-		);
-	}
-}
+export { serializedCourseCrafterBoard as board };
+export { serializedCourseCrafterBoard as default };

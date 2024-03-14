@@ -1785,8 +1785,8 @@ __metadata:
   resolution: "@exadev/breadboard-course-crafter@workspace:samples/CourseCrafter"
   dependencies:
     "@exadev/breadboard-kits": "npm:^0.10.1"
-    "@google-labs/breadboard": "npm:^0.8.0"
-    "@google-labs/core-kit": "npm:0.1.3"
+    "@google-labs/breadboard": "npm:0.11.2"
+    "@google-labs/core-kit": "npm:0.4.0"
     "@paulkinlan/claude-breadboard-kit": "npm:^2.2.5"
     "@types/node": "npm:^20.10.7"
     typescript: "npm:^5.3.3"
@@ -2012,6 +2012,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@google-labs/breadboard-schema@npm:^1.3.0":
+  version: 1.3.0
+  resolution: "@google-labs/breadboard-schema@npm:1.3.0"
+  checksum: ddf4d3ea72b8797cd0748bed11c84e2727622a8cad40f71c8a5d9d1ecf484665ed6cce9e95973538e0f5d8ce0a3916b9cf706c511dbcc06c1133447ab80813e8
+  languageName: node
+  linkType: hard
+
+"@google-labs/breadboard@npm:0.11.2, @google-labs/breadboard@npm:^0.11.2":
+  version: 0.11.2
+  resolution: "@google-labs/breadboard@npm:0.11.2"
+  dependencies:
+    "@google-labs/breadboard-schema": "npm:^1.3.0"
+  checksum: 488e67f07126656a9b29c0a20df37f62755b9df4f75219a7eb504507c5bf69e5bb1d54ca2e141871a38d87307c76cfc403c6997b16bee99387a57cc3928a4a48
+  languageName: node
+  linkType: hard
+
 "@google-labs/breadboard@npm:^0.5.0":
   version: 0.5.1
   resolution: "@google-labs/breadboard@npm:0.5.1"
@@ -2029,7 +2045,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@google-labs/core-kit@npm:0.1.3, @google-labs/core-kit@npm:^0.1.3":
+"@google-labs/core-kit@npm:0.4.0":
+  version: 0.4.0
+  resolution: "@google-labs/core-kit@npm:0.4.0"
+  dependencies:
+    "@google-labs/breadboard": "npm:^0.11.2"
+  checksum: 5005123296265eb4cf6c6fe0a1184eed9c090296addde86eb2ef5f51e9e9393c1ecc723666d1f7e255b3e03e143e3ef0578f5cd6dd5177a0e93941e9ddd9cd67
+  languageName: node
+  linkType: hard
+
+"@google-labs/core-kit@npm:^0.1.3":
   version: 0.1.3
   resolution: "@google-labs/core-kit@npm:0.1.3"
   dependencies:
