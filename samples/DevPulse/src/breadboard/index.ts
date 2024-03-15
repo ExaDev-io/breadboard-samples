@@ -9,6 +9,7 @@ import {
 	JsonKit,
 	ClaudeKit,
 } from "@exadev/breadboard-kits/src";
+import { config } from "dotenv";
 
 const LIMIT_DEPTH = 3;
 const SEARCH_RESULT_COUNT = 2;
@@ -16,6 +17,7 @@ const SEARCH_RESULT_COUNT = 2;
 const DEBUG = false;
 const TOP_STORIES = false;
 
+config();
 //////////////////////////////////////////////
 const hnFirebaseKit = addKit(HackerNewsFirebaseKit);
 const algolia = addKit(HackerNewsAlgoliaKit);
@@ -72,8 +74,9 @@ const devPulseBoard = board(() => {
 
 	search.algoliaUrl.to(base.output({ $id: "algoliaSearchUrl" }));
 
-	const claudeApiKey = core.passthrough();
-	searchParamPassthrough.claudeApiKey.to(claudeApiKey);
+	const claudeApiKey = core.secrets({
+		keys: ["CLAUDE_API_KEY"],
+	});
 
 	//////////////////////////////////////////////
 	if (DEBUG) {
@@ -242,13 +245,14 @@ const devPulseBoard = board(() => {
 	const claudeParams = {
 		model: "claude-2",
 		url: `${serverUrl}`,
+		apiKey: claudeApiKey.CLAUDE_API_KEY,
 	};
 	const claudePostSummarisation = claudeKit.complete({
 		$id: "claudePostSummarisation",
 		...claudeParams,
 	});
 
-	claudeApiKey.claudeApiKey.as("apiKey").to(claudePostSummarisation);
+	// claudeApiKey.CLAUDE_API_KEY.as("apiKey").to(claudePostSummarisation);
 	instructionTemplate.string.as("userQuestion").to(claudePostSummarisation);
 
 	const summaryOutput = base.output({
@@ -256,7 +260,7 @@ const devPulseBoard = board(() => {
 	});
 	story.story_id.to(summaryOutput);
 
-	claudePostSummarisation.to(summaryOutput);
+	claudePostSummarisation.completion.to(summaryOutput);
 
 	return summaryOutput;
 });

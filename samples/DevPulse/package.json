@@ -8,6 +8,7 @@
 		"@paulkinlan/claude-breadboard-kit": "^2.2.5",
 		"@reduxjs/toolkit": "^2.0.1",
 		"antd": "^5.12.1",
+		"dotenv": "^16.4.5",
 		"js-tiktoken": "^1.0.8",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
