@@ -37,7 +37,7 @@ const template: Schema = {
 	},
 };
 const taskDetails: Schema = {
-	type: "string",
+	type: "object",
 	properties: {
 		model: {
 			type: "string",
@@ -66,6 +66,8 @@ const courseCrafterBoard = board(() => {
 		$id: "taskDetails",
 		schema: taskDetails,
 	});
+	taskDetailsInput.model.to(pipeline);
+	taskDetailsInput.task.to(pipeline);
 	const templateInput = base.input({ $id: "promptDetails", schema: template });
 
 	urlInput.url.to(getBlogContentForTask);
@@ -74,9 +76,7 @@ const courseCrafterBoard = board(() => {
 	taskDetailsInput.task.to(getBlogContentForTask);
 
 	// wire blog content into xenova pipeline
-	getBlogContentForTask.blogContent.to(pipeline);
-	getBlogContentForTask.model.to(pipeline);
-	getBlogContentForTask.task.to(pipeline);
+	getBlogContentForTask.blogContent.as("input").to(pipeline);
 
 	getBlogContentForTask.blogContent.to(instructionTemplate);
 	pipeline.output.as("summary").to(instructionTemplate);
@@ -100,12 +100,12 @@ const courseCrafterBoard = board(() => {
 	claudeApiKey.apiKey.to(claudeCompletion);
 	instructionTemplate.string.as("text").to(claudeCompletion);
 
-	claudeCompletion.completion
-		.as("completion")
-		.to(base.output({ $id: "output-2" }));
+	const output = base.output({ $id: "output-2" });
+	claudeCompletion.completion.as("completion").to(output);
+	return output;
 });
 
-const serializedCourseCrafterBoard = courseCrafterBoard.serialize({
+const serializedCourseCrafterBoard = await courseCrafterBoard.serialize({
 	title: "CourseCrafter Single",
 	description: "CourseCrafter for a single URL.",
 });

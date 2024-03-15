@@ -1,14 +1,14 @@
 import { RunResult } from "@google-labs/breadboard";
-/* import * as url from "url";
+import * as url from "url";
 import path from "path";
 import board from "../single/index.js";
-import { writeFile } from "fs/promises"; */
-/* 
+import fs from "fs";
+
 const workingDir: string = url.fileURLToPath(new URL(".", import.meta.url));
-await writeFile(
+fs.writeFileSync(
 	path.join(workingDir, "board.json"),
-	JSON.stringify(board, null, "\t")
-); */
+	JSON.stringify(board, null, 2)
+);
 
 export async function courseCrafterRunResultHandler(
 	runResult: RunResult
@@ -38,14 +38,12 @@ export async function courseCrafterRunResultHandler(
 				].join("/n"),
 			};
 		}
-		return;
 	} else if (runResult.type === "output") {
 		const outputs = runResult.outputs;
 		console.debug(outputs);
-		/* await writeFile(
+		fs.writeFileSync(
 			path.join(workingDir, "summary.md"),
 			outputs["completion"] as string
-		); */
-		return;
+		);
 	}
 }

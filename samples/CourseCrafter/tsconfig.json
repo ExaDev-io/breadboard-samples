@@ -3,6 +3,7 @@
 		"baseUrl": "./src",
 		"module": "NodeNext",
 		"moduleResolution": "nodenext",
+		"allowImportingTsExtensions": true,
 		"noEmit": true,
 		"paths": {
 			"~/*": [

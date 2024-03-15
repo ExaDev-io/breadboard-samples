@@ -10,7 +10,7 @@ import { CliAsyncGeneratorRunner } from "~/breadboard/cli-async-generator-runner
 import board from "../single/index.js";
 import { courseCrafterRunResultHandler } from "./course-crafter-result-handler.js";
 
-const runner = await BoardRunner.fromGraphDescriptor(await board);
+const runner = await BoardRunner.fromGraphDescriptor(board);
 
 new CliAsyncGeneratorRunner(
 	(): AsyncGenerator<RunResult, unknown> =>
