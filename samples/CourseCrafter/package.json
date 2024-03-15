@@ -47,9 +47,9 @@
 			]
 		},
 		"run-board-multiple": {
-			"command": "npx -y tsx src/multiple/index.ts",
+			"command": "npx -y tsx src/multiple/run-board.ts",
 			"files": [
-				"src/multiple/index.ts",
+				"src/multiple/run-board.ts",
 				"tsconfig.json",
 				"package.json",
 				"../../tsconfig.minimal.json"
