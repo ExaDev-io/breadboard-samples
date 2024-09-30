@@ -10,13 +10,13 @@
 		"preview": "vite preview --open"
 	},
 	"dependencies": {
-		"react": "^18.2.0",
-		"react-dom": "^18.2.0"
+		"react": "^18.3.1",
+		"react-dom": "^18.3.1"
 	},
 	"devDependencies": {
-		"@google-labs/breadboard": "^0.8.0",
-		"@types/react": "^18.2.43",
-		"@types/react-dom": "^18.2.17",
+		"@google-labs/breadboard": "^0.27.0",
+		"@types/react": "^18.3.10",
+		"@types/react-dom": "^18.3.0",
 		"@typescript-eslint/eslint-plugin": "^6.13.2",
 		"@typescript-eslint/parser": "^6.13.2",
 		"@vitejs/plugin-react": "^4.2.1",
