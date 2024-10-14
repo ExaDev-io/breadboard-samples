@@ -11,15 +11,15 @@
 		}
 	],
 	"dependencies": {
-		"@anthropic-ai/sdk": "^0.12.4",
+		"@anthropic-ai/sdk": "^0.29.0",
 		"@anthropic-ai/tokenizer": "^0.0.4",
-		"@google-labs/breadboard": "^0.8.0",
-		"@google-labs/core-kit": "^0.1.3",
-		"@xenova/transformers": "^2.14.2",
-		"axios": "^1.6.7",
-		"cheerio": "^1.0.0-rc.12",
-		"dotenv": "^16.4.1",
-		"js-tiktoken": "^1.0.10",
+		"@google-labs/breadboard": "^0.28.0",
+		"@google-labs/core-kit": "^0.15.3",
+		"@xenova/transformers": "^2.17.2",
+		"axios": "^1.7.7",
+		"cheerio": "^1.0.0",
+		"dotenv": "^16.4.5",
+		"js-tiktoken": "^1.0.15",
 		"jsonschema": "^1.4.1"
 	},
 	"description": "Breadboard Kits to be used with the Google Labs [Breadboard](https://github.com/breadboard-ai/breadboard/) project. Initially for use with [GoogleChromeLabs/breadboard-samples](https://github.com/GoogleChromeLabs/breadboard-samples/)",
